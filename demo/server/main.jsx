@@ -7,6 +7,7 @@ import { EJSON } from 'meteor/ejson';
 
 import MainApp from '../imports/app/MainApp';
 
+// Create an Express server
 const app = Express();
 app.use((req, res, next) => {
   console.log('Rendering URL', req.originalUrl);
@@ -36,6 +37,5 @@ app.use((req, res, next) => {
   console.timeEnd('rendering');
   next();
 });
-
 // Add Express to Meteor's connect
 WebApp.connectHandlers.use(Meteor.bindEnvironment(app));

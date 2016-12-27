@@ -5,7 +5,10 @@ import MainApp from '../imports/app/MainApp';
 import { EJSON } from 'meteor/ejson';
 
 Meteor.startup(() => {
+  // Get initial context transmitted as a script
   const context = EJSON.parse(window.initialReactContext);
+  // Get the React root element
   const div = document.getElementById('react');
+  // Render and start the application
   render(<MainApp context={context} />, div);
 });
