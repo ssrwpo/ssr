@@ -17,6 +17,7 @@ parserOptions:
 settings:
   import/core-modules:
     - meteor/meteor
+    - meteor/webapp
     - meteor/ejson
   import/resolver:
     meteor:

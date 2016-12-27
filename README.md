@@ -5,9 +5,10 @@
 ## Todo
 - [ ] Routing
 - [ ] User agent sniffing
+- [ ] Grapher injection with cache
+- [ ] Server side only routes
 - [ ] LRU cache for routes and user agent
 - [ ] Component caching with Electrode
-- [ ] Grapher injection with cache
 
 ## Links
 

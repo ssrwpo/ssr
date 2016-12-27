@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { render } from 'react-dom';
 import { EJSON } from 'meteor/ejson';
+import { BrowserRouter } from 'react-router';
 import MainApp from '../imports/app/MainApp';
 
 window.onload = () => {
@@ -10,5 +11,10 @@ window.onload = () => {
   // Get the React root element
   const div = document.getElementById('react');
   // Render and start the application
-  render(<MainApp context={context} />, div);
+  render(
+    <BrowserRouter>
+      <MainApp context={context} />
+    </BrowserRouter>,
+    div
+  );
 };
