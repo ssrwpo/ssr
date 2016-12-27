@@ -18,22 +18,24 @@ app.use((req, res, next) => {
   const serializedContext = EJSON.stringify(context);
   // Create body
   const content = renderToString(<MainApp context={context} />);
+  // eslint-disable-next-line no-param-reassign
   req.dynamicBody = renderToStaticMarkup(
     <div
       id="react"
       dangerouslySetInnerHTML={{
-        __html: content
+        __html: content,
       }}
     />
   ) + renderToStaticMarkup(
     <script
       dangerouslySetInnerHTML={{
-        __html: `window.initialReactContext='${serializedContext}';`
+        __html: `window.initialReactContext='${serializedContext}';`,
       }}
     />
   );
   // Create head
   const head = rewind();
+  // eslint-disable-next-line no-param-reassign
   req.dynamicHead = ['title', 'meta', 'link', 'script']
     .reduce((acc, key) => acc.concat(head[key].toString()), '');
   // Next middleware
