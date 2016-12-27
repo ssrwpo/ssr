@@ -1,4 +1,4 @@
-# SSR - Router with SSR for Meteor
+# SSR - Router with SSR for Node & Meteor
 
 :warning: Work in progress :warning:
 
