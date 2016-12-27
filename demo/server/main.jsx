@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
@@ -20,7 +21,9 @@ app.use((req, res, next) => {
   req.dynamicBody = renderToStaticMarkup(
     <div
       id="react"
-      dangerouslySetInnerHTML={{ __html: content }}
+      dangerouslySetInnerHTML={{
+        __html: content
+      }}
     />
   ) + renderToStaticMarkup(
     <script
