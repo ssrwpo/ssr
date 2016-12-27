@@ -2,7 +2,13 @@
 
 :warning: Work in progress :warning:
 
-# Links
+## Todo
+- [ ] Routing
+- [ ] User agent sniffing
+- [ ] LRU cache for routes and user agent
+- [ ] Component caching with Electrode
+- [ ] Grapher injection with cache
 
-- Koa with Stream example: https://github.com/koajs/examples/tree/master/stream-view
+## Links
+
 - Speed up server side rendering: https://www.youtube.com/watch?v=PnpfGy7q96U
