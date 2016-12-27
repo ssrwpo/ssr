@@ -1,12 +1,36 @@
 {
-  "name": "demo",
+  "name": "ssr-demo",
   "private": true,
   "scripts": {
     "start": "meteor run"
   },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-import-resolver-meteor": "^0.3.4",
+    "eslint-plugin-class-property": "^1.0.1",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-react": "^6.8.0"
+  },
   "dependencies": {
-    "babel-runtime": "^6.18.0",
-    "bcrypt": "^0.8.7",
-    "meteor-node-stubs": "~0.2.3"
+    "babel-plugin-transform-class-properties": "^6.19.0",
+    "babel-plugin-transform-react-constant-elements": "^6.9.1",
+    "babel-plugin-transform-react-inline-elements": "^6.8.0",
+    "babel-preset-meteor": "^6.14.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-runtime": "^6.20.0",
+    "bcrypt": "^1.0.1",
+    "express": "^4.14.0",
+    "history": "^4.5.0",
+    "meteor-node-stubs": "~0.2.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-helmet": "^3.2.3",
+    "react-redux": "^5.0.1",
+    "react-router": "4.0.0-alpha.6",
+    "redux": "^3.6.0"
   }
 }
