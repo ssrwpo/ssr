@@ -20,7 +20,7 @@ const app = express();
 // Secure Express
 app.use(helmet());
 // Avoid parsing "/api" URLs
-app.use(/^(?!\/api)/, (req, res, next) => {
+app.get(/^(?!\/api)/, (req, res, next) => {
   lastRequest = req;
   console.log('Rendering URL', req.originalUrl);
   console.time('rendering');
@@ -59,7 +59,7 @@ app.use(/^(?!\/api)/, (req, res, next) => {
     .reduce((acc, key) => acc.concat(head[key].toString()), '');
   // Next middleware
   console.timeEnd('rendering');
-  next();
+  return next();
 });
 // Add Express to Meteor's connect
 WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
