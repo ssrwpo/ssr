@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-import expressApp from 'express';
+import express from 'express';
+import helmet from 'helmet';
 import { rewind } from 'react-helmet';
 import { EJSON } from 'meteor/ejson';
 import { ServerRouter, createServerRenderContext } from 'react-router';
@@ -15,7 +16,9 @@ const getLastRequest = () => lastRequest;
 export default getLastRequest;
 
 // Create an Express server
-const app = expressApp();
+const app = express();
+// Secure Express
+app.use(helmet());
 // Avoid parsing "/api" URLs
 app.use(/^(?!\/api)/, (req, res, next) => {
   lastRequest = req;
