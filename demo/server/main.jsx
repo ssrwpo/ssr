@@ -7,13 +7,18 @@ import helmet from 'helmet';
 import { rewind } from 'react-helmet';
 import { EJSON } from 'meteor/ejson';
 import { ServerRouter, createServerRenderContext } from 'react-router';
+import winston from 'winston';
 import MainApp from '../imports/app/MainApp';
 
-/* eslint-disable no-param-reassign, react/no-danger, no-console */
-let lastRequest = null;
+/* eslint-disable no-param-reassign, react/no-danger */
 
+// Debugging information for `meteor shell`
+let lastRequest = null;
 const getLastRequest = () => lastRequest;
 export default getLastRequest;
+
+// Winston configuration
+winston.level = 'debug';
 
 // Create an Express server
 const app = express();
@@ -22,8 +27,8 @@ app.use(helmet());
 // Avoid parsing "/api" URLs
 app.get(/^(?!\/api)/, (req, res, next) => {
   lastRequest = req;
-  console.log('Rendering URL', req.originalUrl);
-  console.time('rendering');
+  winston.debug('Rendering URL', req.originalUrl);
+  winston.profile('rendering');
   // Create data context
   const dataContext = { someItems: ['Hello', 'world'] };
   const serializedDataContext = EJSON.stringify(dataContext);
@@ -38,7 +43,7 @@ app.get(/^(?!\/api)/, (req, res, next) => {
     </ServerRouter>
   );
   const routerResult = routerContext.getResult();
-  console.log('routerResult', routerResult);
+  winston.debug('routerResult', routerResult);
   req.dynamicBody = renderToStaticMarkup(
     <div
       id="react"
@@ -58,7 +63,7 @@ app.get(/^(?!\/api)/, (req, res, next) => {
   req.dynamicHead = ['title', 'meta', 'link', 'script']
     .reduce((acc, key) => acc.concat(head[key].toString()), '');
   // Next middleware
-  console.timeEnd('rendering');
+  winston.profile('rendering');
   return next();
 });
 // Add Express to Meteor's connect
