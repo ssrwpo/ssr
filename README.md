@@ -2,13 +2,13 @@
 
 :warning: Work in progress :warning:
 
-## Todo
+## Roadmap
 - [ ] Routing
-- [ ] User agent sniffing
-- [ ] Grapher injection with cache
+- [ ] User agent sniffing as data context
+- [ ] Grapher injection as data context
 - [ ] Server side only routes
-- [ ] LRU cache for routes and user agent
-- [ ] Component caching with Electrode
+- [ ] LRU cache for user agent, routes & data context
+- [ ] [Component caching with Electrode](https://github.com/electrode-io/electrode-react-ssr-caching)
 
 ## Links
 
