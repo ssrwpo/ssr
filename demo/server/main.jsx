@@ -2,21 +2,22 @@ import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
-import Express from 'express';
+import expressApp from 'express';
 import { rewind } from 'react-helmet';
 import { EJSON } from 'meteor/ejson';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 import MainApp from '../imports/app/MainApp';
 
-/* eslint-disable no-param-reassign, react/no-danger, no-console, new-cap */
+/* eslint-disable no-param-reassign, react/no-danger, no-console */
 let lastRequest = null;
 
 const getLastRequest = () => lastRequest;
 export default getLastRequest;
 
 // Create an Express server
-const app = Express();
-app.use((req, res, next) => {
+const app = expressApp();
+// Avoid parsing "/api" URLs
+app.use(/^(?!\/api)/, (req, res, next) => {
   lastRequest = req;
   console.log('Rendering URL', req.originalUrl);
   console.time('rendering');
