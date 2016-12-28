@@ -4,11 +4,13 @@
 
 ## Roadmap
 - [ ] Routing
+- [ ] Cache control
 - [ ] User agent sniffing as data context
 - [ ] Grapher injection as data context
 - [ ] Server side only routes
 - [ ] LRU cache for user agent, routes & data context
 - [ ] [Component caching with Electrode](https://github.com/electrode-io/electrode-react-ssr-caching)
+- [ ] Service workers
 
 ## Links
 
