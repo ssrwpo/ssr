@@ -42,7 +42,7 @@ spacebars@1.0.12
 spacebars-compiler@1.0.13
 ssrwpo:ssr@0.0.1
 tinytest@1.0.11
-tmeasday:check-npm-versions@0.1.1
+tmeasday:check-npm-versions@0.3.1
 tracker@1.0.15
 ui@1.0.11
 underscore@1.0.10
