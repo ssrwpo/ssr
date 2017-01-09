@@ -33,11 +33,15 @@ settings the expected log level. Available values:
 - [X] Universal logger
 - [ ] Application cache
 - [ ] Service workers
+- [ ] i18n support
 
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
 - [Client side logging: logatim](https://github.com/sospedra/logatim)
 - [Server side logging: winston](https://github.com/winstonjs/winston)
+- [Protocol: Robots.txt](http://www.robotstxt.org/)
+- [Protocol: Sitemaps](https://www.sitemaps.org/)
+- [Server side security: Helmet](https://github.com/helmetjs/helmet)
 
 ## Links
 - [Reactjs - Speed up Server Side Rendering - Sasha Aickin](https://www.youtube.com/watch?v=PnpfGy7q96U)

@@ -17,5 +17,7 @@ if (ssr && ssr.loglevel) {
 
 // logatim configuration
 logatim.setLevel(loglevel);
-
 export default logatim;
+
+const getLoglevel = () => loglevel;
+export { getLoglevel };

@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import { EJSON } from 'meteor/ejson';
 import logger from './logger';
+import { perfStart, perfStop } from './perfMeasure';
 
 checkNpmVersions({
   react: '15.x',
@@ -29,8 +30,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
     app.use(helmet());
     // Avoid parsing "/api" URLs
     app.get(/^(?!\/api)/, (req, res, next) => {
-      logger.debug('Rendering URL', req.originalUrl);
-      // winston.profile('rendering');
+      perfStart();
       // Create data context
       const dataContext = { someItems: ['Hello', 'world'] };
       const serializedDataContext = EJSON.stringify(dataContext);
@@ -44,8 +44,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
           <MainApp context={dataContext} />
         </ServerRouter>,
       );
-      const routerResult = routerContext.getResult();
-      logger.debug('routerResult', routerResult);
+      // const routerResult = routerContext.getResult();
       req.dynamicBody = renderToStaticMarkup(
         <div
           id="react"
@@ -64,8 +63,8 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
       const head = rewind();
       req.dynamicHead = ['title', 'meta', 'link', 'script']
         .reduce((acc, key) => acc.concat(head[key].toString()), '');
+      perfStop(`URL ${req.originalUrl}`);
       // Next middleware
-      // winston.profile('rendering');
       return next();
     });
     // Add Express to Meteor's connect

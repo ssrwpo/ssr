@@ -18,5 +18,7 @@ if (ssr && ssr.loglevel) {
 
 // Winston configuration
 winston.level = loglevel;
-
 export default winston;
+
+const getLoglevel = () => loglevel;
+export { getLoglevel };
