@@ -4,5 +4,6 @@ import { BrowserRouter } from 'react-router';
 
 import MainApp from '../imports/app/MainApp';
 
-logger.info('Router started');
-createRouter(MainApp, BrowserRouter);
+logger.info('Starting router');
+createRouter(MainApp, BrowserRouter)
+.then(() => logger.info('Router started'));

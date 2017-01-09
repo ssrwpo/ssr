@@ -12,20 +12,23 @@ const React = require('react');
 const { render } = require('react-dom');
 /* eslint-enable */
 
-const createRouter = (MainApp, BrowserRouter) => {
-  window.onload = () => {
-    // Get initial context transmitted as a script
-    const context = EJSON.parse(window.initialReactContext);
-    // Get the React root element
-    const div = document.getElementById('react');
-    // Render and start the application
-    render(
-      <BrowserRouter>
-        <MainApp context={context} />
-      </BrowserRouter>,
-      div);
-  };
-};
+const createRouter = (MainApp, BrowserRouter) =>
+  new Promise((resolve) => {
+    window.onload = () => {
+      // Get initial context transmitted as a script
+      const context = EJSON.parse(window.initialReactContext);
+      // Get the React root element
+      const div = document.getElementById('react');
+      // Render and start the application
+      render(
+        <BrowserRouter>
+          <MainApp context={context} />
+        </BrowserRouter>,
+        div,
+      );
+      resolve();
+    };
+  });
 
 // Client side exports
 export default createRouter;

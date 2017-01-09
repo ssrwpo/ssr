@@ -1,5 +1,7 @@
-import createRouter from 'meteor/ssrwpo:ssr';
+import createRouter, { logger } from 'meteor/ssrwpo:ssr';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 import MainApp from '../imports/app/MainApp';
 
-createRouter(MainApp, ServerRouter, createServerRenderContext);
+logger.info('Starting router');
+createRouter(MainApp, ServerRouter, createServerRenderContext)
+.then(() => logger.info('Router started'));

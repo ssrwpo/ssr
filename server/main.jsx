@@ -21,55 +21,57 @@ const { rewind } = require('react-helmet');
 /* eslint-enable */
 
 /* eslint-disable no-param-reassign, react/no-danger */
-const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
-  // Create an Express server
-  const app = express();
-  // Secure Express
-  app.use(helmet());
-  // Avoid parsing "/api" URLs
-  app.get(/^(?!\/api)/, (req, res, next) => {
-    logger.debug('Rendering URL', req.originalUrl);
-    // winston.profile('rendering');
-    // Create data context
-    const dataContext = { someItems: ['Hello', 'world'] };
-    const serializedDataContext = EJSON.stringify(dataContext);
-    // Create body
-    const routerContext = createServerRenderContext();
-    const bodyMarkup = renderToString(
-      <ServerRouter
-        location={req.originalUrl}
-        context={routerContext}
-      >
-        <MainApp context={dataContext} />
-      </ServerRouter>,
-    );
-    const routerResult = routerContext.getResult();
-    logger.debug('routerResult', routerResult);
-    req.dynamicBody = renderToStaticMarkup(
-      <div
-        id="react"
-        dangerouslySetInnerHTML={{
-          __html: bodyMarkup,
-        }}
-      />,
-    ) + renderToStaticMarkup(
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `window.initialReactContext='${serializedDataContext}';`,
-        }}
-      />,
-    );
-    // Create head
-    const head = rewind();
-    req.dynamicHead = ['title', 'meta', 'link', 'script']
-      .reduce((acc, key) => acc.concat(head[key].toString()), '');
-    // Next middleware
-    // winston.profile('rendering');
-    return next();
+const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
+  new Promise((resolve) => {
+    // Create an Express server
+    const app = express();
+    // Secure Express
+    app.use(helmet());
+    // Avoid parsing "/api" URLs
+    app.get(/^(?!\/api)/, (req, res, next) => {
+      logger.debug('Rendering URL', req.originalUrl);
+      // winston.profile('rendering');
+      // Create data context
+      const dataContext = { someItems: ['Hello', 'world'] };
+      const serializedDataContext = EJSON.stringify(dataContext);
+      // Create body
+      const routerContext = createServerRenderContext();
+      const bodyMarkup = renderToString(
+        <ServerRouter
+          location={req.originalUrl}
+          context={routerContext}
+        >
+          <MainApp context={dataContext} />
+        </ServerRouter>,
+      );
+      const routerResult = routerContext.getResult();
+      logger.debug('routerResult', routerResult);
+      req.dynamicBody = renderToStaticMarkup(
+        <div
+          id="react"
+          dangerouslySetInnerHTML={{
+            __html: bodyMarkup,
+          }}
+        />,
+      ) + renderToStaticMarkup(
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.initialReactContext='${serializedDataContext}';`,
+          }}
+        />,
+      );
+      // Create head
+      const head = rewind();
+      req.dynamicHead = ['title', 'meta', 'link', 'script']
+        .reduce((acc, key) => acc.concat(head[key].toString()), '');
+      // Next middleware
+      // winston.profile('rendering');
+      return next();
+    });
+    // Add Express to Meteor's connect
+    WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
+    resolve();
   });
-  // Add Express to Meteor's connect
-  WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
-};
 
 // Server side exports
 export default createRouter;
