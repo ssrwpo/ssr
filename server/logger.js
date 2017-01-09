@@ -1,5 +1,6 @@
+import { Meteor } from 'meteor/meteor';
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
-import loglevel from '../shared/loglevel';
+import defaultLoglevel from '../shared/loglevel';
 
 checkNpmVersions({
   winston: '2.x',
@@ -8,6 +9,12 @@ checkNpmVersions({
 /* eslint-disable import/no-unresolved, import/no-extraneous-dependencies */
 const winston = require('winston');
 /* eslint-enable */
+
+let loglevel = defaultLoglevel;
+const { ssr } = Meteor.settings.public;
+if (ssr && ssr.loglevel) {
+  loglevel = ssr.loglevel;
+}
 
 // Winston configuration
 winston.level = loglevel;

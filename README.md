@@ -9,6 +9,17 @@ yarn add react reac-dom react-router@nest express helmet react-helmet winston lo
 meteor add ssrwpo:ssr
 ```
 
+## Configuration
+### Universal loader
+#### Loglevel
+In your Meteor's settings under the `ssr` object, use the `loglevel` key for
+settings the expected log level. Available values:
+
+* **`debug`** Debugging and performance.
+* **`info`** (default) Informations.
+* **`warning`** Warnings and deprecation messages.
+* **`error`** Errors.
+
 ## Roadmap
 - [ ] Routing
 - [ ] Sitemaps

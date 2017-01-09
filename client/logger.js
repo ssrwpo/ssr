@@ -1,5 +1,5 @@
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
-import loglevel from '../shared/loglevel';
+import defaultLoglevel from '../shared/loglevel';
 
 checkNpmVersions({
   logatim: '0.x',
@@ -9,6 +9,13 @@ checkNpmVersions({
 const logatim = require('logatim');
 /* eslint-enable */
 
+let loglevel = defaultLoglevel;
+const { ssr } = Meteor.settings.public;
+if (ssr && ssr.loglevel) {
+  loglevel = ssr.loglevel;
+}
+
+// logatim configuration
 logatim.setLevel(loglevel);
 
 export default logatim;
