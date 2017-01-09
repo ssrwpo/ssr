@@ -9,7 +9,12 @@ Package.describe({
   documentation: 'README.md',
 });
 
-const pkgs = ['ecmascript', 'ejson', 'webapp', 'tmeasday:check-npm-versions'];
+const pkgs = [
+  // MDG packages
+  'ecmascript', 'ejson', 'webapp',
+  // Community packages
+  'tmeasday:check-npm-versions@0.3.1',
+];
 Package.onUse((api) => {
   api.versionsFrom('1.4.2.3');
   api.use(pkgs);
