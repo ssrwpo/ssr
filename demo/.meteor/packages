@@ -10,7 +10,7 @@ ddp
 mongo
 
 standard-minifier-css
-standard-minifier-js
+ssrwpo:uglifyjs2
 es5-shim
 ecmascript
 shell-server
