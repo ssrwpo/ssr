@@ -10,7 +10,7 @@ meteor add ssrwpo:ssr
 ```
 
 ## Configuration
-### Universal loader
+### Universal logger
 #### Loglevel
 In your Meteor's settings under the `ssr` object, use the `loglevel` key for
 settings the expected log level. Available values:
@@ -30,9 +30,14 @@ settings the expected log level. Available values:
 - [ ] Server side only routes
 - [ ] LRU cache for user agent, routes & data context
 - [ ] [Component caching with Electrode](https://github.com/electrode-io/electrode-react-ssr-caching)
-- [X] Isomorphic logger
+- [X] Universal logger
 - [ ] Application cache
 - [ ] Service workers
+
+## 3rd party documentation
+- [Application router: react-router-4](https://react-router.now.sh)
+- [Client side logging: logatim](https://github.com/sospedra/logatim)
+- [Server side logging: winston](https://github.com/winstonjs/winston)
 
 ## Links
 - [Reactjs - Speed up Server Side Rendering - Sasha Aickin](https://www.youtube.com/watch?v=PnpfGy7q96U)
