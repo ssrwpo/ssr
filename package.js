@@ -9,11 +9,12 @@ Package.describe({
   documentation: 'README.md',
 });
 
-const pkgs = ['ecmascript'];
+const pkgs = ['ecmascript', 'ejson', 'webapp', 'tmeasday:check-npm-versions'];
 Package.onUse((api) => {
   api.versionsFrom('1.4.2.3');
   api.use(pkgs);
-  api.mainModule('ssr.js');
+  api.mainModule('client/main.jsx', 'client');
+  api.mainModule('server/main.jsx', 'server');
 });
 
 Package.onTest((api) => {

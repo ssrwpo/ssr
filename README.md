@@ -2,6 +2,13 @@
 
 :warning: Work in progress :warning:
 
+## Usage
+```
+npm init
+yarn add react reac-dom helmet react-helmet
+meteor add ssrwpo:ssr
+```
+
 ## Roadmap
 - [ ] Routing
 - [ ] Sitemaps
