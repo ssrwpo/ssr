@@ -1,5 +1,6 @@
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 import { EJSON } from 'meteor/ejson';
+import logger from './logger';
 
 checkNpmVersions({
   react: '15.x',
@@ -25,4 +26,7 @@ const createRouter = (MainApp, BrowserRouter) => {
       div);
   };
 };
+
+// Client side exports
 export default createRouter;
+export { logger };

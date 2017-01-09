@@ -5,7 +5,7 @@
 ## Usage
 ```
 npm init
-yarn add react reac-dom helmet react-helmet
+yarn add react reac-dom react-router@nest express helmet react-helmet winston logatim
 meteor add ssrwpo:ssr
 ```
 
@@ -19,7 +19,8 @@ meteor add ssrwpo:ssr
 - [ ] Server side only routes
 - [ ] LRU cache for user agent, routes & data context
 - [ ] [Component caching with Electrode](https://github.com/electrode-io/electrode-react-ssr-caching)
-- [ ] Isomorphic logger
+- [X] Isomorphic logger
+- [ ] Application cache
 - [ ] Service workers
 
 ## Links

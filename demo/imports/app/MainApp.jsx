@@ -73,7 +73,7 @@ const MainApp = ({ context }) => (
     <Match pattern="/topics" component={Topics} />
     <Miss component={NoMatch} />
     <hr />
-    {context.someItems.map((item, idx) => <p key={idx}>{item}</p>)}
+    {context.someItems.map(item => <p key={item}>{item}</p>)}
   </div>
 );
 MainApp.propTypes = {

@@ -2,6 +2,7 @@ import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import { EJSON } from 'meteor/ejson';
+import logger from './logger';
 
 checkNpmVersions({
   react: '15.x',
@@ -20,26 +21,14 @@ const { rewind } = require('react-helmet');
 /* eslint-enable */
 
 /* eslint-disable no-param-reassign, react/no-danger */
-
-// import winston from 'winston';
-
 const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
-  // // Debugging information for `meteor shell`
-  // let lastRequest = null;
-  // const getLastRequest = () => lastRequest;
-  // export default getLastRequest;
-  //
-  // // Winston configuration
-  // winston.level = 'debug';
-  //
   // Create an Express server
   const app = express();
   // Secure Express
   app.use(helmet());
   // Avoid parsing "/api" URLs
   app.get(/^(?!\/api)/, (req, res, next) => {
-    // lastRequest = req;
-    // winston.debug('Rendering URL', req.originalUrl);
+    logger.debug('Rendering URL', req.originalUrl);
     // winston.profile('rendering');
     // Create data context
     const dataContext = { someItems: ['Hello', 'world'] };
@@ -55,7 +44,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
       </ServerRouter>,
     );
     const routerResult = routerContext.getResult();
-    // winston.debug('routerResult', routerResult);
+    logger.debug('routerResult', routerResult);
     req.dynamicBody = renderToStaticMarkup(
       <div
         id="react"
@@ -81,4 +70,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
 };
+
+// Server side exports
 export default createRouter;
+export { logger };
