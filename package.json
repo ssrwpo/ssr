@@ -1,0 +1,30 @@
+{
+  "name": "ssr",
+  "version": "1.0.0",
+  "description": ":warning: Work in progress :warning:",
+  "main": "ssr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssr-server/ssr.git"
+  },
+  "author": "Pierre-Eric Marchandet <pemarchandet@gmail.com> (http://pem-musing.blogspot.fr/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ssr-server/ssr/issues"
+  },
+  "homepage": "https://github.com/ssr-server/ssr#readme",
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.13.0",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-import-resolver-meteor": "^0.3.4",
+    "eslint-plugin-class-property": "^1.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-react": "^6.9.0"
+  }
+}
