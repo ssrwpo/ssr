@@ -15,13 +15,13 @@ checkNpmVersions({
 
 /* eslint-disable import/no-unresolved, import/no-extraneous-dependencies */
 const React = require('react');
-const { renderToString, renderToStaticMarkup } = require('react-dom/server');
+const { renderToString } = require('react-dom/server');
 const express = require('express');
 const helmet = require('helmet');
 const { rewind } = require('react-helmet');
 /* eslint-enable */
 
-/* eslint-disable no-param-reassign, react/no-danger */
+/* eslint-disable no-param-reassign */
 const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
   new Promise((resolve) => {
     // Create an Express server
@@ -46,18 +46,10 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
       // const routerResult = routerContext.getResult();
       // Create body
       req.dynamicBody = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
-      // req.dynamicBody = renderToStaticMarkup(
-      //   <div
-      //     id="react"
-      //     dangerouslySetInnerHTML={{
-      //       __html: bodyMarkup,
-      //     }}
-      //   />,
-      // ) + dataMarkup;
       // Create head
       const head = rewind();
       req.dynamicHead = ['title', 'meta', 'link', 'script']
-        .reduce((acc, key) => acc.concat(head[key].toString()), '');
+        .reduce((acc, key) => `${acc}${head[key].toString()}`, '');
       perfStop(`URL ${req.originalUrl}`);
       // Next middleware
       return next();
