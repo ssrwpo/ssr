@@ -28,33 +28,36 @@ Ex. `babel-node benchmarks/getFromObject.js`
 
 ## Roadmap
 ### v1
-- [X] Universal logger
-- [X] Client side routing
-- [ ] Server side routing
-  - [X] Main routing
-  - [ ] Missed route (404)
-  - [ ] Redirect route
-  - [ ] No SSR routes
-- [ ] Sitemaps
-- [ ] Robots.txt
-- [ ] Cache control (Etag, max-age)
-- [ ] User agent sniffing as data context
-- [ ] Pub/sub collections as data context
-- [ ] Server side only routes and REST API for webhooks
-- [ ] LRU cache for user agent, routes & data context
-- [ ] [Component caching with Electrode](https://github.com/electrode-io/electrode-react-ssr-caching)
+* [X] Universal logger
+* [X] Client side routing
+* [ ] Server side routing
+  * [X] Main routing
+  * [ ] Missed route (404)
+  * [ ] Redirect route
+  * [ ] No SSR routes
+* [ ] Sitemaps
+* [ ] Robots.txt
+* [ ] Cache control (Etag, max-age)
+* [ ] User agent sniffing as data context
+* [ ] Pub/sub collections as data context
+* [ ] Server side only routes and REST API for webhooks
+* [ ] Server side LRU cache with TTL for
+  * [X] Routes
+  * [ ] User agent
+  * [ ] Data context
+* [ ] Component caching with Electrode
 
 ### v2
-- [ ] Browser policy
-- [ ] Application cache API
-- [ ] Service workers
-- [ ] i18n support
-- [ ] Cache prefilling
+* [ ] Browser policy
+* [ ] Application cache API
+* [ ] Service workers
+* [ ] i18n support
+* [ ] Cache prefilling
 
 ### v3
-- [ ] Styled components
-- [ ] Above the fold
-- [ ] Code splitting
+* [ ] Styled components
+* [ ] Above the fold
+* [ ] Code splitting
 
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
@@ -62,8 +65,10 @@ Ex. `babel-node benchmarks/getFromObject.js`
 - [Server side logging: winston](https://github.com/winstonjs/winston)
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
 - [Protocol: Sitemaps](https://www.sitemaps.org/)
-- [Server side security: Helmet](https://github.com/helmetjs/helmet)
-- [Server side performance profiling: Benchmark](https://benchmarkjs.com/)
+- [Server side security: helmet](https://github.com/helmetjs/helmet)
+- [Server side performance profiling: benchmark](https://benchmarkjs.com/)
+- [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)
+- [Server side component cachine: electrode-react-ssr-cachin](https://github.com/electrode-io/electrode-react-ssr-caching)
 
 ## Links
 - [Reactjs - Speed up Server Side Rendering - Sasha Aickin](https://www.youtube.com/watch?v=PnpfGy7q96U)

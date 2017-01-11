@@ -33,6 +33,7 @@
     "react-helmet": "^3.3.0",
     "react-redux": "^5.0.2",
     "react-router": "4.0.0-alpha.6",
+    "receptacle": "^1.0.5",
     "redux": "^3.6.0",
     "winston": "^2.3.0"
   }
