@@ -36,10 +36,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
       // Create application main entry point
       const routerContext = createServerRenderContext();
       const bodyMarkup = renderToString(
-        <ServerRouter
-          location={req.originalUrl}
-          context={routerContext}
-        >
+        <ServerRouter location={req.originalUrl} context={routerContext}>
           <MainApp context={dataContext} />
         </ServerRouter>,
       );
@@ -50,9 +47,9 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
       const head = rewind();
       req.dynamicHead = ['title', 'meta', 'link', 'script']
         .reduce((acc, key) => `${acc}${head[key].toString()}`, '');
-      perfStop(`URL ${req.originalUrl}`);
+      perfStop(req.originalUrl);
       // Next middleware
-      return next();
+      next();
     });
     // Add Express to Meteor's connect
     WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
