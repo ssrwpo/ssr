@@ -57,6 +57,7 @@ settings the expected log level. Available values:
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
 - [Protocol: Sitemaps](https://www.sitemaps.org/)
 - [Server side security: Helmet](https://github.com/helmetjs/helmet)
+- [Server side performance profiling: Benchmark](https://benchmarkjs.com/)
 
 ## Links
 - [Reactjs - Speed up Server Side Rendering - Sasha Aickin](https://www.youtube.com/watch?v=PnpfGy7q96U)
