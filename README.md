@@ -20,6 +20,12 @@ settings the expected log level. Available values:
 * **`warning`** Warnings and deprecation messages.
 * **`error`** Errors.
 
+## Benchmarks
+For profiling the most appropriate libraries or function call a benchmark suite
+is setup in `benchmarks`. Launch a test using [`babel-node`](https://babeljs.io/docs/usage/cli/#babel-node).
+
+Ex. `babel-node benchmarks/getFromObject.js`
+
 ## Roadmap
 ### v1
 - [X] Universal logger
