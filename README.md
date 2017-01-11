@@ -43,6 +43,12 @@ settings the expected log level. Available values:
 - [ ] Application cache API
 - [ ] Service workers
 - [ ] i18n support
+- [ ] Cache prefilling
+
+### v3
+- [ ] Styled components
+- [ ] Above the fold
+- [ ] Code splitting
 
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
