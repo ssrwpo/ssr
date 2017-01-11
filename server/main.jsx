@@ -18,7 +18,7 @@ checkNpmVersions({
                   import/no-extraneous-dependencies,
                   import/no-mutable-exports */
 const React = require('react');
-const { renderToString } = require('react-dom/server');
+const { renderToString, renderToStaticMarkup } = require('react-dom/server');
 const express = require('express');
 const helmet = require('helmet');
 const { rewind } = require('react-helmet');
@@ -54,16 +54,39 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
       head = cached.head;
       body = cached.body;
     } else {
-      logger.debug('Cache missed');
       // Create application main entry point
       const routerContext = createServerRenderContext();
-      const bodyMarkup = renderToString(
+      let bodyMarkup = renderToString(
         <ServerRouter location={url} context={routerContext}>
           <MainApp context={dataContext} />
         </ServerRouter>,
       );
-      // const routerResult = routerContext.getResult();
-      hasCacheMissed = true;
+      const routerResult = routerContext.getResult();
+      if (routerResult.redirect) {
+        // Redirect case
+        logger.debug('Redirect');
+        res.writeHead(301, { Location: routerResult.redirect.pathname });
+        res.end();
+        return;
+      }
+      if (routerResult.missed) {
+        // Not found, re-render for <Miss> component
+        // @TODO Cache 404 page
+        req.res.statusCode = 404;
+        req.res.statusMessage = 'Not found';
+        // @NOTE There's an odd behavior while rerendering the app as depicted
+        // in react-router docs. The client side does not compute the ID
+        // properly leading to inconsistencies during the application re-hydratation.
+        bodyMarkup = renderToStaticMarkup(
+          <ServerRouter location={url} context={routerContext}>
+            <MainApp context={dataContext} />
+          </ServerRouter>,
+        );
+      } else {
+        // Normal route, ask for caching
+        hasCacheMissed = true;
+      }
+      logger.debug('Cache missed');
       // Create body
       body = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
       // Create head
@@ -76,8 +99,6 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
     req.dynamicBody = body;
     // Next middleware
     next();
-    // res.writeHead(404, { 'content-type': 'text/html' });
-    // res.end(`<html><header><title>404</title></header><body>${body}</body></html>`);
     // Cache value on next preocess tick if required
     if (hasCacheMissed) { nextTick(() => cache.set(url, head, body)); }
     perfStop(url);

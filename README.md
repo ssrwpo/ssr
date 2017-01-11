@@ -43,8 +43,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 * [ ] Server side routing
   * [X] Main routing
   * [ ] Missed route (404)
-  * [ ] Redirect route
-  * [ ] No SSR routes
+  * [X] Redirect route
 * [ ] Sitemaps
 * [ ] Robots.txt
 * [ ] Cache control (Etag, max-age)
@@ -63,6 +62,9 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 * [ ] Service workers
 * [ ] i18n support
 * [ ] Cache prefilling
+* [ ] Server side routing
+  * [ ] No SSR routes
+
 
 ### v3
 * [ ] Styled components
