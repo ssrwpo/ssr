@@ -50,9 +50,7 @@ const Topics = ({ pathname }) => (
     <Match
       pattern={pathname}
       exactly
-      render={() => (
-        <h3>Please select a topic</h3>
-      )}
+      render={() => (<h3>Please select a topic</h3>)}
     />
   </div>
 );

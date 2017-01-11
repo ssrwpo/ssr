@@ -14,12 +14,18 @@ checkNpmVersions({
   'react-helmet': '3.x',
 }, 'ssrwpo:ssr');
 
-/* eslint-disable import/no-unresolved, import/no-extraneous-dependencies */
+/* eslint-disable import/no-mutable-exports, import/no-unresolved,
+                  import/no-extraneous-dependencies,
+                  import/no-mutable-exports */
 const React = require('react');
 const { renderToString } = require('react-dom/server');
 const express = require('express');
 const helmet = require('helmet');
 const { rewind } = require('react-helmet');
+
+// For debug purposes
+let debugLastRequest = null;
+let debugLastResponse = null;
 /* eslint-enable */
 
 let nextTick = fct => Meteor.defer(() => fct());
@@ -36,6 +42,8 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
   // Avoid parsing "/api" URLs
   app.get(/^(?!\/api)/, (req, res, next) => {
     perfStart();
+    debugLastRequest = req;
+    debugLastResponse = res;
     const url = req.originalUrl;
     let head = null;
     let body = null;
@@ -47,7 +55,6 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
       body = cached.body;
     } else {
       logger.debug('Cache missed');
-      hasCacheMissed = true;
       // Create application main entry point
       const routerContext = createServerRenderContext();
       const bodyMarkup = renderToString(
@@ -56,6 +63,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
         </ServerRouter>,
       );
       // const routerResult = routerContext.getResult();
+      hasCacheMissed = true;
       // Create body
       body = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
       // Create head
@@ -68,6 +76,8 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
     req.dynamicBody = body;
     // Next middleware
     next();
+    // res.writeHead(404, { 'content-type': 'text/html' });
+    // res.end(`<html><header><title>404</title></header><body>${body}</body></html>`);
     // Cache value on next preocess tick if required
     if (hasCacheMissed) { nextTick(() => cache.set(url, head, body)); }
     perfStop(url);
@@ -78,4 +88,8 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
 
 // Server side exports
 export default createRouter;
-export { logger };
+export {
+  logger,
+  // For easing debug in `meteor shell`
+  debugLastRequest, debugLastResponse,
+};

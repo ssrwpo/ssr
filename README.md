@@ -5,7 +5,8 @@
 ## Usage
 ```
 npm init
-yarn add react reac-dom react-router@nest express helmet react-helmet winston logatim receptacle
+yarn add react reac-dom react-router@next express helmet react-helmet \
+  winston logatim receptacle useragent
 meteor add ssrwpo:ssr
 ```
 
@@ -25,6 +26,15 @@ For profiling the most appropriate libraries or function call a benchmark suite
 is setup in `benchmarks`. Launch a test using [`babel-node`](https://babeljs.io/docs/usage/cli/#babel-node).
 
 Ex. `babel-node benchmarks/getFromObject.js`
+
+## Debug helpers
+The last request and last response received in Express are exposes by this
+package as `debugLastRequest` and `debugLastResponse`, respectively. In Meteor's
+shell, you can access them via:
+
+```js
+import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
+```
 
 ## Roadmap
 ### v1
@@ -69,6 +79,7 @@ Ex. `babel-node benchmarks/getFromObject.js`
 - [Server side performance profiling: benchmark](https://benchmarkjs.com/)
 - [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)
 - [Server side component cachine: electrode-react-ssr-cachin](https://github.com/electrode-io/electrode-react-ssr-caching)
+- [User agent parser: useragent](https://github.com/3rd-Eden/useragent)
 
 ## Links
 - [Reactjs - Speed up Server Side Rendering - Sasha Aickin](https://www.youtube.com/watch?v=PnpfGy7q96U)
