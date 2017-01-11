@@ -22,8 +22,8 @@ const helmet = require('helmet');
 const { rewind } = require('react-helmet');
 /* eslint-enable */
 
-// let nextTime = () => Meteor.setTimeout(() => console.log('Postponed'), 5000);
-// nextTime = Meteor.bindEnvironment(nextTime);
+let nextTick = fct => Meteor.defer(() => fct());
+nextTick = Meteor.bindEnvironment(nextTick);
 
 /* eslint-disable no-param-reassign */
 const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
@@ -39,6 +39,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
     const url = req.originalUrl;
     let head = null;
     let body = null;
+    let hasCacheMissed = false;
     if (cache.has(url)) {
       logger.debug('Cache hit');
       const cached = cache.get(url);
@@ -46,6 +47,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
       body = cached.body;
     } else {
       logger.debug('Cache missed');
+      hasCacheMissed = true;
       // Create application main entry point
       const routerContext = createServerRenderContext();
       const bodyMarkup = renderToString(
@@ -60,13 +62,14 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
       const helmetHead = rewind();
       head = ['title', 'meta', 'link', 'script']
         .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
-      cache.set(url, head, body);
     }
     // Set response's head and body in Webapp's dynamic handlers
     req.dynamicHead = head;
     req.dynamicBody = body;
     // Next middleware
     next();
+    // Cache value on next preocess tick if required
+    if (hasCacheMissed) { nextTick(() => cache.set(url, head, body)); }
     perfStop(url);
   });
   // Add Express to Meteor's connect
