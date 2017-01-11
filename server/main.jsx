@@ -33,7 +33,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
     // Avoid parsing "/api" URLs
     app.get(/^(?!\/api)/, (req, res, next) => {
       perfStart();
-      // Create body
+      // Create application main entry point
       const routerContext = createServerRenderContext();
       const bodyMarkup = renderToString(
         <ServerRouter
@@ -44,14 +44,16 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
         </ServerRouter>,
       );
       // const routerResult = routerContext.getResult();
-      req.dynamicBody = renderToStaticMarkup(
-        <div
-          id="react"
-          dangerouslySetInnerHTML={{
-            __html: bodyMarkup,
-          }}
-        />,
-      ) + dataMarkup;
+      // Create body
+      req.dynamicBody = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
+      // req.dynamicBody = renderToStaticMarkup(
+      //   <div
+      //     id="react"
+      //     dangerouslySetInnerHTML={{
+      //       __html: bodyMarkup,
+      //     }}
+      //   />,
+      // ) + dataMarkup;
       // Create head
       const head = rewind();
       req.dynamicHead = ['title', 'meta', 'link', 'script']
