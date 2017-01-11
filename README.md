@@ -21,17 +21,25 @@ settings the expected log level. Available values:
 * **`error`** Errors.
 
 ## Roadmap
-- [ ] Routing
+### v1
+- [X] Universal logger
+- [X] Client side routing
+- [ ] Server side routing
+  - [X] Main routing
+  - [ ] Missed route (404)
+  - [ ] Redirect route
+  - [ ] No SSR routes
 - [ ] Sitemaps
 - [ ] Robots.txt
-- [ ] Cache control
+- [ ] Cache control (Etag, max-age)
 - [ ] User agent sniffing as data context
-- [ ] Grapher injection as data context
-- [ ] Server side only routes
+- [ ] Pub/sub collections as data context
+- [ ] Server side only routes and REST API for webhooks
 - [ ] LRU cache for user agent, routes & data context
 - [ ] [Component caching with Electrode](https://github.com/electrode-io/electrode-react-ssr-caching)
-- [X] Universal logger
-- [ ] Application cache
+### v2
+- [ ] Browser policy
+- [ ] Application cache API
 - [ ] Service workers
 - [ ] i18n support
 
