@@ -37,6 +37,7 @@ settings the expected log level. Available values:
 - [ ] Server side only routes and REST API for webhooks
 - [ ] LRU cache for user agent, routes & data context
 - [ ] [Component caching with Electrode](https://github.com/electrode-io/electrode-react-ssr-caching)
+
 ### v2
 - [ ] Browser policy
 - [ ] Application cache API
