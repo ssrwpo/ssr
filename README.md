@@ -5,7 +5,7 @@
 ## Usage
 ```
 npm init
-yarn add react reac-dom react-router@nest express helmet react-helmet winston logatim
+yarn add react reac-dom react-router@nest express helmet react-helmet winston logatim immutable
 meteor add ssrwpo:ssr
 ```
 

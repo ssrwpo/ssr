@@ -22,39 +22,39 @@ const { rewind } = require('react-helmet');
 /* eslint-enable */
 
 /* eslint-disable no-param-reassign */
-const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
-  new Promise((resolve) => {
-    // Create an Express server
-    const app = express();
-    // Secure Express
-    app.use(helmet());
-    // Create data context
-    const { dataContext, dataMarkup } = createDataContext();
-    // Avoid parsing "/api" URLs
-    app.get(/^(?!\/api)/, (req, res, next) => {
-      perfStart();
-      // Create application main entry point
-      const routerContext = createServerRenderContext();
-      const bodyMarkup = renderToString(
-        <ServerRouter location={req.originalUrl} context={routerContext}>
-          <MainApp context={dataContext} />
-        </ServerRouter>,
-      );
-      // const routerResult = routerContext.getResult();
-      // Create body
-      req.dynamicBody = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
-      // Create head
-      const head = rewind();
-      req.dynamicHead = ['title', 'meta', 'link', 'script']
-        .reduce((acc, key) => `${acc}${head[key].toString()}`, '');
-      perfStop(req.originalUrl);
-      // Next middleware
-      next();
-    });
-    // Add Express to Meteor's connect
-    WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
-    resolve();
+const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
+  // Create an Express server
+  const app = express();
+  // Secure Express
+  app.use(helmet());
+  // Create data context
+  const { dataContext, dataMarkup } = createDataContext();
+  // Avoid parsing "/api" URLs
+  app.get(/^(?!\/api)/, (req, res, next) => {
+    perfStart();
+    // Create application main entry point
+    const routerContext = createServerRenderContext();
+    const bodyMarkup = renderToString(
+      <ServerRouter location={req.originalUrl} context={routerContext}>
+        <MainApp context={dataContext} />
+      </ServerRouter>,
+    );
+    // const routerResult = routerContext.getResult();
+    // Create body
+    const body = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
+    req.dynamicBody = body;
+    // Create head
+    const helmetHead = rewind();
+    const head = ['title', 'meta', 'link', 'script']
+      .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
+    req.dynamicHead = head;
+    perfStop(req.originalUrl);
+    // Next middleware
+    next();
   });
+  // Add Express to Meteor's connect
+  WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
+};
 
 // Server side exports
 export default createRouter;
