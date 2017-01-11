@@ -1,9 +1,9 @@
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import { EJSON } from 'meteor/ejson';
 import logger from './logger';
 import { perfStart, perfStop } from './perfMeasure';
+import createDataContext from './dataContext';
 
 checkNpmVersions({
   react: '15.x',
@@ -28,12 +28,11 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
     const app = express();
     // Secure Express
     app.use(helmet());
+    // Create data context
+    const { dataContext, dataMarkup } = createDataContext();
     // Avoid parsing "/api" URLs
     app.get(/^(?!\/api)/, (req, res, next) => {
       perfStart();
-      // Create data context
-      const dataContext = { someItems: ['Hello', 'world'] };
-      const serializedDataContext = EJSON.stringify(dataContext);
       // Create body
       const routerContext = createServerRenderContext();
       const bodyMarkup = renderToString(
@@ -52,13 +51,7 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) =>
             __html: bodyMarkup,
           }}
         />,
-      ) + renderToStaticMarkup(
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.initialReactContext='${serializedDataContext}';`,
-          }}
-        />,
-      );
+      ) + dataMarkup;
       // Create head
       const head = rewind();
       req.dynamicHead = ['title', 'meta', 'link', 'script']
