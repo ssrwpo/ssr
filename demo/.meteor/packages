@@ -4,6 +4,7 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
+ecmascript
 meteor
 hot-code-push
 ddp
@@ -11,8 +12,9 @@ mongo
 
 standard-minifier-css
 ssrwpo:uglifyjs2
+#standard-minifier-js
 es5-shim
-ecmascript
+
 shell-server
 
 webapp

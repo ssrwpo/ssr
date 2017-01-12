@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes } from 'react';
 import { Match, Miss, Link } from 'react-router';
 // Pages import
 import Home from '../routes/Home';
@@ -23,6 +23,6 @@ const MainApp = ({ context }) => (
   </div>
 );
 MainApp.propTypes = {
-  context: pt.object.isRequired,
+  context: PropTypes.object.isRequired,
 };
 export default MainApp;

@@ -1,4 +1,1 @@
-{
-  "plugins": ["transform-class-properties", "transform-react-constant-elements", "transform-react-inline-elements"],
-  "presets": ["meteor"]
-}
+../.babelrc
