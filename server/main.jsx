@@ -1,37 +1,25 @@
-import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import {
+  React,
+  renderToString,
+  renderToStaticMarkup,
+  express,
+  helmet,
+  rewind,
+  Provider,
+} from './peerDependencies';
 import logger from './logger';
 import { perfStart, perfStop } from './perfMeasure';
 import createDataContext from './dataContext';
 import cache from './cache';
+import nextTick from './nextTick';
 
-checkNpmVersions({
-  react: '15.x',
-  'react-dom': '15.x',
-  express: '4.x',
-  helmet: '3.x',
-  'react-helmet': '3.x',
-  'react-redux': '5.x',
-}, 'ssrwpo:ssr');
-
-/* eslint-disable import/no-mutable-exports, import/no-unresolved,
-                  import/no-extraneous-dependencies,
-                  import/no-mutable-exports */
-const React = require('react');
-const { renderToString, renderToStaticMarkup } = require('react-dom/server');
-const express = require('express');
-const helmet = require('helmet');
-const { rewind } = require('react-helmet');
-const { Provider } = require('react-redux');
-
+/* eslint-disable import/no-mutable-exports */
 // For debug purposes
 let debugLastRequest = null;
 let debugLastResponse = null;
 /* eslint-enable */
-
-let nextTick = fct => Meteor.defer(() => fct());
-nextTick = Meteor.bindEnvironment(nextTick);
 
 /* eslint-disable no-param-reassign */
 const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) => {
@@ -76,6 +64,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       logger.debug('Redirect');
       res.writeHead(301, { Location: routerResult.redirect.pathname });
       res.end();
+      perfStop(url);
       return;
     }
     // Not found, re-render for <Miss> component
@@ -97,6 +86,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       // Normal route, ask for caching
       hasCacheMissed = true;
     }
+    // Cache missed case: render the app
     logger.debug('Cache missed');
     logger.debug('Store initial state:', JSON.stringify(store.getState()));
     // Create body

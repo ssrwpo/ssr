@@ -1,18 +1,10 @@
-import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 import { EJSON } from 'meteor/ejson';
+import {
+  React,
+  render,
+  Provider,
+} from './peerDependencies';
 import logger from './logger';
-
-checkNpmVersions({
-  react: '15.x',
-  'react-dom': '15.x',
-  'react-redux': '5.x',
-}, 'ssrwpo:ssr');
-
-/* eslint-disable import/no-unresolved, import/no-extraneous-dependencies */
-const React = require('react');
-const { render } = require('react-dom');
-const { Provider } = require('react-redux');
-/* eslint-enable */
 
 const createRouter = (MainApp, store, BrowserRouter) =>
   new Promise((resolve) => {
