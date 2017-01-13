@@ -6,7 +6,7 @@
 ```
 npm init
 yarn add react reac-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent
+  winston logatim receptacle useragent es6-enum redux react-redux
 meteor add ssrwpo:ssr
 ```
 

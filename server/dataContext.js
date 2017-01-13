@@ -5,7 +5,7 @@ const createDataContext = () => {
   const serialized = EJSON.stringify(dataContext);
   return {
     dataContext,
-    dataMarkup: `<script>window.initialReactContext='${serialized}';</script>`,
+    dataMarkup: `<script>window.__PRELOADED_STATE__='${serialized}';</script>`,
   };
 };
 export default createDataContext;

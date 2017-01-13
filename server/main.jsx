@@ -12,6 +12,7 @@ checkNpmVersions({
   express: '4.x',
   helmet: '3.x',
   'react-helmet': '3.x',
+  'react-redux': '5.x',
 }, 'ssrwpo:ssr');
 
 /* eslint-disable import/no-mutable-exports, import/no-unresolved,
@@ -22,6 +23,7 @@ const { renderToString, renderToStaticMarkup } = require('react-dom/server');
 const express = require('express');
 const helmet = require('helmet');
 const { rewind } = require('react-helmet');
+const { Provider } = require('react-redux');
 
 // For debug purposes
 let debugLastRequest = null;
@@ -32,7 +34,7 @@ let nextTick = fct => Meteor.defer(() => fct());
 nextTick = Meteor.bindEnvironment(nextTick);
 
 /* eslint-disable no-param-reassign */
-const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
+const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) => {
   // Create an Express server
   const app = express();
   // Secure Express
@@ -61,9 +63,11 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
     // Create application main entry point
     const routerContext = createServerRenderContext();
     let bodyMarkup = renderToString(
-      <ServerRouter location={url} context={routerContext}>
-        <MainApp context={dataContext} />
-      </ServerRouter>,
+      <Provider store={store}>
+        <ServerRouter location={url} context={routerContext}>
+          <MainApp context={dataContext} />
+        </ServerRouter>
+      </Provider>,
     );
     // Get router results
     const routerResult = routerContext.getResult();
@@ -83,9 +87,11 @@ const createRouter = (MainApp, ServerRouter, createServerRenderContext) => {
       // in react-router docs. The client side does not compute the ID
       // properly leading to inconsistencies during the application re-hydratation.
       bodyMarkup = renderToStaticMarkup(
-        <ServerRouter location={url} context={routerContext}>
-          <MainApp context={dataContext} />
-        </ServerRouter>,
+        <Provider store={store}>
+          <ServerRouter location={url} context={routerContext}>
+            <MainApp context={dataContext} />
+          </ServerRouter>
+        </Provider>,
       );
     } else {
       // Normal route, ask for caching
