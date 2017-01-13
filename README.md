@@ -80,7 +80,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 - [Server side security: helmet](https://github.com/helmetjs/helmet)
 - [Server side performance profiling: benchmark](https://benchmarkjs.com/)
 - [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)
-- [Server side component cachine: electrode-react-ssr-cachin](https://github.com/electrode-io/electrode-react-ssr-caching)
+- [Server side component cachine: electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
 - [User agent parser: useragent](https://github.com/3rd-Eden/useragent)
 
 ## Links
