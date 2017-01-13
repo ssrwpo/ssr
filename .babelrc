@@ -11,7 +11,9 @@
       "module-resolver", {
         "alias": {
           "react": "react/dist/react.min",
-          "react-router": "react-router/umd/react-router.min"
+          "react-router": "react-router/umd/react-router.min",
+          "redux": "redux/dist/redux.min",
+          "react-redux": "react-redux/dist/react-redux.min"
         }
       }
     ]

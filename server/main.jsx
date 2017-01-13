@@ -78,8 +78,8 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       res.end();
       return;
     }
+    // Not found, re-render for <Miss> component
     if (routerResult.missed) {
-      // Not found, re-render for <Miss> component
       // @TODO Cache 404 page
       req.res.statusCode = 404;
       req.res.statusMessage = 'Not found';
@@ -98,6 +98,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       hasCacheMissed = true;
     }
     logger.debug('Cache missed');
+    logger.debug('Store initial state:', JSON.stringify(store.getState()));
     // Create body
     body = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
     // Create head
