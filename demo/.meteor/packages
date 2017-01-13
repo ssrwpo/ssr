@@ -11,12 +11,12 @@ ddp
 mongo
 
 standard-minifier-css
-ssrwpo:uglifyjs2
-#standard-minifier-js
-es5-shim
 
 shell-server
 
 webapp
 ejson
 ssrwpo:ssr
+
+ssrwpo:uglifyjs2
+#standard-minifier-js
