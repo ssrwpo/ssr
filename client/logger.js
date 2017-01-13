@@ -1,4 +1,4 @@
-import logatim from './peerDependencies';
+import { logatim } from './peerDependencies';
 import defaultLoglevel from '../shared/loglevel';
 
 let loglevel = defaultLoglevel;
