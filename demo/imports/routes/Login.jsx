@@ -4,7 +4,7 @@ import { auth } from '/imports/actions';
 
 const Login = ({ login }) => (
   <div>
-    <p>Login: <button onClick={login}>Log in</button></p>
+    <p>Not logged in: <button onClick={login}>Log in</button></p>
   </div>
 );
 Login.propTypes = {

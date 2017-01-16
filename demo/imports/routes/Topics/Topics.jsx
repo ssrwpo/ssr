@@ -15,8 +15,8 @@ const Topics = ({ pathname }) => (
     </ul>
     <Match pattern={`${pathname}/:topicId`} component={Topic} />
     <Match
-      pattern={pathname}
       exactly
+      pattern={pathname}
       render={() => (<h3>Please select a topic</h3>)}
     />
   </div>
