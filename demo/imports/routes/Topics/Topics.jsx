@@ -1,4 +1,4 @@
-import React, { PropTypes as pt } from 'react';
+import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { Match, Link } from 'react-router';
 // Subroutes
@@ -22,6 +22,6 @@ const Topics = ({ pathname }) => (
   </div>
 );
 Topics.propTypes = {
-  pathname: pt.string.isRequired,
+  pathname: PropTypes.string.isRequired,
 };
 export default Topics;

@@ -14,7 +14,7 @@ const MainApp = ({ context }) => (
       <li><Link to="/topics">Topics</Link></li>
     </ul>
     <hr />
-    <Match exactly pattern="/" component={Home} />
+    <Match pattern="/" component={Home} />
     <Match pattern="/about" component={About} />
     <Match pattern="/topics" component={Topics} />
     <Miss component={NotFound} />
