@@ -38,6 +38,6 @@
     "eslint-plugin-react": "^6.9.0",
     "immutable": "^3.8.1",
     "microtime": "^2.1.2",
-    "receptacle": "^1.0.5"
+    "receptacle": "^1.1.0"
   }
 }
