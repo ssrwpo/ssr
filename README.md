@@ -73,7 +73,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
   * [ ] URL parameters
 * [ ] Sitemaps
 * [ ] Robots.txt
-* [X] Cache control (Etag, max-age, if-none-match)
+* [X] Cache control (etag, max-age, if-none-match)
 * [ ] User agent sniffing as data context
 * [ ] Pub/sub collections as data context
 * [ ] Server side only routes and REST API for webhooks
@@ -107,7 +107,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 - [Server side security: helmet](https://github.com/helmetjs/helmet)
 - [Server side performance profiling: benchmark](https://benchmarkjs.com/)
 - [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)
-- [Server side component cachine: electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
+- [Server side component caching: electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
 - [User agent parser: useragent](https://github.com/3rd-Eden/useragent)
 
 ## Links

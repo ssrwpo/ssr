@@ -38,10 +38,31 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
   app
   .route(EXPRESS_COVERED_URL)
   .get((req, res, next) => {
+    const url = req.path;
+    // Using Express only to serve HTML files generated here
+    if (url.indexOf('.') !== -1) {
+      logger.debug('URL avoided', url);
+      next();
+      return;
+    }
     perfStart();
+    // Blabla
     debugLastRequest = req;
     debugLastResponse = res;
-    const url = req.path;
+
+    // STEP1 User agent analysis
+
+    // SETP2 Cache analysis
+    let statusCode = 200;
+    let head = null;
+    let body = null;
+    let hash = null;
+    let Location = null;
+    // STEP3 Application rendering if required
+    // STEP4 Transport
+    // STEP5 Cache filling if required
+
+
     // @TODO Find a pattern for expressing query
     // const query = req.query;
     // Page is in the cache
@@ -84,8 +105,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       perfStop(url);
       return;
     }
-    let head = null;
-    let body = null;
     // Create application main entry point
     const routerContext = createServerRenderContext();
     let bodyMarkup = renderToString(
@@ -101,7 +120,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     if (routerResult.redirect) {
       logger.debug('301 - Redirect');
       req.res.statusCode = 304;
-      const Location = routerResult.redirect.pathname;
+      Location = routerResult.redirect.pathname;
       res.writeHead(301, { Location });
       res.end();
       nextTick(() => cache.setRedirect(url, Location));
@@ -139,7 +158,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     req.dynamicHead = head;
     req.dynamicBody = body;
     // Create hash for ETag cache control
-    const hash = crypto.createHash('md5').update(head + body).digest('hex');
+    hash = crypto.createHash('md5').update(head + body).digest('hex');
     res.set({ ETag: hash, 'Cache-Control': 'public, no-cache' });
     const formerHash = req.headers && req.headers['if-none-match'];
     if (formerHash && formerHash === hash) {
@@ -167,6 +186,10 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
 };
+
+process.on('message', Meteor.bindEnvironment((e) => {
+  logger.info('e.refresh', e.refresh);
+}));
 
 // Server side exports
 export default createRouter;

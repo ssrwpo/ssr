@@ -15,6 +15,7 @@ import Topics from '/imports/routes/Topics';
 
 const MainApp = ({ isLoggedIn, context }) => (
   <div>
+    <p>Release 1.4</p>
     <ul>
       <li><Link to="/">Home</Link></li>
       {isLoggedIn || <li><Link to="/login">Login</Link></li>}
@@ -27,7 +28,7 @@ const MainApp = ({ isLoggedIn, context }) => (
     <MatchWhenAuthorized pattern="/protected" component={Protected} />
     <Match exactly pattern="/login" component={Login} />
     <Match exactly pattern="/about" component={About} />
-    <Match exactly pattern="/topics" component={Topics} />
+    <Match pattern="/topics" component={Topics} />
     <Miss component={NotFound} />
     <hr />
     {context.someItems.map(item => <p key={item}>{item}</p>)}
