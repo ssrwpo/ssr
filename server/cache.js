@@ -18,6 +18,9 @@ class Cache {
   setRedirect(url, location) {
     this.receptacle.set(url, { type: 301, location }, { ttl: Cache.DEFAULT_TTL });
   }
+  setNotFound(url) {
+    this.receptacle.set(url, { type: 404 }, { ttl: Cache.DEFAULT_TTL });
+  }
   has(url) {
     return this.receptacle.has(url);
   }

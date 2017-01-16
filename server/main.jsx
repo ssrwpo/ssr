@@ -21,6 +21,8 @@ let debugLastRequest = null;
 let debugLastResponse = null;
 /* eslint-enable */
 
+const NOT_FOUND_URL = '/not-found';
+
 /* eslint-disable no-param-reassign */
 const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) => {
   // Create an Express server
@@ -51,6 +53,14 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
           res.writeHead(301, { Location: cached.location });
           res.end();
           break;
+        case 404: {
+          req.res.statusCode = 404;
+          req.res.statusMessage = 'Not found';
+          const notFoundCached = cache.get(NOT_FOUND_URL);
+          req.dynamicHead = notFoundCached.head;
+          req.dynamicBody = notFoundCached.body;
+          next();
+        } break;
         default:
       }
       perfStop(url);
@@ -58,7 +68,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     }
     let head = null;
     let body = null;
-    let hasCacheMissed = false;
     // Create application main entry point
     const routerContext = createServerRenderContext();
     let bodyMarkup = renderToString(
@@ -82,7 +91,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     }
     // Not found, re-render for <Miss> component
     if (routerResult.missed) {
-      // @TODO Cache 404 page
       req.res.statusCode = 404;
       req.res.statusMessage = 'Not found';
       // @NOTE There's an odd behavior while rerendering the app as depicted
@@ -95,9 +103,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
           </ServerRouter>
         </Provider>,
       );
-    } else {
-      // Normal route, ask for caching
-      hasCacheMissed = true;
     }
     // Cache missed case: render the app
     logger.debug('Cache missed');
@@ -113,8 +118,17 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     req.dynamicBody = body;
     // Next middleware
     next();
-    // Cache value on next process tick if required
-    if (hasCacheMissed) { nextTick(() => cache.setPage(url, head, body)); }
+    // Cache value on next process tick
+    nextTick(() => {
+      if (routerResult.missed) {
+        cache.setNotFound(url);
+        if (!cache.get(NOT_FOUND_URL)) {
+          cache.setPage(NOT_FOUND_URL, head, body);
+        }
+      } else {
+        cache.setPage(url, head, body);
+      }
+    });
     perfStop(url);
   });
   // Add Express to Meteor's connect
