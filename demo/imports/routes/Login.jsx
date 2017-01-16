@@ -9,7 +9,7 @@ const Login = ({ isLoggedIn, login, location }) => (
   isLoggedIn
   ? <Redirect to={location.state ? location.state.from : '/'} />
   : <div>
-    <Helmet title="About" />
+    <Helmet title="Login" />
     <p>Not logged in: <button onClick={login}>Log in</button></p>
   </div>
 );
