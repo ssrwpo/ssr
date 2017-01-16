@@ -39,11 +39,20 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     // const query = req.query;
     // Page is in the cache
     if (cache.has(url)) {
-      logger.debug('Cache hit');
       const cached = cache.get(url);
-      req.dynamicHead = cached.head;
-      req.dynamicBody = cached.body;
-      next();
+      logger.debug('Cache hit: type:', cached.type);
+      switch (cached.type) {
+        case 200:
+          req.dynamicHead = cached.head;
+          req.dynamicBody = cached.body;
+          next();
+          break;
+        case 301:
+          res.writeHead(301, { Location: cached.location });
+          res.end();
+          break;
+        default:
+      }
       perfStop(url);
       return;
     }
@@ -64,8 +73,10 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     // Redirect case
     if (routerResult.redirect) {
       logger.debug('Redirect');
-      res.writeHead(301, { Location: routerResult.redirect.pathname });
+      const Location = routerResult.redirect.pathname;
+      res.writeHead(301, { Location });
       res.end();
+      nextTick(() => cache.setRedirect(url, Location));
       perfStop(url);
       return;
     }
@@ -103,7 +114,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     // Next middleware
     next();
     // Cache value on next process tick if required
-    if (hasCacheMissed) { nextTick(() => cache.set(url, head, body)); }
+    if (hasCacheMissed) { nextTick(() => cache.setPage(url, head, body)); }
     perfStop(url);
   });
   // Add Express to Meteor's connect

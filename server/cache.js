@@ -12,8 +12,11 @@ class Cache {
   constructor() {
     this.receptacle = new Receptacle({ max: Cache.MAX_ITEMS });
   }
-  set(url, head, body) {
-    this.receptacle.set(url, { head, body }, { ttl: Cache.DEFAULT_TTL });
+  setPage(url, head, body) {
+    this.receptacle.set(url, { type: 200, head, body }, { ttl: Cache.DEFAULT_TTL });
+  }
+  setRedirect(url, location) {
+    this.receptacle.set(url, { type: 301, location }, { ttl: Cache.DEFAULT_TTL });
   }
   has(url) {
     return this.receptacle.has(url);

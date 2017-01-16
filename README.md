@@ -69,7 +69,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 * [ ] Server side routing
   * [X] Main routing
   * [ ] Missed route (404)
-  * [ ] Redirect route
+  * [X] Redirect route
   * [ ] URL parameters
 * [ ] Sitemaps
 * [ ] Robots.txt
