@@ -5,6 +5,7 @@ import MatchWhenAuthorized from '/imports/components/MatchWhenAuthorized';
 // Pages import
 import Home from '/imports/routes/Home';
 import Protected from '/imports/routes/Protected';
+import Login from '/imports/routes/Login';
 import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
 import Topics from '/imports/routes/Topics';
@@ -20,6 +21,7 @@ const MainApp = ({ context }) => (
     <hr />
     <Match exactly pattern="/" component={Home} />
     <MatchWhenAuthorized exactly pattern="/protected" component={Protected} />
+    <Match exactly pattern="/login" component={Login} />
     <Match exactly pattern="/about" component={About} />
     <Match exactly pattern="/topics" component={Topics} />
     <Miss component={NotFound} />

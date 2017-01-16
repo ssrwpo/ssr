@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+import { selectIsLoggedIn } from '/imports/reducers/auth';
 
 const Home = ({ isLoggedIn }) => (
   <div>
@@ -12,5 +13,4 @@ const Home = ({ isLoggedIn }) => (
 Home.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
 };
-const mapStateToProps = state => ({ isLoggedIn: state.auth });
-export default connect(mapStateToProps)(Home);
+export default connect(selectIsLoggedIn)(Home);

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Match, Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import { selectIsLoggedIn } from '/imports/reducers/auth';
 
 const MatchWhenAuthorized = ({ isLoggedIn, component: Component, ...rest }) => (
   <Match
@@ -21,8 +22,10 @@ const MatchWhenAuthorized = ({ isLoggedIn, component: Component, ...rest }) => (
 );
 MatchWhenAuthorized.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  component: PropTypes.element.isRequired,
-  location: PropTypes.string.isRequired,
+  component: PropTypes.func.isRequired,
+  location: PropTypes.string,
 };
-const mapStateToProps = state => ({ isLoggedIn: state.auth });
-export default connect(mapStateToProps)(MatchWhenAuthorized);
+MatchWhenAuthorized.defaultProps = {
+  location: '/',
+};
+export default connect(selectIsLoggedIn)(MatchWhenAuthorized);

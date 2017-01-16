@@ -9,3 +9,6 @@ export default function auth(state = defaultState, action) {
     default: return state;
   }
 }
+
+// Shared props selectors
+export const selectIsLoggedIn = state => ({ isLoggedIn: state.auth });
