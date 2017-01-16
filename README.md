@@ -116,3 +116,4 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 - [Server-Side Rendering: Live Code Session - Supercharged (with info on cache control)](https://www.youtube.com/watch?v=8LM4p7l9YMY)
 - [AppCache](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache#Browser_compatibility)
 - [Caching best practices & max-age gotchas](https://jakearchibald.com/2016/caching-best-practices/)
+- [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers)

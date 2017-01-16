@@ -23,6 +23,9 @@ let debugLastResponse = null;
 /* eslint-enable */
 
 const NOT_FOUND_URL = '/not-found';
+// URL pattern covered by Express
+// @NOTE Avoid parsing "/api" URLs
+const EXPRESS_COVERED_URL = /^(?!\/api)/;
 
 /* eslint-disable no-param-reassign */
 const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) => {
@@ -32,9 +35,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
   app.use(helmet());
   // Create data context
   const { dataContext, dataMarkup } = createDataContext();
-  // URL pattern covered by Express
-  // @NOTE Avoid parsing "/api" URLs
-  const EXPRESS_COVERED_URL = /^(?!\/api)/;
   app
   .route(EXPRESS_COVERED_URL)
   .get((req, res, next) => {
@@ -53,6 +53,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
           const formerHash = req.headers && req.headers['if-none-match'];
           if (formerHash && formerHash === cached.hash) {
             logger.debug('304 - Not modified');
+            req.res.statusCode = 304;
             res.writeHead(304);
             res.end();
           } else {
@@ -65,6 +66,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
         } break;
         case 301:
           logger.debug('301 - Redirect');
+          req.res.statusCode = 301;
           res.writeHead(301, { Location: cached.location });
           res.end();
           break;
@@ -98,6 +100,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     // Redirect case
     if (routerResult.redirect) {
       logger.debug('301 - Redirect');
+      req.res.statusCode = 304;
       const Location = routerResult.redirect.pathname;
       res.writeHead(301, { Location });
       res.end();
@@ -141,6 +144,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     const formerHash = req.headers && req.headers['if-none-match'];
     if (formerHash && formerHash === hash) {
       logger.debug('304 - Not modified');
+      req.res.statusCode = 304;
       res.writeHead(304);
       res.end();
     } else {
