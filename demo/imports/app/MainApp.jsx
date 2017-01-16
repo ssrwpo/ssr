@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Match, Miss, Link } from 'react-router';
+// Components
+import MatchWhenAuthorized from '/imports/components/MatchWhenAuthorized';
 // Pages import
 import Home from '/imports/routes/Home';
 import Protected from '/imports/routes/Protected';
@@ -17,7 +19,7 @@ const MainApp = ({ context }) => (
     </ul>
     <hr />
     <Match exactly pattern="/" component={Home} />
-    <Match exactly pattern="/protected" component={Protected} />
+    <MatchWhenAuthorized exactly pattern="/protected" component={Protected} />
     <Match exactly pattern="/about" component={About} />
     <Match exactly pattern="/topics" component={Topics} />
     <Miss component={NotFound} />

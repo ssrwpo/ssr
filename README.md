@@ -21,6 +21,32 @@ settings the expected log level. Available values:
 * **`warning`** Warnings and deprecation messages.
 * **`error`** Errors.
 
+### Recommended Babel configuration
+For optimal results, set your `.babelrc` with the following content:
+```json
+{
+  "presets": ["meteor"],
+  "plugins": [
+    "transform-class-properties",
+    "transform-react-remove-prop-types",
+    "transform-react-constant-elements",
+    "transform-react-inline-elements",
+    "transform-inline-environment-variables",
+    "transform-dead-code-elimination",
+    [
+      "module-resolver", {
+        "alias": {
+          "react": "react/dist/react.min",
+          "react-router": "react-router/umd/react-router.min",
+          "redux": "redux/dist/redux.min",
+          "react-redux": "react-redux/dist/react-redux.min"
+        }
+      }
+    ]
+  ]
+}
+```
+
 ## Benchmarks
 For profiling the most appropriate libraries or function call a benchmark suite
 is setup in `benchmarks`. Launch a test using [`babel-node`](https://babeljs.io/docs/usage/cli/#babel-node).
