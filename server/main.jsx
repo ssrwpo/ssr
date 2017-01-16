@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import crypto from 'crypto';
 import {
   React,
   renderToString,
@@ -31,8 +32,12 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
   app.use(helmet());
   // Create data context
   const { dataContext, dataMarkup } = createDataContext();
-  // Avoid parsing "/api" URLs
-  app.get(/^(?!\/api)/, (req, res, next) => {
+  // URL pattern covered by Express
+  // @NOTE Avoid parsing "/api" URLs
+  const EXPRESS_COVERED_URL = /^(?!\/api)/;
+  app
+  .route(EXPRESS_COVERED_URL)
+  .get((req, res, next) => {
     perfStart();
     debugLastRequest = req;
     debugLastResponse = res;
@@ -44,16 +49,27 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       const cached = cache.get(url);
       logger.debug('Cache hit: type:', cached.type);
       switch (cached.type) {
-        case 200:
-          req.dynamicHead = cached.head;
-          req.dynamicBody = cached.body;
-          next();
-          break;
+        case 200: {
+          const formerHash = req.headers && req.headers['if-none-match'];
+          if (formerHash && formerHash === cached.hash) {
+            logger.debug('304 - Not modified');
+            res.writeHead(304);
+            res.end();
+          } else {
+            logger.debug('200 - OK');
+            req.dynamicHead = cached.head;
+            req.dynamicBody = cached.body;
+            res.set({ ETag: cached.hash, 'Cache-Control': 'public, no-cache' });
+            next();
+          }
+        } break;
         case 301:
+          logger.debug('301 - Redirect');
           res.writeHead(301, { Location: cached.location });
           res.end();
           break;
         case 404: {
+          logger.debug('404 - Not found');
           req.res.statusCode = 404;
           req.res.statusMessage = 'Not found';
           const notFoundCached = cache.get(NOT_FOUND_URL);
@@ -81,7 +97,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     const routerResult = routerContext.getResult();
     // Redirect case
     if (routerResult.redirect) {
-      logger.debug('Redirect');
+      logger.debug('301 - Redirect');
       const Location = routerResult.redirect.pathname;
       res.writeHead(301, { Location });
       res.end();
@@ -91,6 +107,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     }
     // Not found, re-render for <Miss> component
     if (routerResult.missed) {
+      logger.debug('404 - Not found');
       req.res.statusCode = 404;
       req.res.statusMessage = 'Not found';
       // @NOTE There's an odd behavior while rerendering the app as depicted
@@ -103,6 +120,8 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
           </ServerRouter>
         </Provider>,
       );
+    } else {
+      logger.debug('200 - OK');
     }
     // Cache missed case: render the app
     logger.debug('Cache missed');
@@ -116,17 +135,27 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     // Set response's head and body in Webapp's dynamic handlers
     req.dynamicHead = head;
     req.dynamicBody = body;
-    // Next middleware
-    next();
+    // Create hash for ETag cache control
+    const hash = crypto.createHash('md5').update(head + body).digest('hex');
+    res.set({ ETag: hash, 'Cache-Control': 'public, no-cache' });
+    const formerHash = req.headers && req.headers['if-none-match'];
+    if (formerHash && formerHash === hash) {
+      logger.debug('304 - Not modified');
+      res.writeHead(304);
+      res.end();
+    } else {
+      // Next middleware
+      next();
+    }
     // Cache value on next process tick
     nextTick(() => {
       if (routerResult.missed) {
         cache.setNotFound(url);
         if (!cache.get(NOT_FOUND_URL)) {
-          cache.setPage(NOT_FOUND_URL, head, body);
+          cache.setPage(NOT_FOUND_URL, head, body, hash);
         }
       } else {
-        cache.setPage(url, head, body);
+        cache.setPage(url, head, body, hash);
       }
     });
     perfStop(url);

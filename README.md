@@ -73,7 +73,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
   * [ ] URL parameters
 * [ ] Sitemaps
 * [ ] Robots.txt
-* [ ] Cache control (Etag, max-age)
+* [X] Cache control (Etag, max-age, if-none-match)
 * [ ] User agent sniffing as data context
 * [ ] Pub/sub collections as data context
 * [ ] Server side only routes and REST API for webhooks

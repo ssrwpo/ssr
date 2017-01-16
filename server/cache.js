@@ -13,9 +13,9 @@ class Cache {
   constructor() {
     this.receptacle = new Receptacle({ max: Cache.MAX_ITEMS });
   }
-  setPage(url, head, body) {
+  setPage(url, head, body, hash) {
     logger.debug('Cache Page', url);
-    this.receptacle.set(url, { type: 200, head, body }, { ttl: Cache.DEFAULT_TTL });
+    this.receptacle.set(url, { type: 200, head, body, hash }, { ttl: Cache.DEFAULT_TTL });
   }
   setRedirect(url, location) {
     logger.debug('Cache Redirect', url);
