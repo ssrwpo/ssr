@@ -18,14 +18,7 @@ const createRouter = (MainApp, store, BrowserRouter) =>
       render(
         <Provider store={store}>
           <BrowserRouter>
-            {
-              ({ router }) => {
-                if (window) {
-                  window.router = router;
-                }
-                return (<MainApp context={context} />);
-              }
-            }
+            <MainApp context={context} />
           </BrowserRouter>
         </Provider>,
         div,

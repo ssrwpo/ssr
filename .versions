@@ -22,7 +22,7 @@ html-tools@1.0.11
 htmljs@1.0.11
 id-map@1.0.9
 jquery@1.11.10
-local-test:ssrwpo:ssr@0.0.3
+local-test:ssrwpo:ssr@0.0.4
 logging@1.1.16
 meteor@1.6.0
 minimongo@1.0.17
@@ -40,7 +40,7 @@ retry@1.0.9
 routepolicy@1.0.12
 spacebars@1.0.12
 spacebars-compiler@1.0.13
-ssrwpo:ssr@0.0.3
+ssrwpo:ssr@0.0.4
 tinytest@1.0.11
 tmeasday:check-npm-versions@0.3.1
 tracker@1.0.15
