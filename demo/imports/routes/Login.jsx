@@ -13,7 +13,6 @@ class Login extends PureComponent {
   }
   state = { redirectToReferrer: false }
   onLogin = (e) => {
-    console.log('Logging in');
     this.props.login(e);
     this.setState({ redirectToReferrer: true });
   }

@@ -34,7 +34,9 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     perfStart();
     debugLastRequest = req;
     debugLastResponse = res;
-    const url = req.originalUrl;
+    const url = req.path;
+    // @TODO Find a pattern for expressing query
+    // const query = req.query;
     // Page is in the cache
     if (cache.has(url)) {
       logger.debug('Cache hit');
