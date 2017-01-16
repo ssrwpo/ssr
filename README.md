@@ -82,6 +82,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
   * [ ] User agent
   * [ ] Data context
 * [ ] Component caching with Electrode
+* [ ] Counter measure when Meteor.Reload starts requesting the same URL over & over again 
 
 ### v2
 * [ ] Browser policy
