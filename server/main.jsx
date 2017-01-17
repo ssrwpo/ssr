@@ -45,143 +45,154 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       next();
       return;
     }
+    // Start performance cheking
     perfStart();
-    // Blabla
     debugLastRequest = req;
     debugLastResponse = res;
 
     // STEP1 User agent analysis
+    // @TODO
 
     // SETP2 Cache analysis
+    // @TODO Find a pattern for expressing query
+    // const query = req.query;
     let statusCode = 200;
     let head = null;
     let body = null;
     let hash = null;
     let Location = null;
-    // STEP3 Application rendering if required
-    // STEP4 Transport
-    // STEP5 Cache filling if required
-
-
-    // @TODO Find a pattern for expressing query
-    // const query = req.query;
-    // Page is in the cache
+    let isFromCache = false;
+    let is404fromCache = false;
     if (cache.has(url)) {
       const cached = cache.get(url);
       logger.debug('Cache hit: type:', cached.type);
+      statusCode = cached.type;
+      isFromCache = true;
       switch (cached.type) {
-        case 200: {
-          const formerHash = req.headers && req.headers['if-none-match'];
-          if (formerHash && formerHash === cached.hash) {
-            logger.debug('304 - Not modified');
-            req.res.statusCode = 304;
-            res.writeHead(304);
-            res.end();
-          } else {
-            logger.debug('200 - OK');
-            req.dynamicHead = cached.head;
-            req.dynamicBody = cached.body;
-            res.set({ ETag: cached.hash, 'Cache-Control': 'public, no-cache' });
-            next();
-          }
-        } break;
+        case 200:
+          hash = cached.hash;
+          head = cached.head;
+          body = cached.body;
+          break;
         case 301:
-          logger.debug('301 - Redirect');
-          req.res.statusCode = 301;
-          res.writeHead(301, { Location: cached.location });
-          res.end();
+          statusCode = 301;
+          Location = cached.location;
           break;
         case 404: {
-          logger.debug('404 - Not found');
-          req.res.statusCode = 404;
-          req.res.statusMessage = 'Not found';
+          statusCode = 404;
           const notFoundCached = cache.get(NOT_FOUND_URL);
-          req.dynamicHead = notFoundCached.head;
-          req.dynamicBody = notFoundCached.body;
+          head = notFoundCached.head;
+          body = notFoundCached.body;
           next();
         } break;
         default:
       }
-      perfStop(url);
-      return;
     }
-    // Create application main entry point
-    const routerContext = createServerRenderContext();
-    let bodyMarkup = renderToString(
-      <Provider store={store}>
-        <ServerRouter location={url} context={routerContext}>
-          <MainApp context={dataContext} />
-        </ServerRouter>
-      </Provider>,
-    );
-    // Get router results
-    const routerResult = routerContext.getResult();
-    // Redirect case
-    if (routerResult.redirect) {
-      logger.debug('301 - Redirect');
-      req.res.statusCode = 304;
-      Location = routerResult.redirect.pathname;
-      res.writeHead(301, { Location });
-      res.end();
-      nextTick(() => cache.setRedirect(url, Location));
-      perfStop(url);
-      return;
-    }
-    // Not found, re-render for <Miss> component
-    if (routerResult.missed) {
-      logger.debug('404 - Not found');
-      req.res.statusCode = 404;
-      req.res.statusMessage = 'Not found';
-      // @NOTE There's an odd behavior while rerendering the app as depicted
-      // in react-router docs. The client side does not compute the ID
-      // properly leading to inconsistencies during the application re-hydratation.
-      bodyMarkup = renderToStaticMarkup(
+
+    // STEP3 Application rendering if required
+    if (!isFromCache) {
+      // Create and render application main entry point
+      const routerContext = createServerRenderContext();
+      let bodyMarkup = renderToString(
         <Provider store={store}>
           <ServerRouter location={url} context={routerContext}>
             <MainApp context={dataContext} />
           </ServerRouter>
         </Provider>,
       );
-    } else {
-      logger.debug('200 - OK');
-    }
-    // Cache missed case: render the app
-    logger.debug('Cache missed');
-    logger.debug('Store initial state:', JSON.stringify(store.getState()));
-    // Create body
-    body = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
-    // Create head
-    const helmetHead = rewind();
-    head = ['title', 'meta', 'link', 'script']
-      .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
-    // Set response's head and body in Webapp's dynamic handlers
-    req.dynamicHead = head;
-    req.dynamicBody = body;
-    // Create hash for ETag cache control
-    hash = crypto.createHash('md5').update(head + body).digest('hex');
-    res.set({ ETag: hash, 'Cache-Control': 'public, no-cache' });
-    const formerHash = req.headers && req.headers['if-none-match'];
-    if (formerHash && formerHash === hash) {
-      logger.debug('304 - Not modified');
-      req.res.statusCode = 304;
-      res.writeHead(304);
-      res.end();
-    } else {
-      // Next middleware
-      next();
-    }
-    // Cache value on next process tick
-    nextTick(() => {
-      if (routerResult.missed) {
-        cache.setNotFound(url);
-        if (!cache.get(NOT_FOUND_URL)) {
-          cache.setPage(NOT_FOUND_URL, head, body, hash);
+      // Get router results
+      const routerResult = routerContext.getResult();
+      // Redirect case
+      if (routerResult.redirect) {
+        statusCode = 301;
+        Location = routerResult.redirect.pathname;
+      // Not found, re-render for <Miss> component
+      } else if (routerResult.missed) {
+        statusCode = 404;
+        // Check if a former not found page has been cached
+        if (cache.has(NOT_FOUND_URL)) {
+          is404fromCache = true;
+          const cachedPage = cache.get(NOT_FOUND_URL);
+          head = cachedPage.head;
+          body = cachedPage.body;
+        } else {
+          // @NOTE There's an odd behavior while rerendering the app as depicted
+          // in react-router docs. The client side does not compute the ID
+          // properly leading to inconsistencies during the application re-hydratation.
+          bodyMarkup = renderToStaticMarkup(
+            <Provider store={store}>
+              <ServerRouter location={url} context={routerContext}>
+                <MainApp context={dataContext} />
+              </ServerRouter>
+            </Provider>,
+          );
         }
-      } else {
-        cache.setPage(url, head, body, hash);
       }
-    });
-    perfStop(url);
+      if (body === null) {
+        // Create body
+        body = `<div id="react">${bodyMarkup}</div>${dataMarkup}`;
+      }
+      if (head === null) {
+        // Create head
+        const helmetHead = rewind();
+        head = ['title', 'meta', 'link', 'script']
+          .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
+      }
+      if (statusCode === 200 && hash === null) {
+        hash = crypto.createHash('md5').update(head + body).digest('hex');
+      }
+    }
+
+    // STEP4 Transport
+    const formerHash = req.headers && req.headers['if-none-match'];
+    if (statusCode === 200 && formerHash && formerHash === hash) {
+      statusCode = 304;
+    }
+    req.res.statusCode = statusCode;
+    switch (statusCode) {
+      // OK
+      case 200:
+        req.dynamicHead = head;
+        req.dynamicBody = body;
+        res.set({ ETag: hash, 'Cache-Control': 'public, no-cache' });
+        next();
+        break;
+      // Redirect
+      case 301:
+        res.writeHead(301, { Location });
+        res.end();
+        break;
+      // Not modified
+      case 304:
+        res.writeHead(304);
+        res.end();
+        break;
+      // Not found
+      case 404:
+        req.res.statusMessage = 'Not found';
+        req.dynamicHead = head;
+        req.dynamicBody = body;
+        next();
+        break;
+      default:
+    }
+
+    // STEP5 Cache filling if required
+    if (!isFromCache) {
+      nextTick(() => {
+        if (statusCode === 404) {
+          cache.setNotFound(url);
+          if (!is404fromCache) {
+            cache.setPage(NOT_FOUND_URL, head, body, hash);
+          }
+        } else {
+          cache.setPage(url, head, body, hash);
+        }
+      });
+    }
+
+    // End performance cheking
+    perfStop(`${statusCode} - ${url}`);
   });
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));

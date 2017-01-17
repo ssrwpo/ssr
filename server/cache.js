@@ -14,15 +14,15 @@ class Cache {
     this.receptacle = new Receptacle({ max: Cache.MAX_ITEMS });
   }
   setPage(url, head, body, hash) {
-    logger.debug('Cache Page', url);
+    logger.debug('cache page:', url);
     this.receptacle.set(url, { type: 200, head, body, hash }, { ttl: Cache.DEFAULT_TTL });
   }
   setRedirect(url, location) {
-    logger.debug('Cache Redirect', url);
+    logger.debug('cach redirect:', url);
     this.receptacle.set(url, { type: 301, location }, { ttl: Cache.DEFAULT_TTL });
   }
   setNotFound(url) {
-    logger.debug('Cache NotFound', url);
+    logger.debug('cache notfound:', url);
     this.receptacle.set(url, { type: 404 }, { ttl: Cache.DEFAULT_TTL });
   }
   has(url) {
