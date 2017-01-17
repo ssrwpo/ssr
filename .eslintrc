@@ -3,6 +3,7 @@ env:
   browser: true
   meteor: true
   mongo: true
+  jest: true
 globals:
   window: true
   document: true

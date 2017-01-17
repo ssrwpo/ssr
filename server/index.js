@@ -5,6 +5,7 @@ import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import createDataContext from './utils/dataContext';
 // Serving steps
+import userAgentAnalysis from './steps/userAgentAnalysis';
 import cacheAnalysis from './steps/cacheAnalysis';
 import applicationRendering from './steps/applicationRendering';
 import transport from './steps/transport';
@@ -60,7 +61,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     };
 
     // STEP1 User agent analysis
-    // userAgentAnalysis(stepResults);
+    userAgentAnalysis(stepResults);
     // SETP2 Cache analysis
     // @TODO Find a pattern for expressing query based on: const query = req.query;
     cacheAnalysis(stepResults);
