@@ -110,6 +110,7 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 - [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)
 - [Server side component caching: electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
 - [User agent parser: useragent](https://github.com/3rd-Eden/useragent)
+- [Meteor issue on Hot code push](https://github.com/meteor/meteor/issues/7115)
 
 ## Links
 - [Reactjs - Speed up Server Side Rendering - Sasha Aickin](https://www.youtube.com/watch?v=PnpfGy7q96U)
