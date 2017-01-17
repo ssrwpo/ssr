@@ -25,8 +25,8 @@ let debugLastResponse = null;
 
 const NOT_FOUND_URL = '/not-found';
 // URL pattern covered by Express
-// @NOTE Avoid parsing "/api" URLs
-const EXPRESS_COVERED_URL = /^(?!\/api)/;
+// @NOTE URLs that contains no dot and that doesn't start with "/api"
+const EXPRESS_COVERED_URL = /^[^.]*^(?!\/api)/;
 
 /* eslint-disable no-param-reassign */
 const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) => {
@@ -40,12 +40,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
   .route(EXPRESS_COVERED_URL)
   .get((req, res, next) => {
     const url = req.path;
-    // Using Express only to serve HTML files generated here
-    if (url.indexOf('.') !== -1) {
-      logger.debug('URL avoided', url);
-      next();
-      return;
-    }
     // Start performance cheking
     perfStart();
     debugLastRequest = req;
