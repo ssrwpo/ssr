@@ -205,5 +205,4 @@ export {
   logger,
   // For easing debug in `meteor shell`
   debugLastRequest, debugLastResponse,
-  shouldForce200,
 };
