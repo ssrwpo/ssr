@@ -1,0 +1,6 @@
+.meteor
+node_modules
+public
+private
+doc
+packages

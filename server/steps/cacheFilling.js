@@ -1,5 +1,5 @@
-import cache from '../cache';
-import nextTick from '../nextTick';
+import cache from '../utils/cache';
+import nextTick from '../utils/nextTick';
 import { NOT_FOUND_URL } from '../constants';
 
 const cacheFilling = (stepResults) => {

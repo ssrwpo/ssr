@@ -8,6 +8,7 @@ checkNpmVersions({
   'react-helmet': '3.x',
   'react-redux': '5.x',
   receptacle: '1.x',
+  useragent: '2.1.x',
   winston: '2.x',
 }, 'ssrwpo:ssr');
 
@@ -19,6 +20,7 @@ const helmet = require('helmet');
 const { rewind } = require('react-helmet');
 const { Provider } = require('react-redux');
 const Receptacle = require('receptacle');
+const useragent = require('useragent');
 const winston = require('winston');
 /* eslint-enable */
 
@@ -31,5 +33,6 @@ export {
   rewind,
   Provider,
   Receptacle,
+  useragent,
   winston,
 };

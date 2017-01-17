@@ -21,8 +21,3 @@ Package.onUse((api) => {
   api.mainModule('client/main.jsx', 'client');
   api.mainModule('server/index.js', 'server');
 });
-
-Package.onTest((api) => {
-  api.use(pkgs.concat(['tinytest', name]));
-  api.mainModule('ssr-tests.js');
-});

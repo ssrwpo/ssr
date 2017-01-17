@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { winston } from './peerDependencies';
-import defaultLoglevel from '../shared/loglevel';
+import defaultLoglevel from '../../shared/loglevel';
 
 let loglevel = defaultLoglevel;
 const { ssr } = Meteor.settings.public;

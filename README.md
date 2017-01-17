@@ -47,13 +47,14 @@ For optimal results, set your `.babelrc` with the following content:
 }
 ```
 
-## Benchmarks
+## Package development
+### Benchmarks
 For profiling the most appropriate libraries or function call a benchmark suite
 is setup in `benchmarks`. Launch a test using [`babel-node`](https://babeljs.io/docs/usage/cli/#babel-node).
 
 Ex. `babel-node benchmarks/getFromObject.js`
 
-## Debug helpers
+### Debug helpers
 The last request and last response received in Express are exposes by this
 package as `debugLastRequest` and `debugLastResponse`, respectively. In Meteor's
 shell, you can access them via:
@@ -62,7 +63,7 @@ shell, you can access them via:
 import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 ```
 
-## Launching tests
+### Launching tests
 This project uses [Jest](https://facebook.github.io/jest/) and [chai](http://chaijs.com/).
 
 ```
@@ -70,6 +71,13 @@ This project uses [Jest](https://facebook.github.io/jest/) and [chai](http://cha
 npm t
 # In watch mode:
 npm t -- --watchAll --notify
+```
+
+### Linting
+The linter is based on [ESlint](http://eslint.org/) configured with [Airbnb styles](https://github.com/airbnb/javascript).
+
+```
+npm run lint
 ```
 
 ## Roadmap
@@ -91,7 +99,6 @@ npm t -- --watchAll --notify
   * [X] Routes
   * [ ] User agent
   * [ ] Data context
-* [ ] Component caching with Electrode
 * [X] Counter measure when Meteor.Reload starts requesting the same URL over & over again
 
 ### v2
@@ -102,7 +109,12 @@ npm t -- --watchAll --notify
 * [ ] Cache prefilling
 * [ ] Server side routing
   * [ ] No SSR routes
-
+* [ ] Component caching with Electrode
+* [ ] Server stats
+  * [ ] From cache vs rendered
+  * [ ] System usage: CPU, RAM
+  * [ ] Most rendered page
+  * [ ] Longest rendered page
 
 ### v3
 * [ ] Styled components

@@ -4,7 +4,8 @@
   "description": ":warning: Work in progress :warning:",
   "main": "ssr.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "./scripts/eslint.sh; exit 0"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,8 @@
     "immutable": "^3.8.1",
     "jest": "^18.1.0",
     "microtime": "^2.1.2",
-    "receptacle": "^1.1.0"
+    "receptacle": "^1.1.0",
+    "useragent": "^2.1.10"
   },
   "jest": {
     "verbose": true,

@@ -5,11 +5,11 @@ import {
   renderToStaticMarkup,
   rewind,
   Provider,
-} from '../peerDependencies';
-import cache from '../cache';
+} from '../utils/peerDependencies';
+import cache from '../utils/cache';
 import { NOT_FOUND_URL } from '../constants';
 
-// Un-pure function
+// Impure function
 /* eslint-disable no-param-reassign */
 const applicationRendering = (stepResults) => {
   if (stepResults.isFromCache) {

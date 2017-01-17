@@ -1,8 +1,8 @@
-import cache from '../cache';
+import cache from '../utils/cache';
 import { NOT_FOUND_URL } from '../constants';
-import logger from '../logger';
+import logger from '../utils/logger';
 
-// Un-pure function
+// Impure function
 /* eslint-disable no-param-reassign */
 const cacheAnalysis = (stepResults) => {
   if (!cache.has(stepResults.url)) {

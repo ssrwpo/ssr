@@ -1,6 +1,6 @@
-import shouldForce200 from '../shouldForce200';
+import shouldForce200 from '../utils/shouldForce200';
 
-// Un-pure function
+// Impure function
 /* eslint-disable no-param-reassign */
 const transport = (stepResults) => {
   const formerHash = stepResults.req.headers && stepResults.req.headers['if-none-match'];

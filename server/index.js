@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import { express, helmet } from './peerDependencies';
-import logger from './logger';
-import { perfStart, perfStop } from './perfMeasure';
-import createDataContext from './dataContext';
+import { express, helmet } from './utils/peerDependencies';
+import logger from './utils/logger';
+import { perfStart, perfStop } from './utils/perfMeasure';
+import createDataContext from './utils/dataContext';
 // Serving steps
 import cacheAnalysis from './steps/cacheAnalysis';
 import applicationRendering from './steps/applicationRendering';
@@ -26,8 +26,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
   const app = express();
   // Secure Express
   app.use(helmet());
-  // Create data context
-  const { dataContext, dataMarkup } = createDataContext();
   app
   .route(EXPRESS_COVERED_URL)
   .get((req, res, next) => {
@@ -36,12 +34,15 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     perfStart();
     debugLastRequest = req;
     debugLastResponse = res;
+    // Create data context
+    const { dataContext, dataMarkup } = createDataContext();
     // Inpure structure for storing results throughout steps
     const stepResults = {
       req,
       res,
       next,
       url,
+      browserType: null,
       statusCode: 200,
       hash: null,
       head: null,
@@ -59,7 +60,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     };
 
     // STEP1 User agent analysis
-    // @TODO
+    // userAgentAnalysis(stepResults);
     // SETP2 Cache analysis
     // @TODO Find a pattern for expressing query based on: const query = req.query;
     cacheAnalysis(stepResults);
