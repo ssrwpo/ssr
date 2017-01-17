@@ -19,7 +19,7 @@ Package.onUse((api) => {
   api.versionsFrom('1.4.2.3');
   api.use(pkgs);
   api.mainModule('client/main.jsx', 'client');
-  api.mainModule('server/main.jsx', 'server');
+  api.mainModule('server/index.js', 'server');
 });
 
 Package.onTest((api) => {
