@@ -62,6 +62,16 @@ shell, you can access them via:
 import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 ```
 
+## Launching tests
+This project uses [Jest](https://facebook.github.io/jest/) and [chai](http://chaijs.com/).
+
+```
+# In one-shot mode:
+npm t
+# In watch mode:
+npm t -- --watchAll --notify
+```
+
 ## Roadmap
 ### v1
 * [X] Universal logger
@@ -111,6 +121,9 @@ import { debugLastRequest, debugLastResponse } from 'meteor/ssrwpo:ssr';
 - [Server side component caching: electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching)
 - [User agent parser: useragent](https://github.com/3rd-Eden/useragent)
 - [Meteor issue on Hot code push](https://github.com/meteor/meteor/issues/7115)
+- [Discussions about Hot code push issue](https://forums.meteor.com/t/app-constantly-refreshing-after-an-update/23586/143)
+- [Unit tests: Jest](https://facebook.github.io/jest/)
+- [Unit tests: chai](http://chaijs.com/)
 
 ## Links
 - [Reactjs - Speed up Server Side Rendering - Sasha Aickin](https://www.youtube.com/watch?v=PnpfGy7q96U)
