@@ -15,6 +15,7 @@ import { perfStart, perfStop } from './perfMeasure';
 import createDataContext from './dataContext';
 import cache from './cache';
 import nextTick from './nextTick';
+import shouldForce200 from './shouldForce200';
 
 /* eslint-disable import/no-mutable-exports */
 // For debug purposes
@@ -147,7 +148,12 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     // STEP4 Transport
     const formerHash = req.headers && req.headers['if-none-match'];
     if (statusCode === 200 && formerHash && formerHash === hash) {
-      statusCode = 304;
+      const callerIp = req.socket && req.socket.remoteAddress
+        ? req.socket.remoteAddress
+        : 'undefined';
+      if (!shouldForce200(callerIp)) {
+        statusCode = 304;
+      }
     }
     req.res.statusCode = statusCode;
     switch (statusCode) {
@@ -205,4 +211,5 @@ export {
   logger,
   // For easing debug in `meteor shell`
   debugLastRequest, debugLastResponse,
+  shouldForce200,
 };
