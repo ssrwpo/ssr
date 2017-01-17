@@ -1,13 +1,5 @@
-import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 import logger from './logger';
-
-checkNpmVersions({
-  receptacle: '1.x',
-}, 'ssrwpo:ssr');
-
-/* eslint-disable import/no-unresolved, import/no-extraneous-dependencies */
-const Receptacle = require('receptacle');
-/* eslint-enable */
+import { Receptacle } from './peerDependencies';
 
 class Cache {
   constructor() {

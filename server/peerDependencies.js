@@ -1,12 +1,13 @@
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 
 checkNpmVersions({
-  react: '15.x',
-  'react-dom': '15.x',
   express: '4.x',
   helmet: '3.x',
+  react: '15.x',
+  'react-dom': '15.x',
   'react-helmet': '3.x',
   'react-redux': '5.x',
+  receptacle: '1.x',
   winston: '2.x',
 }, 'ssrwpo:ssr');
 
@@ -17,6 +18,7 @@ const express = require('express');
 const helmet = require('helmet');
 const { rewind } = require('react-helmet');
 const { Provider } = require('react-redux');
+const Receptacle = require('receptacle');
 const winston = require('winston');
 /* eslint-enable */
 
@@ -28,5 +30,6 @@ export {
   helmet,
   rewind,
   Provider,
+  Receptacle,
   winston,
 };
