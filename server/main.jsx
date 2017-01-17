@@ -83,7 +83,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
           const notFoundCached = cache.get(NOT_FOUND_URL);
           head = notFoundCached.head;
           body = notFoundCached.body;
-          next();
         } break;
         default:
       }
@@ -91,6 +90,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
 
     // STEP3 Application rendering if required
     if (!isFromCache) {
+      let helmetHead = null;
       // Create and render application main entry point
       const routerContext = createServerRenderContext();
       let bodyMarkup = renderToString(
@@ -100,6 +100,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
           </ServerRouter>
         </Provider>,
       );
+      helmetHead = rewind();
       // Get router results
       const routerResult = routerContext.getResult();
       // Redirect case
@@ -126,6 +127,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
               </ServerRouter>
             </Provider>,
           );
+          helmetHead = rewind();
         }
       }
       if (body === null) {
@@ -134,7 +136,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       }
       if (head === null) {
         // Create head
-        const helmetHead = rewind();
         head = ['title', 'meta', 'link', 'script']
           .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
       }
@@ -181,10 +182,10 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     if (!isFromCache) {
       nextTick(() => {
         if (statusCode === 404) {
-          cache.setNotFound(url);
           if (!is404fromCache) {
             cache.setPage(NOT_FOUND_URL, head, body, hash);
           }
+          cache.setNotFound(url);
         } else {
           cache.setPage(url, head, body, hash);
         }
@@ -197,10 +198,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
 };
-
-process.on('message', Meteor.bindEnvironment((e) => {
-  logger.info('e.refresh', e.refresh);
-}));
 
 // Server side exports
 export default createRouter;
