@@ -1,5 +1,5 @@
 import cache from '../utils/cache';
-import { NOT_FOUND_URL } from '../constants';
+import { NOT_FOUND_URL } from '../../shared/constants';
 import logger from '../utils/logger';
 
 // Impure function

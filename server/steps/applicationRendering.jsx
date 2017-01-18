@@ -7,7 +7,7 @@ import {
   Provider,
 } from '../utils/peerDependencies';
 import cache from '../utils/cache';
-import { NOT_FOUND_URL } from '../constants';
+import { NOT_FOUND_URL } from '../../shared/constants';
 
 // Impure function
 /* eslint-disable no-param-reassign */

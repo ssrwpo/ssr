@@ -1,7 +1,7 @@
 import { logatim } from './peerDependencies';
-import defaultLoglevel from '../shared/loglevel';
+import { LOG_LEVEL } from '../../shared/constants';
 
-let loglevel = defaultLoglevel;
+let loglevel = LOG_LEVEL;
 const { ssr } = Meteor.settings.public;
 if (ssr && ssr.loglevel) {
   loglevel = ssr.loglevel;

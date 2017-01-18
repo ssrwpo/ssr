@@ -13,7 +13,7 @@ import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
 import Topics from '/imports/routes/Topics';
 
-const MainApp = ({ isLoggedIn, context }) => (
+const MainApp = ({ isLoggedIn }) => (
   <div>
     <p>Release 1.4</p>
     <ul>
@@ -30,12 +30,9 @@ const MainApp = ({ isLoggedIn, context }) => (
     <Match exactly pattern="/about" component={About} />
     <Match pattern="/topics" component={Topics} />
     <Miss component={NotFound} />
-    <hr />
-    {context.someItems.map(item => <p key={item}>{item}</p>)}
   </div>
 );
 MainApp.propTypes = {
-  context: PropTypes.object.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
 };
 export default connect(selectIsLoggedIn)(MainApp);

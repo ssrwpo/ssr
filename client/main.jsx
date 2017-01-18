@@ -3,8 +3,8 @@ import {
   React,
   render,
   Provider,
-} from './peerDependencies';
-import logger from './logger';
+} from './utils/peerDependencies';
+import logger from './utils/logger';
 
 const createRouter = (MainApp, store, BrowserRouter) =>
   new Promise((resolve) => {
@@ -18,7 +18,7 @@ const createRouter = (MainApp, store, BrowserRouter) =>
       render(
         <Provider store={store}>
           <BrowserRouter>
-            <MainApp context={context} />
+            <MainApp />
           </BrowserRouter>
         </Provider>,
         div,
