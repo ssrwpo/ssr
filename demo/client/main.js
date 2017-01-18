@@ -1,5 +1,4 @@
-import 'react';
-import createRouter, { logger } from 'meteor/ssrwpo:ssr';
+import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import { BrowserRouter } from 'react-router';
 import * as appReducers from '/imports/reducers';
 

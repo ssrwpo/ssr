@@ -1,6 +1,6 @@
 {
   "name": "ssr",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": ":warning: Work in progress :warning:",
   "main": "ssr.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "babel-plugin-module-resolver": "^2.4.0",
     "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-plugin-transform-dead-code-elimination": "^2.2.2",
-    "babel-plugin-transform-inline-environment-variables": "^6.8.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.0.2",
     "babel-plugin-transform-react-constant-elements": "^6.9.1",
     "babel-plugin-transform-react-inline-elements": "^6.8.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.2.11",

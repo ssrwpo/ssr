@@ -3,7 +3,7 @@
 const name = 'ssrwpo:ssr';
 Package.describe({
   name,
-  version: '0.0.5',
+  version: '0.0.6',
   summary: 'SSR - Router with SSR for Node & Meteor',
   git: 'https://github.com/ssr-server/ssr',
   documentation: 'README.md',

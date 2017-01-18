@@ -1,4 +1,4 @@
-import createRouter, { logger } from 'meteor/ssrwpo:ssr';
+import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 import MainApp from '/imports/app/MainApp';
 import * as appReducers from '/imports/reducers';

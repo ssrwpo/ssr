@@ -5,7 +5,7 @@ checkNpmVersions({
   helmet: '3.x',
   logatim: '0.x',
   'react-dom': '15.x',
-  'react-helmet': '3.x',
+  'react-helmet': '4.x',
   'react-redux': '5.x',
   receptacle: '1.x',
   redux: '3.x',

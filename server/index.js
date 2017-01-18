@@ -84,8 +84,8 @@ const createRouter = (MainApp, appReducers, ServerRouter, createServerRenderCont
 };
 
 // Server side exports
-export default createRouter;
 export {
+  createRouter,
   logger,
   // For easing debug in `meteor shell`
   debugLastRequest, debugLastResponse,
