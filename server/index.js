@@ -3,10 +3,10 @@ import { WebApp } from 'meteor/webapp';
 import { express, helmet } from './utils/peerDependencies';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
-import createDataContext from './utils/dataContext';
 // Serving steps
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import cacheAnalysis from './steps/cacheAnalysis';
+import createDataContext from './steps/createDataContext';
 import applicationRendering from './steps/applicationRendering';
 import transport from './steps/transport';
 import cacheFilling from './steps/cacheFilling';
@@ -35,8 +35,6 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     perfStart();
     debugLastRequest = req;
     debugLastResponse = res;
-    // Create data context
-    const { dataContext, dataMarkup } = createDataContext();
     // Inpure structure for storing results throughout steps
     const stepResults = {
       req,
@@ -52,8 +50,8 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       isFromCache: false,
       is404fromCache: false,
       store,
-      dataContext,
-      dataMarkup,
+      dataContext: null,
+      dataMarkup: null,
       MainApp,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,
@@ -65,11 +63,13 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
     // SETP2 Cache analysis
     // @TODO Find a pattern for expressing query based on: const query = req.query;
     cacheAnalysis(stepResults);
-    // STEP3 Application rendering if required
+    // STEP3 Create data context
+    createDataContext(stepResults);
+    // STEP4 Application rendering if required
     applicationRendering(stepResults);
-    // STEP4 Transport
+    // STEP5 Transport
     transport(stepResults);
-    // STEP5 Cache filling if required
+    // STEP6 Cache filling if required
     cacheFilling(stepResults);
 
     // End performance cheking
