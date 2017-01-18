@@ -107,7 +107,7 @@ npm run lint
 * [ ] Sitemaps
 * [ ] Robots.txt
 * [X] Cache control (etag, max-age, if-none-match)
-* [ ] User agent sniffing as data context
+* [X] User agent sniffing as data context
 * [ ] Pub/sub collections as data context
 * [ ] Server side only routes and REST API for webhooks
 * [ ] Server side LRU cache with TTL for

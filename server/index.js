@@ -2,6 +2,7 @@
 import './utils/peerDependencies';
 import express from 'express';
 import helmet from 'helmet';
+import { combineReducers, createStore } from 'redux';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 /* eslint-enable */
@@ -14,6 +15,8 @@ import createDataContext from './steps/createDataContext';
 import applicationRendering from './steps/applicationRendering';
 import transport from './steps/transport';
 import cacheFilling from './steps/cacheFilling';
+/* eslint-enable */
+import * as packageReducers from '../shared/reducers';
 
 /* eslint-disable import/no-mutable-exports */
 // For debug purposes
@@ -27,6 +30,9 @@ const EXPRESS_COVERED_URL = /^[^.]*^(?!\/api)/;
 
 /* eslint-disable no-param-reassign */
 const createRouter = (MainApp, appReducers, ServerRouter, createServerRenderContext) => {
+  // Create a redux store
+  const allReducers = combineReducers(Object.assign(appReducers, packageReducers));
+  const store = createStore(allReducers);
   // Create an Express server
   const app = express();
   // Secure Express
@@ -45,7 +51,6 @@ const createRouter = (MainApp, appReducers, ServerRouter, createServerRenderCont
       res,
       next,
       url,
-      platform: 'default',
       statusCode: 200,
       hash: null,
       head: null,
@@ -53,8 +58,7 @@ const createRouter = (MainApp, appReducers, ServerRouter, createServerRenderCont
       Location: null,
       isFromCache: false,
       is404fromCache: false,
-      appReducers,
-      store: null,
+      store,
       contextMarkup: null,
       MainApp,
       // Used for circumventing issues on checkNpmDependencies
