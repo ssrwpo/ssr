@@ -1,5 +1,7 @@
+/* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import winston from 'winston';
+/* eslint-enable */
 import { Meteor } from 'meteor/meteor';
-import { winston } from './peerDependencies';
 import { LOG_LEVEL } from '../../shared/constants';
 
 let loglevel = LOG_LEVEL;

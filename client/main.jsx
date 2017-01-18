@@ -1,9 +1,9 @@
 import { EJSON } from 'meteor/ejson';
-import {
-  React,
-  render,
-  Provider,
-} from './utils/peerDependencies';
+/* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+/* eslint-enable */
 import logger from './utils/logger';
 
 const createRouter = (MainApp, store, BrowserRouter) =>

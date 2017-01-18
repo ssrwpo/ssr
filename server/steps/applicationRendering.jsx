@@ -1,11 +1,10 @@
 import crypto from 'crypto';
-import {
-  React,
-  renderToString,
-  renderToStaticMarkup,
-  rewind,
-  Provider,
-} from '../utils/peerDependencies';
+/* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import React from 'react';
+import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+import { Provider } from 'react-redux';
+import { rewind } from 'react-helmet';
+/* eslint-enable */
 import cache from '../utils/cache';
 import { NOT_FOUND_URL } from '../../shared/constants';
 

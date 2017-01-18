@@ -1,4 +1,6 @@
-import { logatim } from './peerDependencies';
+/* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import logatim from 'logatim';
+/* eslint-enable */
 import { LOG_LEVEL } from '../../shared/constants';
 
 let loglevel = LOG_LEVEL;

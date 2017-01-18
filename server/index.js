@@ -1,6 +1,10 @@
+/* eslint-disable import/first, no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import './utils/peerDependencies';
+import express from 'express';
+import helmet from 'helmet';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import { express, helmet } from './utils/peerDependencies';
+/* eslint-enable */
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 // Serving steps
