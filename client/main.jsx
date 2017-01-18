@@ -3,15 +3,23 @@ import { EJSON } from 'meteor/ejson';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { combineReducers, createStore } from 'redux';
 /* eslint-enable */
 import logger from './utils/logger';
 
-const createRouter = (MainApp, store, BrowserRouter) =>
+let store = null;
+
+const getStore = () => store;
+
+const createRouter = (MainApp, appReducers, BrowserRouter) =>
   new Promise((resolve) => {
+    const allReducers = combineReducers(appReducers);
     window.onload = () => {
       // Get initial context transmitted as a script
       // eslint-disable-next-line no-underscore-dangle
-      const context = EJSON.parse(window.__PRELOADED_STATE__);
+      const initialState = EJSON.parse(window.__PRELOADED_STATE__);
+      // Create store
+      store = createStore(allReducers, initialState);
       // Get the React root element
       const div = document.getElementById('react');
       // Render and start the application
@@ -28,5 +36,4 @@ const createRouter = (MainApp, store, BrowserRouter) =>
   });
 
 // Client side exports
-export default createRouter;
-export { logger };
+export { createRouter, logger, getStore };

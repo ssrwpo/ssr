@@ -9,11 +9,17 @@ const cacheFilling = (stepResults) => {
   nextTick(() => {
     if (stepResults.statusCode === 404) {
       if (!stepResults.is404fromCache) {
-        cache.setPage(NOT_FOUND_URL, stepResults.head, stepResults.body, stepResults.hash);
+        cache.setPage(
+          stepResults.platform, NOT_FOUND_URL,
+          stepResults.head, stepResults.body, stepResults.hash,
+        );
       }
       cache.setNotFound(stepResults.url);
     } else {
-      cache.setPage(stepResults.url, stepResults.head, stepResults.body, stepResults.hash);
+      cache.setPage(
+        stepResults.platform, stepResults.url,
+        stepResults.head, stepResults.body, stepResults.hash,
+      );
     }
   });
 };

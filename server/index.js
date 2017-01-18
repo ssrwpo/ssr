@@ -26,7 +26,7 @@ let debugLastResponse = null;
 const EXPRESS_COVERED_URL = /^[^.]*^(?!\/api)/;
 
 /* eslint-disable no-param-reassign */
-const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) => {
+const createRouter = (MainApp, appReducers, ServerRouter, createServerRenderContext) => {
   // Create an Express server
   const app = express();
   // Secure Express
@@ -45,7 +45,7 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       res,
       next,
       url,
-      browserType: null,
+      platform: 'default',
       statusCode: 200,
       hash: null,
       head: null,
@@ -53,9 +53,9 @@ const createRouter = (MainApp, store, ServerRouter, createServerRenderContext) =
       Location: null,
       isFromCache: false,
       is404fromCache: false,
-      store,
-      dataContext: null,
-      dataMarkup: null,
+      appReducers,
+      store: null,
+      contextMarkup: null,
       MainApp,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,

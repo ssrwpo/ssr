@@ -21,7 +21,7 @@ const applicationRendering = (stepResults) => {
   let bodyMarkup = renderToString(
     <Provider store={stepResults.store}>
       <ServerRouter location={stepResults.url} context={routerContext}>
-        <MainApp context={stepResults.dataContext} />
+        <MainApp />
       </ServerRouter>
     </Provider>,
   );
@@ -36,9 +36,9 @@ const applicationRendering = (stepResults) => {
   } else if (routerResult.missed) {
     stepResults.statusCode = 404;
     // Check if a former not found page has been cached
-    if (cache.has(NOT_FOUND_URL)) {
+    if (cache.has(stepResults.platform, NOT_FOUND_URL)) {
       stepResults.is404fromCache = true;
-      const cachedPage = cache.get(NOT_FOUND_URL);
+      const cachedPage = cache.get(stepResults.platform, NOT_FOUND_URL);
       stepResults.head = cachedPage.head;
       stepResults.body = cachedPage.body;
     } else {
@@ -57,7 +57,7 @@ const applicationRendering = (stepResults) => {
   }
   if (stepResults.body === null) {
     // Create body
-    stepResults.body = `<div id="react">${bodyMarkup}</div>${stepResults.dataMarkup}`;
+    stepResults.body = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;
   }
   if (stepResults.head === null) {
     // Create head

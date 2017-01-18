@@ -1,8 +1,6 @@
-import { combineReducers } from 'redux';
 import auth from './auth';
 
-const rootReducer = combineReducers({
+export {
+  // eslint-disable-next-line import/prefer-default-export
   auth,
-});
-
-export default rootReducer;
+};

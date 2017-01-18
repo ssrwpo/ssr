@@ -5,12 +5,11 @@ import logger from '../utils/logger';
 // Impure function
 /* eslint-disable no-param-reassign */
 const cacheAnalysis = (stepResults) => {
-  if (!cache.has(stepResults.url)) {
+  if (!cache.has(stepResults.platform, stepResults.url)) {
     return;
   }
-  const cached = cache.get(stepResults.url);
+  const cached = cache.get(stepResults.platform, stepResults.url);
   logger.debug('Cache hit: type:', cached.type);
-  stepResults.statusCode = cached.type;
   stepResults.isFromCache = true;
   switch (cached.type) {
     case 200:
@@ -24,10 +23,18 @@ const cacheAnalysis = (stepResults) => {
       stepResults.Location = cached.location;
       break;
     case 404: {
-      stepResults.statusCode = 404;
-      const notFoundCached = cache.get(NOT_FOUND_URL);
-      stepResults.head = notFoundCached.head;
-      stepResults.body = notFoundCached.body;
+      // URL is a 404 but we need to check if a NotFound page has been
+      //  rendered for this platform
+      if (cache.has(stepResults.platform, NOT_FOUND_URL)) {
+        const notFoundCached = cache.get(stepResults.platform, NOT_FOUND_URL);
+        stepResults.statusCode = 404;
+        stepResults.head = notFoundCached.head;
+        stepResults.body = notFoundCached.body;
+      } else {
+        // No rendered page for this platform, ensure that this page will
+        //  get rendered and cache
+        stepResults.isFromCache = false;
+      }
     } break;
     default:
   }

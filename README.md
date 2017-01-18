@@ -99,7 +99,7 @@ npm run lint
 * [ ] Server side only routes and REST API for webhooks
 * [ ] Server side LRU cache with TTL for
   * [X] Routes
-  * [ ] User agent
+  * [X] User agent
   * [ ] Data context
 * [X] Counter measure when Meteor.Reload starts requesting the same URL over & over again
 

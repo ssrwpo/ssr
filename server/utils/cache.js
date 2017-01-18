@@ -7,22 +7,31 @@ class Cache {
   constructor() {
     this.receptacle = new Receptacle({ max: Cache.MAX_ITEMS });
   }
-  setPage(url, head, body, hash) {
-    logger.debug('cache page:', url);
-    this.receptacle.set(url, { type: 200, head, body, hash }, Cache.DEFAULT_TTL);
+  getKey(platform, url) { return `${platform}-${url}`; }
+  setPage(platform, url, head, body, hash) {
+    const key = this.getKey(platform, url);
+    logger.debug('cache page:', key);
+    this.receptacle.set(key, { type: 200, head, body, hash }, Cache.DEFAULT_TTL);
   }
   setRedirect(url, location) {
-    logger.debug('cach redirect:', url);
+    logger.debug('cache redirect:', url);
     this.receptacle.set(url, { type: 301, location }, Cache.DEFAULT_TTL);
   }
   setNotFound(url) {
     logger.debug('cache notfound:', url);
     this.receptacle.set(url, { type: 404 }, Cache.DEFAULT_TTL);
   }
-  has(url) {
+  has(platform, url) {
+    if (this.receptacle.has(this.getKey(platform, url))) {
+      return true;
+    }
     return this.receptacle.has(url);
   }
-  get(url) {
+  get(platform, url) {
+    const res = this.receptacle.get(this.getKey(platform, url));
+    if (res) {
+      return res;
+    }
     return this.receptacle.get(url);
   }
 }
