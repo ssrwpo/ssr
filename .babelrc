@@ -1,5 +1,5 @@
 {
-  "presets": ["es2015", "react", "meteor"],
+  "presets": ["es2015", "meteor"],
   "plugins": [
     "transform-class-properties",
     "transform-react-constant-elements",
