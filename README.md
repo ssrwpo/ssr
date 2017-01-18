@@ -3,12 +3,25 @@
 :warning: Work in progress :warning:
 
 ## Usage
+### Installation
 ```
 npm init
 yarn add react reac-dom react-router@next express helmet react-helmet \
   winston logatim receptacle useragent es6-enum redux react-redux
 meteor add ssrwpo:ssr
 ```
+
+### Platform detection
+For the initial render, your app may require some defaults to ensure that
+it will server retina images
+The platform detection reducer provides the following platforms:
+
+* `android`: Any tablet or phone with Android using Chrome or the built-in browser.
+* `ipad`:  Any Apple iPad.
+* `iphone`: Any Apple iPhone.
+* `safari`: Any MacOS Safari (not iPhone or iPad).
+* `ie`: Any Internet Explorer before Edge.
+* `default`: All the other browsers and devices.
 
 ## Configuration
 ### Universal logger

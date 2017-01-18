@@ -6,10 +6,18 @@ import useragent from 'useragent';
 /* eslint-disable no-param-reassign */
 const userAgentAnalysis = (stepResults) => {
   const res = useragent.lookup(stepResults.req.headers['user-agent']);
-  // console.log('os', res.os);
-  // console.log('device', res.device);
-  if (res.family === 'Safari') {
+  const os = res.os;
+  const device = res.device;
+  if (os.family === 'Android') {
+    stepResults.platform = 'android';
+  } else if (device.family === 'iPad') {
+    stepResults.platform = 'ipad';
+  } else if (device.family === 'iPhone') {
+    stepResults.platform = 'iphone';
+  } else if (res.family === 'Safari') {
     stepResults.platform = 'safari';
+  } else if (res.family == 'IE') {
+    stepResults.platform = 'ie';
   }
 };
 export default userAgentAnalysis;
