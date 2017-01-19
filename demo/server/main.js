@@ -9,10 +9,10 @@ import '/imports/api/Places/server';
 import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
 
-const appCursors = [
-  Folks.find({}, { sort: { order: -1 } }),
-  Places.find({}, { sort: { order: -1 } }),
-];
+const appCursors = {
+  Folks: Folks.find({}, { sort: { order: -1 } }),
+  Places: Places.find({}, { sort: { order: -1 } }),
+};
 
 logger.info('Starting router');
 createRouter(
@@ -20,7 +20,7 @@ createRouter(
   MainApp,
   // An object containing your application reducers
   appReducers,
-  // The cursors required as data context
+  // An object containing the cursors required as data context
   appCursors,
   // The server side router from react-router-4
   ServerRouter,

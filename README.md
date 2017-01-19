@@ -39,7 +39,7 @@ createRouter(
   MainApp,
   // An object containing your application reducers
   appReducers,
-  // The cursors required as data context
+  // An object containing the cursors required as data context
   appCursors,
   // The server side router from react-router-4
   ServerRouter,

@@ -2,12 +2,12 @@
 import './utils/peerDependencies';
 import express from 'express';
 import helmet from 'helmet';
-import { combineReducers, createStore } from 'redux';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 /* eslint-enable */
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
+import createAppAndPackageStore from './utils/createAppAndPackageStore';
 // Serving steps
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import cacheAnalysis from './steps/cacheAnalysis';
@@ -15,8 +15,6 @@ import createDataContext from './steps/createDataContext';
 import applicationRendering from './steps/applicationRendering';
 import transport from './steps/transport';
 import cacheFilling from './steps/cacheFilling';
-/* eslint-enable */
-import * as packageReducers from '../shared/reducers';
 
 /* eslint-disable import/no-mutable-exports */
 // For debug purposes
@@ -30,12 +28,10 @@ const EXPRESS_COVERED_URL = /^[^.]*^(?!\/api)/;
 
 /* eslint-disable no-param-reassign */
 const createRouter = (
-  MainApp, appReducers, appCursors = [], ServerRouter, createServerRenderContext,
+  MainApp, appReducers, appCursors = {}, ServerRouter, createServerRenderContext,
 ) => {
-  // appCursors.forEach(cursor => console.log(cursor.fetch()));
   // Create a redux store
-  const allReducers = combineReducers({ ...appReducers, ...packageReducers });
-  const store = createStore(allReducers);
+  const store = createAppAndPackageStore(appReducers, appCursors);
   // Create an Express server
   const app = express();
   // Secure Express
