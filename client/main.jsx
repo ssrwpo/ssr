@@ -8,14 +8,18 @@ import { combineReducers, applyMiddleware, createStore } from 'redux';
 /* eslint-enable */
 import logger from './utils/logger';
 import * as packageReducers from '../shared/reducers';
+import createCollectionReducers from '../shared/reducers/utils';
 
 let store = null;
 
 const getStore = () => store;
 
-const createRouter = (MainApp, appReducers, appMiddlewares = [], BrowserRouter) =>
+const createRouter = (
+  MainApp, appReducers, appMiddlewares = [], appCursorNames, BrowserRouter,
+) =>
   new Promise((resolve) => {
-    const allReducers = combineReducers(Object.assign(appReducers, packageReducers));
+    const cursorReducers = createCollectionReducers(appCursorNames);
+    const allReducers = combineReducers({ ...appReducers, ...packageReducers, ...cursorReducers });
     Meteor.startup(() => {
       // Get initial context transmitted as a script
       // eslint-disable-next-line no-underscore-dangle

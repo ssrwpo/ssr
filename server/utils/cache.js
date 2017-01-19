@@ -36,7 +36,7 @@ class Cache {
   }
   reset() {
     logger.debug('cache reset');
-    this.receptacle.reset();
+    this.receptacle.clear();
   }
 }
 // 1k pages are cached

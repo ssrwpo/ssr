@@ -23,6 +23,8 @@ createRouter(
   appReducers,
   // Your redux middleware of choice
   appMiddlewares,
+  // Your collection names
+  appCursorNames,
   // The router used in your client
   BrowserRouter,
 )

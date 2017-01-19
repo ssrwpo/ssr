@@ -17,6 +17,8 @@ const appMiddlewares = [
   }),
 ];
 
+const appCursorNames = ['Folks', 'Places'];
+
 logger.info('Starting router');
 createRouter(
   // Your MainApp as the top component that will get rendered in <div id='react' />
@@ -25,6 +27,8 @@ createRouter(
   appReducers,
   // Your redux middleware of choice
   appMiddlewares,
+  // Your collection names
+  appCursorNames,
   // The router used in your client
   BrowserRouter,
 )
