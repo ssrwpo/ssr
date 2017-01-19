@@ -9,6 +9,8 @@ import MatchWhenAuthorized from '/imports/components/MatchWhenAuthorized';
 import Home from '/imports/routes/Home';
 import Protected from '/imports/routes/Protected';
 import Login from '/imports/routes/Login';
+import Folks from '/imports/routes/Folks';
+import Places from '/imports/routes/Places';
 import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
 import Topics from '/imports/routes/Topics';
@@ -20,6 +22,8 @@ const MainApp = ({ isLoggedIn }) => (
       <li><Link to="/">Home</Link></li>
       {isLoggedIn || <li><Link to="/login">Login</Link></li>}
       <li><Link to="/protected">Protected</Link></li>
+      <li><Link to="/folks">Folks</Link></li>
+      <li><Link to="/places">Places</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/topics">Topics</Link></li>
     </ul>
@@ -27,6 +31,8 @@ const MainApp = ({ isLoggedIn }) => (
     <Match exactly pattern="/" component={Home} />
     <MatchWhenAuthorized pattern="/protected" component={Protected} />
     <Match exactly pattern="/login" component={Login} />
+    <Match exactly pattern="/folks" component={Folks} />
+    <Match exactly pattern="/places" component={Places} />
     <Match exactly pattern="/about" component={About} />
     <Match pattern="/topics" component={Topics} />
     <Miss component={NotFound} />

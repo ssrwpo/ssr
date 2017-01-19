@@ -6,8 +6,7 @@ const createCollectionReducers = cursorNames =>
         switch (action.type) {
           case `${cursorName}.ADD`: return [...state, action.value];
           case `${cursorName}.CHANGE`: {
-            // eslint-disable-next-line no-underscore-dangle
-            const idx = state.findIndex(item => (item._id === action.value));
+            const idx = state.findIndex(item => (item.id === action.value));
             const newItem = { ...state[idx], ...action.value.fields };
             return [
               ...state.slice(0, idx - 1),
@@ -17,7 +16,7 @@ const createCollectionReducers = cursorNames =>
           }
           case `${cursorName}.REMOVE`: {
             // eslint-disable-next-line no-underscore-dangle
-            const idx = state.findIndex(item => (item._id === action.value));
+            const idx = state.findIndex(item => (item.id === action.value));
             return [
               ...state.slice(0, idx - 1),
               ...state.slice(idx + 1),

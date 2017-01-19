@@ -147,12 +147,12 @@ yarn lint
 * [ ] Robots.txt
 * [X] Cache control (etag, max-age, if-none-match)
 * [X] User agent sniffing as data context
-* [ ] Pub/sub collections as data context
+* [X] Reactive collections as data context
 * [ ] Server side only routes and REST API for webhooks
-* [ ] Server side LRU cache with TTL for
+* [X] Server side LRU cache with TTL for
   * [X] Routes
   * [X] User agent
-  * [ ] Data context
+  * [X] Data context
 * [X] Counter measure when Meteor.Reload starts requesting the same URL over & over again
 
 ### v2
