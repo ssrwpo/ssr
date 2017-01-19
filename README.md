@@ -11,6 +11,38 @@ yarn add react reac-dom react-router@next express helmet react-helmet \
 meteor add ssrwpo:ssr
 ```
 
+### Client side call
+```js
+import { createRouter, logger } from 'meteor/ssrwpo:ssr';
+import { BrowserRouter } from 'react-router';
+
+...
+
+createRouter(
+  // Your MainApp as the top component that will get rendered in <div id='react' />
+  MainApp,
+  // An object containing your application reducers
+  appReducers,
+  // Your redux middleware of choice
+  appMiddlewares,
+  // The router used in your client
+  BrowserRouter,
+)
+.then(() => logger.info('Router started'));
+```
+
+### Server side call
+```js
+import { createRouter, logger } from 'meteor/ssrwpo:ssr';
+import { ServerRouter, createServerRenderContext } from 'react-router';
+
+...
+
+createRouter(MainApp, appReducers, ServerRouter, createServerRenderContext);
+logger.info('Router started');
+
+```
+
 ### Platform detection
 For the initial render, your app may require some defaults to ensure that
 it will server retina images
