@@ -2,6 +2,9 @@ import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 import MainApp from '/imports/app/MainApp';
 import * as appReducers from '/imports/reducers';
+// Collection and fixtures
+import '/imports/api/Folks/server';
+import '/imports/api/Places/server';
 
 logger.info('Starting router');
 createRouter(

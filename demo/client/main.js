@@ -9,17 +9,13 @@ import MainApp from '../imports/app/MainApp';
 const appMiddlewares = [
   thunk,
   promise,
+  // Middleware for logs
+  createLogger({
+    actionTransformer(action) {
+      return Object.assign({}, ...action, { type: String(action.type) });
+    },
+  }),
 ];
-if (process.env.NODE_ENV === 'development') {
-  appMiddlewares.push(
-    // Middleware for logs
-    createLogger({
-      actionTransformer(action) {
-        return Object.assign({}, ...action, { type: String(action.type) });
-      },
-    }),
-  );
-}
 
 logger.info('Starting router');
 createRouter(
