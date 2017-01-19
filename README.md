@@ -15,9 +15,7 @@ meteor add ssrwpo:ssr
 ```js
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import { BrowserRouter } from 'react-router';
-
 ...
-
 createRouter(
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
@@ -35,12 +33,15 @@ createRouter(
 ```js
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import { ServerRouter, createServerRenderContext } from 'react-router';
-
 ...
-
-createRouter(MainApp, appReducers, ServerRouter, createServerRenderContext);
+createRouter(
+  // Your MainApp as the top component rendered and injected in the HTML payload
+  MainApp, appReducers,
+  // The server side router from react-router-4
+  ServerRouter,
+  createServerRenderContext,
+);
 logger.info('Router started');
-
 ```
 
 ### Platform detection

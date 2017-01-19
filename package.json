@@ -1,6 +1,6 @@
 {
   "name": "ssr",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": ":warning: Work in progress :warning:",
   "main": "ssr.js",
   "scripts": {
