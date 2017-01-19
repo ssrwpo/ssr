@@ -81,16 +81,16 @@ This project uses [Jest](https://facebook.github.io/jest/) and [chai](http://cha
 
 ```
 # In one-shot mode:
-npm t
+yarn test
 # In watch mode:
-npm t -- --watchAll --notify
+yarn test -- --watchAll --notify
 ```
 
 ### Linting
 The linter is based on [ESlint](http://eslint.org/) configured with [Airbnb styles](https://github.com/airbnb/javascript).
 
 ```
-npm run lint
+yarn lint
 ```
 
 :warning: All code must be linted before sending any PR. See the [Contributing guide](./CONTRIBUTING.md).

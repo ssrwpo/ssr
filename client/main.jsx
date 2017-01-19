@@ -4,7 +4,7 @@ import { EJSON } from 'meteor/ejson';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, applyMiddleware, createStore } from 'redux';
 /* eslint-enable */
 import logger from './utils/logger';
 import * as packageReducers from '../shared/reducers';
@@ -13,7 +13,7 @@ let store = null;
 
 const getStore = () => store;
 
-const createRouter = (MainApp, appReducers, BrowserRouter) =>
+const createRouter = (MainApp, appReducers, appMiddlewares = [], BrowserRouter) =>
   new Promise((resolve) => {
     const allReducers = combineReducers(Object.assign(appReducers, packageReducers));
     Meteor.startup(() => {
@@ -21,7 +21,11 @@ const createRouter = (MainApp, appReducers, BrowserRouter) =>
       // eslint-disable-next-line no-underscore-dangle
       const initialState = EJSON.parse(window.__PRELOADED_STATE__);
       // Create store
-      store = createStore(allReducers, initialState);
+      store = createStore(
+        allReducers,
+        initialState,
+        applyMiddleware(...appMiddlewares),
+      );
       // Get the React root element
       const div = document.getElementById('react');
       // Render and start the application
