@@ -29,9 +29,12 @@ let debugLastResponse = null;
 const EXPRESS_COVERED_URL = /^[^.]*^(?!\/api)/;
 
 /* eslint-disable no-param-reassign */
-const createRouter = (MainApp, appReducers, ServerRouter, createServerRenderContext) => {
+const createRouter = (
+  MainApp, appReducers, appCursors = [], ServerRouter, createServerRenderContext,
+) => {
+  // appCursors.forEach(cursor => console.log(cursor.fetch()));
   // Create a redux store
-  const allReducers = combineReducers(Object.assign(appReducers, packageReducers));
+  const allReducers = combineReducers({ ...appReducers, ...packageReducers });
   const store = createStore(allReducers);
   // Create an Express server
   const app = express();

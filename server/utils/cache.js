@@ -34,6 +34,10 @@ class Cache {
     }
     return this.receptacle.get(url);
   }
+  reset() {
+    logger.debug('cache reset');
+    this.receptacle.reset();
+  }
 }
 // 1k pages are cached
 // eslint-disable-next-line no-restricted-properties

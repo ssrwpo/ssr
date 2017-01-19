@@ -7,17 +7,18 @@ const cacheFilling = (stepResults) => {
     return;
   }
   nextTick(() => {
+    const platform = stepResults.store.getState().platform;
     if (stepResults.statusCode === 404) {
       if (!stepResults.is404fromCache) {
         cache.setPage(
-          stepResults.platform, NOT_FOUND_URL,
+          platform, NOT_FOUND_URL,
           stepResults.head, stepResults.body, stepResults.hash,
         );
       }
       cache.setNotFound(stepResults.url);
     } else {
       cache.setPage(
-        stepResults.platform, stepResults.url,
+        platform, stepResults.url,
         stepResults.head, stepResults.body, stepResults.hash,
       );
     }

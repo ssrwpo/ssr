@@ -36,7 +36,11 @@ import { ServerRouter, createServerRenderContext } from 'react-router';
 ...
 createRouter(
   // Your MainApp as the top component rendered and injected in the HTML payload
-  MainApp, appReducers,
+  MainApp,
+  // An object containing your application reducers
+  appReducers,
+  // The cursors required as data context
+  appCursors,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,

@@ -36,9 +36,10 @@ const applicationRendering = (stepResults) => {
   } else if (routerResult.missed) {
     stepResults.statusCode = 404;
     // Check if a former not found page has been cached
-    if (cache.has(stepResults.platform, NOT_FOUND_URL)) {
+    const platform = stepResults.store.getState().platform;
+    if (cache.has(platform, NOT_FOUND_URL)) {
       stepResults.is404fromCache = true;
-      const cachedPage = cache.get(stepResults.platform, NOT_FOUND_URL);
+      const cachedPage = cache.get(platform, NOT_FOUND_URL);
       stepResults.head = cachedPage.head;
       stepResults.body = cachedPage.body;
     } else {
