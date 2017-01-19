@@ -4,6 +4,11 @@ import { combineReducers, createStore } from 'redux';
 import cache from './cache';
 import * as packageReducers from '../../shared/reducers';
 import createCollectionReducers from '../../shared/reducers/utils';
+import {
+  collectionAdd,
+  collectionChange,
+  collectionRemove,
+} from '../../shared/actions/utils';
 
 const createAppAndPackageStore = (appReducers, appCursors) => {
   let isStoreInitDone = false;
@@ -20,16 +25,15 @@ const createAppAndPackageStore = (appReducers, appCursors) => {
         if (isStoreInitDone) {
           cache.reset();
         }
-        store.dispatch({ type: `${cursorName}.ADD`, value: { _id: id, ...fields } });
-        // console.log(cursorName, 'added', id, fields);
+        store.dispatch(collectionAdd(cursorName, id, fields));
       },
       changed(id, fields) {
         cache.reset();
-        // console.log(cursorName, 'changed', id, fields);
+        store.dispatch(collectionChange(cursorName, id, fields));
       },
       removed(id) {
         cache.reset();
-        // console.log(cursorName, 'removed', id);
+        store.dispatch(collectionRemove(cursorName, id));
       },
     });
   });
