@@ -30,7 +30,7 @@ const MainApp = ({ isLoggedIn }) => (
     <Match exactly pattern="/" component={Home} />
     <MatchWhenAuthorized pattern="/protected" component={Protected} />
     <Match exactly pattern="/login" component={Login} />
-    <Match exactly pattern="/folks" component={Folks} />
+    <Match pattern="/folks" component={Folks} />
     <Match exactly pattern="/places" component={Places} />
     <Match exactly pattern="/about" component={About} />
     <Match pattern="/topics" component={Topics} />

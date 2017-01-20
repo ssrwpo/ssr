@@ -152,7 +152,7 @@ yarn lint
   * [X] Main routing
   * [X] Missed route (404)
   * [X] Redirect route
-  * [ ] URL parameters
+  * [ ] URL query parameters
 * [X] Sitemaps
 * [X] Robots.txt
 * [X] Cache control (etag, max-age, if-none-match)
