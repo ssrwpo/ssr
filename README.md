@@ -43,7 +43,7 @@ createRouter({
   appReducers,
   // Optionnal: An object containing the cursors required as data context
   appCursors,
-  // Optionnal: The content of your robots.txt
+  // Optionnal: A function that returns the content of your robots.txt
   robotsTxt,
   // The server side router from react-router-4
   ServerRouter,

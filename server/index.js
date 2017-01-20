@@ -24,7 +24,11 @@ let debugLastResponse = null;
 
 // URL pattern covered by Express
 // @NOTE URLs that contains no dot and that doesn't start with "/api"
-const EXPRESS_COVERED_URL = /^[^.]*^(?!\/api)/;
+const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
+
+
+// string ^\/\S+$
+// no dot ^\/[^.]*$
 
 /* eslint-disable no-param-reassign */
 const createRouter = ({
@@ -32,6 +36,7 @@ const createRouter = ({
   appReducers = {},
   appCursors = {},
   robotsTxt,
+  sitemaps,
   ServerRouter,
   createServerRenderContext,
 }) => {
@@ -42,8 +47,11 @@ const createRouter = ({
   // Secure Express
   app.use(helmet());
   app
-  .get(EXPRESS_COVERED_URL, (req, res, next) => {
+  // Routes for HTML payload
+  .route(EXPRESS_COVERED_URL)
+  .get((req, res, next) => {
     const url = req.path;
+    console.log('Matching?', url, url.match(EXPRESS_COVERED_URL))
     // Start performance cheking
     perfStart();
     debugLastRequest = req;
@@ -86,9 +94,27 @@ const createRouter = ({
     // End performance cheking
     perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
   });
+
+  // Routes for robots.txt payload
   if (robotsTxt) {
-    app.get('/robots.txt', (req, res) => res.end(robotsTxt));
+    app
+    .route('/robots.txt')
+    .get((req, res) => {
+      perfStart();
+      res.end(robotsTxt());
+      perfStop('robots.txt');
+    });
   }
+
+  // Routes for sitemaps.xml payload
+  if (sitemaps) {
+    app.get('/sitemaps.xml', (req, res) => {
+      perfStart();
+      res.end(sitemaps());
+      perfStop('sitemaps.xml');
+    });
+  }
+
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
 };
