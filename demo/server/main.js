@@ -10,6 +10,7 @@ import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
 // Sitemaps & Robots
 import robotsTxt from './robotsTxt';
+import sitemapXml from './sitemapXml';
 
 const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),
@@ -26,6 +27,8 @@ createRouter({
   appCursors,
   // Optionnal: A function that returns the content of your robots.txt
   robotsTxt,
+  // Optionnal: A function that returns the content of your sitemaps.xml
+  sitemapXml,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,

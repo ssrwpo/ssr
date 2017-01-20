@@ -23,12 +23,10 @@ let debugLastResponse = null;
 /* eslint-enable */
 
 // URL pattern covered by Express
-// @NOTE URLs that contains no dot and that doesn't start with "/api"
+// @NOTE URLs that:
+// * doesn't start with "/api/"
+// * contains no dot
 const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
-
-
-// string ^\/\S+$
-// no dot ^\/[^.]*$
 
 /* eslint-disable no-param-reassign */
 const createRouter = ({
@@ -36,7 +34,7 @@ const createRouter = ({
   appReducers = {},
   appCursors = {},
   robotsTxt,
-  sitemaps,
+  sitemapXml,
   ServerRouter,
   createServerRenderContext,
 }) => {
@@ -51,7 +49,6 @@ const createRouter = ({
   .route(EXPRESS_COVERED_URL)
   .get((req, res, next) => {
     const url = req.path;
-    console.log('Matching?', url, url.match(EXPRESS_COVERED_URL))
     // Start performance cheking
     perfStart();
     debugLastRequest = req;
@@ -102,16 +99,17 @@ const createRouter = ({
     .get((req, res) => {
       perfStart();
       res.end(robotsTxt());
-      perfStop('robots.txt');
+      perfStop('/robots.txt');
     });
   }
 
-  // Routes for sitemaps.xml payload
-  if (sitemaps) {
-    app.get('/sitemaps.xml', (req, res) => {
+  // Routes for sitemap.xml payload
+  if (sitemapXml) {
+    app.get('/sitemap.xml', (req, res) => {
       perfStart();
-      res.end(sitemaps());
-      perfStop('sitemaps.xml');
+      res.set('Content-Type', 'text/xml');
+      res.end(sitemapXml());
+      perfStop('/sitemap.xml');
     });
   }
 

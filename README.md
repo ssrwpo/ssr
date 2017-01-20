@@ -45,6 +45,8 @@ createRouter({
   appCursors,
   // Optionnal: A function that returns the content of your robots.txt
   robotsTxt,
+  // Optionnal: A function that returns the content of your sitemaps.xml
+  sitemapXml,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
@@ -145,7 +147,7 @@ yarn lint
   * [X] Missed route (404)
   * [X] Redirect route
   * [ ] URL parameters
-* [ ] Sitemaps
+* [X] Sitemaps
 * [X] Robots.txt
 * [X] Cache control (etag, max-age, if-none-match)
 * [X] User agent sniffing as data context
