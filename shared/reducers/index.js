@@ -1,6 +1,7 @@
 import platform from './platform';
+import buildDate from './buildDate';
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   platform,
+  buildDate,
 };

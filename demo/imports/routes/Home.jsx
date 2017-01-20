@@ -1,25 +1,34 @@
+import moment from 'moment';
+import pick from 'lodash/pick';
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { selectIsLoggedIn } from '/imports/reducers/auth';
-import { auth } from '/imports/actions';
+import { auth as authAction } from '/imports/actions';
 
-const Home = ({ isLoggedIn, logout }) => (
+const Home = ({ auth, logout, platform, buildDate }) => (
   <div>
     <Helmet title="Home" />
     <h2>Home</h2>
-    <p>{isLoggedIn ? 'Logged in' : 'Logged out'}</p>
-    { isLoggedIn && <p><button onClick={logout}>Log out</button></p>}
+    <p>{auth ? 'Logged in' : 'Logged out'}</p>
+    { auth && <p><button onClick={logout}>Log out</button></p>}
+    <p>Current platform is: <strong>{platform}</strong></p>
+    <p><em>Build date: {moment(buildDate).format('DD/MM/YYYY HH:mm')}</em></p>
   </div>
 );
 Home.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
+  auth: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired,
+  platform: PropTypes.string.isRequired,
+  buildDate: PropTypes.number.isRequired,
 };
+const mapStateToProps = state => pick(state, ['auth', 'platform', 'buildDate']);
 const mapDispatchToProps = dispatch => ({
   logout(e) {
     e.preventDefault();
-    dispatch(auth.logout());
+    dispatch(authAction.logout());
   },
 });
-export default connect(selectIsLoggedIn, mapDispatchToProps)(Home);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);

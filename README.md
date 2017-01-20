@@ -56,8 +56,9 @@ logger.info('Router started');
 
 ### Platform detection
 For the initial render, your app may require some defaults to ensure that
-it will server retina images
-The platform detection reducer provides the following platforms:
+it will server retina images or specific layout for a platform.
+
+The `platform` detection reducer provides the following platforms:
 
 * `android`: Any tablet or phone with Android using Chrome or the built-in browser.
 * `ipad`:  Any Apple iPad.
@@ -65,6 +66,11 @@ The platform detection reducer provides the following platforms:
 * `safari`: Any MacOS Safari (not iPhone or iPad).
 * `ie`: Any Internet Explorer before Edge.
 * `default`: All the other browsers and devices.
+
+### Build date
+Each produced HTML payload is tagged with a build date allowing capabilities
+to check if a reload is required. The reducer is named `buildDate` and it
+contains a UNIX date.
 
 ## Configuration
 ### Universal logger

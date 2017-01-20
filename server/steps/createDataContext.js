@@ -1,6 +1,5 @@
 import { EJSON } from 'meteor/ejson';
-/* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
-/* eslint-enable */
+import { buildDate } from '../../shared/actions';
 
 // Impure function
 /* eslint-disable no-param-reassign */
@@ -8,6 +7,7 @@ const createDataContext = (stepResults) => {
   if (stepResults.isFromCache) {
     return;
   }
+  stepResults.store.dispatch(buildDate.set((new Date()).valueOf()));
   const serialized = EJSON.stringify(stepResults.store.getState());
   stepResults.contextMarkup = `<script>window.__PRELOADED_STATE__='${serialized}';</script>`;
 };
