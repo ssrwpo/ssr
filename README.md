@@ -43,6 +43,8 @@ createRouter({
   appReducers,
   // Optionnal: An object containing the cursors required as data context
   appCursors,
+  // Optionnal: The content of your robots.txt
+  robotsTxt,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
@@ -144,7 +146,7 @@ yarn lint
   * [X] Redirect route
   * [ ] URL parameters
 * [ ] Sitemaps
-* [ ] Robots.txt
+* [X] Robots.txt
 * [X] Cache control (etag, max-age, if-none-match)
 * [X] User agent sniffing as data context
 * [X] Reactive collections as data context

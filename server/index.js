@@ -31,6 +31,7 @@ const createRouter = ({
   MainApp,
   appReducers = {},
   appCursors = {},
+  robotsTxt,
   ServerRouter,
   createServerRenderContext,
 }) => {
@@ -41,8 +42,7 @@ const createRouter = ({
   // Secure Express
   app.use(helmet());
   app
-  .route(EXPRESS_COVERED_URL)
-  .get((req, res, next) => {
+  .get(EXPRESS_COVERED_URL, (req, res, next) => {
     const url = req.path;
     // Start performance cheking
     perfStart();
@@ -86,6 +86,9 @@ const createRouter = ({
     // End performance cheking
     perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
   });
+  if (robotsTxt) {
+    app.get('/robots.txt', (req, res) => res.end(robotsTxt));
+  }
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
 };

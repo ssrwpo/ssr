@@ -8,6 +8,8 @@ import '/imports/api/Places/server';
 // Collections
 import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
+// Sitemaps & Robots
+import robotsTxt from './robotsTxt';
 
 const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),
@@ -22,6 +24,8 @@ createRouter({
   appReducers,
   // Optionnal: An object containing the cursors required as data context
   appCursors,
+  // Optionnal: The content of your robots.txt
+  robotsTxt,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
