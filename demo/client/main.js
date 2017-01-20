@@ -12,7 +12,7 @@ const appMiddlewares = [
   // Middleware for logs
   createLogger({
     actionTransformer(action) {
-      return Object.assign({}, ...action, { type: String(action.type) });
+      return { ...action, type: String(action.type) };
     },
   }),
 ];
@@ -20,16 +20,16 @@ const appMiddlewares = [
 const appCursorNames = ['Folks', 'Places'];
 
 logger.info('Starting router');
-createRouter(
+createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
-  // An object containing your application reducers
+  // Optionnal: An object containing your application reducers
   appReducers,
-  // Your redux middleware of choice
+  // Optionnal: An array of your redux middleware of choice
   appMiddlewares,
-  // Your collection names
+  // Optionnal: An array of your collection names
   appCursorNames,
   // The router used in your client
   BrowserRouter,
-)
+})
 .then(() => logger.info('Router started'));

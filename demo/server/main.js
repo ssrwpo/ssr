@@ -15,15 +15,15 @@ const appCursors = {
 };
 
 logger.info('Starting router');
-createRouter(
+createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
-  // An object containing your application reducers
+  // Optionnal: An object containing your application reducers
   appReducers,
-  // An object containing the cursors required as data context
+  // Optionnal: An object containing the cursors required as data context
   appCursors,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
-);
+});
 logger.info('Router started');

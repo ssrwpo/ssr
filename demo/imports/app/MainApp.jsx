@@ -17,7 +17,6 @@ import Topics from '/imports/routes/Topics';
 
 const MainApp = ({ isLoggedIn }) => (
   <div>
-    <p>Release 1.4</p>
     <ul>
       <li><Link to="/">Home</Link></li>
       {isLoggedIn || <li><Link to="/login">Login</Link></li>}

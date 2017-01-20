@@ -16,18 +16,18 @@ meteor add ssrwpo:ssr
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import { BrowserRouter } from 'react-router';
 ...
-createRouter(
+createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
-  // An object containing your application reducers
+  // Optionnal: An object containing your application reducers
   appReducers,
-  // Your redux middleware of choice
+  // Optionnal: An array of your redux middleware of choice
   appMiddlewares,
-  // Your collection names
+  // Optionnal: An array of your collection names
   appCursorNames,
   // The router used in your client
   BrowserRouter,
-)
+})
 .then(() => logger.info('Router started'));
 ```
 
@@ -36,17 +36,17 @@ createRouter(
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 ...
-createRouter(
+createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
-  // An object containing your application reducers
+  // Optionnal: An object containing your application reducers
   appReducers,
-  // An object containing the cursors required as data context
+  // Optionnal: An object containing the cursors required as data context
   appCursors,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
-);
+});
 logger.info('Router started');
 ```
 
@@ -156,7 +156,7 @@ yarn lint
 * [X] Counter measure when Meteor.Reload starts requesting the same URL over & over again
 
 ### v2
-* [ ] Browser policy
+* [ ] Configurable browser policy
 * [ ] Application cache API
 * [ ] Service workers
 * [ ] i18n support

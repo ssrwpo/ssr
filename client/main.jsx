@@ -14,9 +14,13 @@ let store = null;
 
 const getStore = () => store;
 
-const createRouter = (
-  MainApp, appReducers, appMiddlewares = [], appCursorNames, BrowserRouter,
-) =>
+const createRouter = ({
+  MainApp,
+  appReducers = {},
+  appMiddlewares = [],
+  appCursorNames = [],
+  BrowserRouter,
+}) =>
   new Promise((resolve) => {
     const cursorReducers = createCollectionReducers(appCursorNames);
     const allReducers = combineReducers({ ...appReducers, ...packageReducers, ...cursorReducers });
