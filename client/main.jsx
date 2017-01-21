@@ -27,7 +27,8 @@ const createRouter = ({
     Meteor.startup(() => {
       // Get initial context transmitted as a script
       // eslint-disable-next-line no-underscore-dangle
-      const initialState = EJSON.parse(window.__PRELOADED_STATE__);
+      const decodedEjsonString = decodeURIComponent(window.__PRELOADED_STATE__);
+      const initialState = !decodedEjsonString ? {} : EJSON.parse(decodedEjsonString);
       // Create store
       store = createStore(
         allReducers,
