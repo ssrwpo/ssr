@@ -14,26 +14,31 @@ const applicationRendering = (stepResults) => {
   if (stepResults.isFromCache) {
     return;
   }
-  const { MainApp, ServerRouter, createServerRenderContext } = stepResults;
+  let routerResult = null;
   let helmetHead = null;
-  // Create and render application main entry point
+  let bodyMarkup = null;
+  const { MainApp, ServerRouter, createServerRenderContext } = stepResults;
   const routerContext = createServerRenderContext();
-  let bodyMarkup = renderToString(
-    <Provider store={stepResults.store}>
-      <ServerRouter location={stepResults.url} context={routerContext}>
-        <MainApp />
-      </ServerRouter>
-    </Provider>,
-  );
-  helmetHead = rewind();
-  // Get router results
-  const routerResult = routerContext.getResult();
+  // Avoid the initial app rendering in case there's an unwanted URL query parameter
+  if (!stepResults.hasUnwantedQueryParameters) {
+    // Create and render application main entry point
+    bodyMarkup = renderToString(
+      <Provider store={stepResults.store}>
+        <ServerRouter location={stepResults.url} context={routerContext}>
+          <MainApp />
+        </ServerRouter>
+      </Provider>,
+    );
+    helmetHead = rewind();
+    // Get router results
+    routerResult = routerContext.getResult();
+  }
   // Redirect case
-  if (routerResult.redirect) {
+  if (routerResult && routerResult.redirect) {
     stepResults.statusCode = 301;
     stepResults.Location = routerResult.redirect.pathname;
   // Not found, re-render for <Miss> component
-  } else if (routerResult.missed) {
+  } else if (stepResults.hasUnwantedQueryParameters || (routerResult && routerResult.missed)) {
     stepResults.statusCode = 404;
     // Check if a former not found page has been cached
     const platform = stepResults.store.getState().platform;

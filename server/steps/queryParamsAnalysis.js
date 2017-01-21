@@ -15,11 +15,14 @@ const queryParamsAnalysis = (stepResults) => {
   if (!queryRouteAnalysis) {
     return;
   }
-  const res = queryRouteAnalysis(query);
+  const res = queryRouteAnalysis(query, stepResults.store);
   if (!res) {
     stepResults.hasUnwantedQueryParameters = true;
     return;
   }
-  stepResults.url = url.format({ pathname: stepResults.url, query: res });
+  const sortedQuery = Object.keys(res).sort().reduce((acc, key) =>
+    ({ ...acc, [key]: res[key] })
+  , {});
+  stepResults.url = url.format({ pathname: stepResults.url, query: sortedQuery });
 };
 export default queryParamsAnalysis;
