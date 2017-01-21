@@ -15,7 +15,10 @@ const cacheFilling = (stepResults) => {
           stepResults.head, stepResults.body, stepResults.hash,
         );
       }
-      cache.setNotFound(stepResults.url);
+      // Don't cache 404 for URL query parameters
+      if (stepResults.hasUnwantedQueryParameters) {
+        cache.setNotFound(stepResults.url);
+      }
     } else {
       cache.setPage(
         platform, stepResults.url,
