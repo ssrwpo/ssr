@@ -1,3 +1,7 @@
+import url from 'url';
+
+// Impure function
+/* eslint-disable no-param-reassign */
 const queryParamsAnalysis = (stepResults) => {
   if (!stepResults.urlQueryParameters) {
     return;
@@ -6,11 +10,16 @@ const queryParamsAnalysis = (stepResults) => {
   if (!query) {
     return;
   }
-  // Check for filtered query
-  // Check if other query parameters are accepeted on this route
-  if (!stepResults.urlQueryParameters[stepResults.url]) {
-
+  // Check allowed query parameters on this route
+  const queryRouteAnalysis = stepResults.urlQueryParameters[stepResults.url];
+  if (!queryRouteAnalysis) {
+    return;
   }
-  console.log('query', query);
+  const res = queryRouteAnalysis(query);
+  if (!res) {
+    stepResults.hasUnwantedQueryParameters = true;
+    return;
+  }
+  stepResults.url = url.format({ pathname: stepResults.url, query: res });
 };
 export default queryParamsAnalysis;

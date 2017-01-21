@@ -1,7 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const chai = require('chai');
-// const chaiImmutable = require('chai-immutable');
-// chai.use(chaiImmutable);
+const dirtyChai = require('dirty-chai');
+
+chai.use(dirtyChai);
 
 // Make sure chai and jasmine ".not" play nice together
 const originalNot = Object.getOwnPropertyDescriptor(chai.Assertion.prototype, 'not').get;

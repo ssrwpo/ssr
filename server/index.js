@@ -62,6 +62,7 @@ const createRouter = ({
       next,
       url,
       urlQueryParameters,
+      hasUnwantedQueryParameters: false,
       statusCode: 200,
       hash: null,
       head: null,
