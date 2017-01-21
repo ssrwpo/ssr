@@ -11,6 +11,8 @@ import Places from '/imports/api/Places';
 // Sitemaps & Robots
 import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
+// URL query parameters
+import urlQueryParameters from './urlQueryParameters';
 
 const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),
@@ -29,6 +31,8 @@ createRouter({
   robotsTxt,
   // Optionnal: A function that returns the content of your sitemaps.xml
   sitemapXml,
+  // Optionnal: An object with keys on URL with query parameters
+  urlQueryParameters,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
