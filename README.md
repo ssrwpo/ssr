@@ -19,11 +19,11 @@ import { BrowserRouter } from 'react-router';
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
-  // Optionnal: An object containing your application reducers
+  // Optional: An object containing your application reducers
   appReducers,
-  // Optionnal: An array of your redux middleware of choice
+  // Optional: An array of your redux middleware of choice
   appMiddlewares,
-  // Optionnal: An array of your collection names
+  // Optional: An array of your collection names
   appCursorNames,
   // The router used in your client
   BrowserRouter,
@@ -39,14 +39,16 @@ import { ServerRouter, createServerRenderContext } from 'react-router';
 createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
-  // Optionnal: An object containing your application reducers
+  // Optional: An object containing your application reducers
   appReducers,
-  // Optionnal: An object containing the cursors required as data context
+  // Optional: An object containing the cursors required as data context
   appCursors,
-  // Optionnal: A function that returns the content of your robots.txt
+  // Optional: A function that returns the content of your robots.txt
   robotsTxt,
-  // Optionnal: A function that returns the content of your sitemaps.xml
+  // Optional: A function that returns the content of your sitemaps.xml
   sitemapXml,
+  // Optional: An object with keys on URL with query parameters
+  urlQueryParameters,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,

@@ -82,7 +82,6 @@ const createRouter = ({
     // STEP2 Analyse query params
     queryParamsAnalysis(stepResults);
     // SETP3 Cache analysis
-    // @TODO Find a pattern for expressing query based on: const query = req.query;
     cacheAnalysis(stepResults);
     // STEP4 Create data context
     createDataContext(stepResults);

@@ -23,11 +23,11 @@ logger.info('Starting router');
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
-  // Optionnal: An object containing your application reducers
+  // Optional: An object containing your application reducers
   appReducers,
-  // Optionnal: An array of your redux middleware of choice
+  // Optional: An array of your redux middleware of choice
   appMiddlewares,
-  // Optionnal: An array of your collection names
+  // Optional: An array of your collection names
   appCursorNames,
   // The router used in your client
   BrowserRouter,

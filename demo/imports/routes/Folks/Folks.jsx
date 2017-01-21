@@ -7,7 +7,7 @@ import Folk from './routes/Folk';
 const Nav = ({ folks }) => (
   <nav><ul>
     {folks.map(folk => <li key={folk.id}>
-      <Link to={{ query: { id: folk.id } }}>{folk.name}</Link>
+      <Link to={{ query: { folkId: folk.id } }}>{folk.name}</Link>
     </li>)}
   </ul></nav>
 );
@@ -16,8 +16,8 @@ Nav.propTypes = {
 };
 
 const Folks = ({ folks, location }) => {
-  const id = location.query && location.query.id;
-  const folk = id && folks.find(item => item.id === id);
+  const folkId = location.query && location.query.folkId;
+  const folk = folkId && folks.find(item => item.id === folkId);
   return (
     <div>
       <Helmet title="Folks" />
