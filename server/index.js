@@ -37,6 +37,7 @@ const createRouter = ({
   robotsTxt,
   sitemapXml,
   urlQueryParameters,
+  webhooks,
   ServerRouter,
   createServerRenderContext,
 }) => {
@@ -116,6 +117,13 @@ const createRouter = ({
       res.end(sitemapXml());
       perfStop('/sitemap.xml');
     });
+  }
+
+  // Server side routes
+  if (webhooks) {
+    Object.keys(webhooks).forEach(webhookRoute =>
+      app.all(webhookRoute, webhooks[webhookRoute]),
+    );
   }
 
   // Add Express to Meteor's connect

@@ -13,6 +13,8 @@ import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
 // URL query parameters
 import urlQueryParameters from './urlQueryParameters';
+// Webhooks
+import webhooks from './webhooks';
 
 const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),
@@ -33,6 +35,8 @@ createRouter({
   sitemapXml,
   // Optional: An object with keys on URL with query parameters
   urlQueryParameters,
+  // Optional: An object with keys on route solver
+  webhooks,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,

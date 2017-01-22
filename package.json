@@ -1,7 +1,7 @@
 {
   "name": "ssr",
-  "version": "0.0.11",
-  "description": ":warning: Work in progress :warning:",
+  "version": "1.0.0",
+  "description": "Server side rendering with Express, react-router-4 & redux for Meteor.",
   "main": "ssr.js",
   "scripts": {
     "test": "jest",

@@ -1,6 +1,6 @@
 # SSR - Router with SSR for Node & Meteor
 
-:warning: Work in progress :warning:
+Server side rendering with Express, react-router-4 & redux for Meteor.
 
 ## Usage
 ### Installation
@@ -49,6 +49,8 @@ createRouter({
   sitemapXml,
   // Optional: An object with keys on URL with query parameters
   urlQueryParameters,
+  // Optional: An object with keys on route solver
+  webhooks,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
@@ -150,7 +152,7 @@ yarn lint
 ### v1
 * [X] Universal logger
 * [X] Client side routing
-* [ ] Server side routing
+* [X] Server side routing
   * [X] Main routing
   * [X] Missed route (404)
   * [X] Redirect route
@@ -160,7 +162,7 @@ yarn lint
 * [X] Cache control (etag, max-age, if-none-match)
 * [X] User agent sniffing as data context
 * [X] Reactive collections as data context
-* [ ] Server side only routes and REST API for webhooks
+* [X] Server side only routes and REST API for webhooks
 * [X] Server side LRU cache with TTL for
   * [X] Routes
   * [X] User agent
