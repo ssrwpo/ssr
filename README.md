@@ -6,7 +6,7 @@ Server side rendering with Express, react-router-4 & redux for Meteor.
 ### Installation
 ```
 npm init
-yarn add react reac-dom react-router@next express helmet react-helmet \
+yarn add react react-dom react-router@next express helmet react-helmet \
   winston logatim receptacle useragent es6-enum redux react-redux
 meteor add ssrwpo:ssr
 ```
