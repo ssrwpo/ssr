@@ -32,6 +32,7 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
 /* eslint-disable no-param-reassign */
 const createRouter = ({
   MainApp,
+  storeSubscription,
   appReducers = {},
   appCursors = {},
   robotsTxt,
@@ -43,6 +44,10 @@ const createRouter = ({
 }) => {
   // Create a redux store
   const store = createAppAndPackageStore(appReducers, appCursors);
+  // Set store subscription
+  if (storeSubscription) {
+    store.subscribe(() => storeSubscription(store));
+  }
   // Create an Express server
   const app = express();
   // Secure Express

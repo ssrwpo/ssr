@@ -1,6 +1,7 @@
 import AUTH from './auth';
+import RETINA from './retina';
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   AUTH,
+  RETINA,
 };

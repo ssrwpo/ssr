@@ -19,6 +19,8 @@ import { BrowserRouter } from 'react-router';
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
+  // Optional: Store subscription (equivalent to `store.subscribe(store => storeSubscription(store))`)
+  storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
   // Optional: An array of your redux middleware of choice
@@ -39,6 +41,8 @@ import { ServerRouter, createServerRenderContext } from 'react-router';
 createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
+  // Optional: Store subscription (equivalent to `store.subscribe(store => storeSubscription(store))`)
+  storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
   // Optional: An object containing the cursors required as data context

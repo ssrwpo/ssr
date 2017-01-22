@@ -8,6 +8,8 @@ import '/imports/api/Places/server';
 // Collections
 import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
+// Store subscription
+import storeSubscription from '/imports/store';
 // Sitemaps & Robots
 import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
@@ -25,6 +27,8 @@ logger.info('Starting router');
 createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
+  // Optional: Store subscription
+  storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
   // Optional: An object containing the cursors required as data context

@@ -16,6 +16,7 @@ const getStore = () => store;
 
 const createRouter = ({
   MainApp,
+  storeSubscription,
   appReducers = {},
   appMiddlewares = [],
   appCursorNames = [],
@@ -35,6 +36,10 @@ const createRouter = ({
         initialState,
         applyMiddleware(...appMiddlewares),
       );
+      // Set store subscription
+      if (storeSubscription) {
+        store.subscribe(() => storeSubscription(store));
+      }
       // Get the React root element
       const div = document.getElementById('react');
       // Render and start the application

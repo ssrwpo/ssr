@@ -4,7 +4,8 @@ import * as appReducers from '/imports/reducers';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
-import MainApp from '../imports/app/MainApp';
+import MainApp from '/imports/app/MainApp';
+import storeSubscription from '/imports/store';
 
 const appMiddlewares = [
   thunk,
@@ -23,6 +24,8 @@ logger.info('Starting router');
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
+  // Optional: Store subscription
+  storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
   // Optional: An array of your redux middleware of choice
