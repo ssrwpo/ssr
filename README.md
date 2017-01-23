@@ -6,6 +6,8 @@ Server side rendering with Express, react-router-4 & redux for Meteor.
 ### Installation in your own project
 
 You can replace yarn by your favorite way of installing NPM packages.
+To install yarn : https://yarnpkg.com/en/docs/install
+To install "meteor yarn" : ```meteor npm i -g yarn```
 
 ```
 meteor yarn add react react-dom react-router@next express helmet react-helmet \
