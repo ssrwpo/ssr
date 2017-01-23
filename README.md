@@ -5,9 +5,9 @@ Server side rendering with Express, react-router-4 & redux for Meteor.
 ## Usage
 ### Installation in your own project
 
-You can replace yarn by your favorite way of installing NPM packages.
-To install yarn : https://yarnpkg.com/en/docs/install
-To install "meteor yarn" : ```meteor npm i -g yarn```
+You can replace yarn by your favorite way of installing NPM packages.  
+To install yarn : https://yarnpkg.com/en/docs/install  
+To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
 meteor yarn add react react-dom react-router@next express helmet react-helmet \
@@ -60,9 +60,9 @@ createRouter({
   appReducers,
   // Optional: An object containing the cursors required as data context
   appCursors,
-  // Optional: A function that returns the content of your robots.txt
+  // Optional: A function returning a string with the content of your robots.txt
   robotsTxt,
-  // Optional: A function that returns the content of your sitemaps.xml
+  // Optional: A function returning a string with the content of your sitemap.xml
   sitemapXml,
   // Optional: An object with keys on URL with query parameters
   urlQueryParameters,
@@ -74,6 +74,18 @@ createRouter({
 });
 logger.info('Router started');
 ```
+
+### Robots.txt and Sitemap.xml
+
+To set up your robots.txt, you need to have a key "robotsTxt" inside the object that you pass to the server-side createRouter function.  
+This key should contain a function that returns a string with the desired content of your robots.txt.  
+The same principle applies to sitemap.xml, with the key "sitemapXml".  
+The function that you pass will receive store as it's first parameter.  
+This allows you to programmatically build your sitemap.xml or robots.txt based on the store contents.  
+For example, you can populate your sitemap.xml of dynamic routes generated based on the store data.  
+You can see examples of building these functions here:  
+* [Robots.txt](https://github.com/ssr-server/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
+* [Sitemap.xml](https://github.com/ssr-server/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
 
 ### Platform detection
 For the initial render, your app may require some defaults to ensure that
