@@ -3,12 +3,23 @@
 Server side rendering with Express, react-router-4 & redux for Meteor.
 
 ## Usage
-### Installation
+### Installation in your own project
+
+You can replace yarn by your favorite way of installing NPM packages.
+
 ```
-npm init
-yarn add react react-dom react-router@next express helmet react-helmet \
+meteor yarn add react react-dom react-router@next express helmet react-helmet \
   winston logatim receptacle useragent es6-enum redux react-redux
 meteor add ssrwpo:ssr
+```
+
+### To run the demo based on this repository
+
+```
+git clone https://github.com/ssr-server/ssr.git && cd ssr
+meteor yarn install
+cd demo
+meteor yarn install && meteor
 ```
 
 ### Client side call
