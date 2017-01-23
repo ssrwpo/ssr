@@ -114,18 +114,7 @@ For optimal results, set your `.babelrc` with the following content:
     "transform-react-remove-prop-types",
     "transform-react-constant-elements",
     "transform-react-inline-elements",
-    "transform-inline-environment-variables",
-    "transform-dead-code-elimination",
-    [
-      "module-resolver", {
-        "alias": {
-          "react": "react/dist/react.min",
-          "react-router": "react-router/umd/react-router.min",
-          "redux": "redux/dist/redux.min",
-          "react-redux": "react-redux/dist/react-redux.min"
-        }
-      }
-    ]
+    "transform-dead-code-elimination"
   ]
 }
 ```
