@@ -78,16 +78,14 @@ logger.info('Router started');
 ### Robots.txt and Sitemap.xml
 
 To set up your robots.txt, you need to have a key "robotsTxt" inside the object that you pass to the server-side createRouter function.  
-This key should contain a function that returns a string with the desired content of your robots.txt.
-The same principle applies to sitemap.xml, with the key "sitemapXml".
-The function that you pass will receive store as it's first parameter.
-This allows you to programmatically build your sitemap.xml or robots.txt based on the store contents.
-For example, you can populate your sitemap.xml of dynamic routes generated based on the store data.
+This key should contain a function that returns a string with the desired content of your robots.txt.  
+The same principle applies to sitemap.xml, with the key "sitemapXml".  
+The function that you pass will receive store as it's first parameter.  
+This allows you to programmatically build your sitemap.xml or robots.txt based on the store contents.  
+For example, you can populate your sitemap.xml of dynamic routes generated based on the store data.  
 You can see examples of building these functions here:  
 * [Robots.txt](https://github.com/ssr-server/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
 * [Sitemap.xml](https://github.com/ssr-server/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
-
-### Sitemap.xml
 
 ### Platform detection
 For the initial render, your app may require some defaults to ensure that
