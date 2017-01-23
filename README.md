@@ -190,6 +190,7 @@ yarn lint
 * [ ] Service workers
 * [ ] i18n support
 * [ ] Cache prefilling
+* [ ] API for cache limit control
 * [ ] Server side routing
   * [ ] No SSR routes
 * [ ] Component caching with Electrode
