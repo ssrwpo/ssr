@@ -216,3 +216,4 @@ yarn lint
 - [AppCache](https://developer.mozilla.org/en-US/docs/Web/HTML/Using_the_application_cache#Browser_compatibility)
 - [Caching best practices & max-age gotchas](https://jakearchibald.com/2016/caching-best-practices/)
 - [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers)
+- [Progressive Web Apps With React](https://addyosmani.com/blog/progressive-web-apps-with-react/)
