@@ -119,7 +119,7 @@ const createRouter = ({
     app.get('/sitemap.xml', (req, res) => {
       perfStart();
       res.set('Content-Type', 'text/xml');
-      res.end(sitemapXml());
+      res.end(sitemapXml(store));
       perfStop('/sitemap.xml');
     });
   }

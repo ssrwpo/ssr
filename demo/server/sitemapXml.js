@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+const sitemapDateFormat = 'YYYY-MM-DD';
 const header = '<?xml version="1.0" encoding="UTF-8"?>';
 const urlsetStart = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 const urlsetStop = '</urlset>';
@@ -10,7 +11,7 @@ const urlsetStop = '</urlset>';
 const urlLoc = ({ slug, lastmod, changefreq, priority }) =>
   '<url>' +
     `<loc>${Meteor.absoluteUrl()}${slug}</loc>` +
-    (lastmod ? `<lastmod>${moment(lastmod).format('YYYY-MM-DD')}</lastmod>` : '') +
+    (lastmod ? `<lastmod>${moment(lastmod).format(sitemapDateFormat)}</lastmod>` : '') +
     (changefreq ? `<changefreq>${changefreq}</changefreq>` : '') +
     (priority ? `<priority>${priority}</priority>` : '') +
   '</url>';
@@ -28,6 +29,14 @@ const routeContents = [
 ].map(routeContent => urlLoc(routeContent))
 .join('');
 
-const sitemapXml = () => header + urlsetStart + routeContents + urlsetStop;
+const dynamicRouteContents = store =>
+  store.getState().Folks.map(folk => urlLoc({
+    slug: `folks?folkId=${folk.id}`,
+    lastmod: folk.lastMod,
+    priority: 0.7,
+  })).join('');
+
+const sitemapXml = store =>
+  header + urlsetStart + routeContents + dynamicRouteContents(store) + urlsetStop;
 
 export default sitemapXml;
