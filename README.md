@@ -11,7 +11,7 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 
 ```
 meteor yarn add react react-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent es6-enum redux react-redux
+  winston logatim receptacle useragent es6-enum redux react-redux moment
 meteor add ssrwpo:ssr
 ```
 
@@ -86,6 +86,27 @@ For example, you can populate your sitemap.xml of dynamic routes generated based
 You can see examples of building these functions here:  
 * [Robots.txt](https://github.com/ssr-server/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
 * [Sitemap.xml](https://github.com/ssr-server/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
+
+For easing the sitemap creation, a convenient tool `sitemapFromArray` accepts an array of object with the following keys:
+
+* `slug`: A mandatory relative URL to a page
+* `lastmod`: An optional `Date`
+* `changefreq`: An optional frequency of robot's revisiting with the following allowed values: `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly`, `never`.
+* `priority`: An optional priority when search engine are displaying your map. When none provided, robots are using 0.5. This value range from 0 to 1.
+
+For using it:
+```js
+// Server side only
+import { sitemapFromArray } from 'meteor/ssrwpo:ssr';
+...
+const sitemapContent = sitemapFromArray([
+  // The home
+  { slug: '', lastmod: new Date(), priority: 1 },
+  // A frequently changed news page
+  { slug: 'news', changefreq: 'hourly' },
+  // ...
+]);
+```
 
 ### Platform detection
 For the initial render, your app may require some defaults to ensure that
