@@ -2,7 +2,8 @@
   "name": "ssr-demo",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "meteor": "meteor --settings settings.json"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
