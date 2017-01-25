@@ -31,12 +31,10 @@ export const createCollectionReducers = cursorNames =>
 
 // Create a store holding a unique value
 export const createValueReducer = (storeName, initialState = null) =>
-  (state = initialState, action) => {
-    switch (action) {
-      case `${storeName}.SET`:
-        return action.value;
-      case `${storeName}.RESET`:
-        return initialState;
+  (state = initialState, { type, value }) => {
+    switch (type) {
+      case `${storeName}.SET`: return value;
+      case `${storeName}.RESET`: return initialState;
       default: return state;
     }
   };
