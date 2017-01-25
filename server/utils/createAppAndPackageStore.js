@@ -3,7 +3,7 @@ import { combineReducers, createStore } from 'redux';
 /* eslint-enable */
 import cache from './cache';
 import * as packageReducers from '../../shared/reducers';
-import createCollectionReducers from '../../shared/reducers/utils';
+import { createCollectionReducers } from '../../shared/reducers/utils';
 import {
   collectionAdd,
   collectionChange,

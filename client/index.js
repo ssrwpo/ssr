@@ -1,6 +1,5 @@
-import { createRouter, debugLastRequest, debugLastResponse } from './createRouter';
+import { createRouter, getStore } from './createRouter';
 import logger from './utils/logger';
-import sitemapFromArray from './utils/sitemaps';
 import pure from '../shared/hoc/pure';
 import {
   createCollectionReducers,
@@ -14,14 +13,12 @@ import {
   valueReset,
 } from '../shared/actions/utils';
 
-// Server side exports
+// Client side exports
 export {
   // Main API
   createRouter,
   // Isomorphic logger
   logger,
-  // Sitemap helper, server side only
-  sitemapFromArray,
   // HOC
   pure,
   // Store creation
@@ -33,7 +30,6 @@ export {
   collectionRemove,
   valueSet,
   valueReset,
-  // Acces to last reques, mainly for debug in `meteor shell`
-  debugLastRequest,
-  debugLastResponse,
+  // Store access, mainly for debug
+  getStore,
 };
