@@ -1,5 +1,5 @@
 import { EJSON } from 'meteor/ejson';
-import { buildDate } from '../../shared/actions';
+import { valueSet } from '../../shared/actions/utils';
 
 // Impure function
 /* eslint-disable no-param-reassign */
@@ -12,7 +12,7 @@ const createDataContext = (stepResults) => {
   if (stepResults.isFromCache) {
     return;
   }
-  stepResults.store.dispatch(buildDate.set((new Date()).valueOf()));
+  stepResults.store.dispatch(valueSet('buildDate', (new Date()).valueOf()));
   const serialized = EJSON.stringify(stepResults.store.getState());
   const encoded = fixedEncodeURIComponent(serialized);
   stepResults.contextMarkup = `<script>window.__PRELOADED_STATE__='${encoded}';</script>`;

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import useragent from 'useragent';
 /* eslint-enable */
-import { platform } from '../../shared/actions';
+import { valueSet } from '../../shared/actions/utils';
 
 // Impure function
 /* eslint-disable no-param-reassign */
@@ -21,6 +21,6 @@ const userAgentAnalysis = (stepResults) => {
   } else if (ua.family === 'IE') {
     res = 'ie';
   }
-  stepResults.store.dispatch(platform.set(res));
+  stepResults.store.dispatch(valueSet('platform', res));
 };
 export default userAgentAnalysis;
