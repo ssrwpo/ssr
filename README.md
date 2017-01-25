@@ -21,7 +21,8 @@ meteor add ssrwpo:ssr
 git clone https://github.com/ssr-server/ssr.git && cd ssr
 meteor yarn install
 cd demo
-meteor yarn install && meteor
+meteor yarn install
+meteor --settings ./settings.json
 ```
 
 ### Client side call
