@@ -11,6 +11,7 @@ import Protected from '/imports/routes/Protected';
 import Login from '/imports/routes/Login';
 import Folks from '/imports/routes/Folks';
 import Places from '/imports/routes/Places';
+import Performance from '/imports/routes/Performance';
 import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
 import Topics from '/imports/routes/Topics';
@@ -23,6 +24,7 @@ const MainApp = ({ isLoggedIn }) => (
       <li><Link to="/protected">Protected</Link></li>
       <li><Link to="/folks">Folks</Link></li>
       <li><Link to="/places">Places</Link></li>
+      <li><Link to="/performance">Performance</Link></li>
       <li><Link to="/about">About</Link></li>
       <li><Link to="/topics">Topics</Link></li>
     </ul>
@@ -32,6 +34,7 @@ const MainApp = ({ isLoggedIn }) => (
     <Match exactly pattern="/login" component={Login} />
     <Match pattern="/folks" component={Folks} />
     <Match exactly pattern="/places" component={Places} />
+    <Match exactly pattern="/performance" component={Performance} />
     <Match exactly pattern="/about" component={About} />
     <Match pattern="/topics" component={Topics} />
     <Miss component={NotFound} />

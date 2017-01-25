@@ -9,6 +9,7 @@ import { combineReducers, applyMiddleware, createStore } from 'redux';
 import logger from './utils/logger';
 import * as packageReducers from '../shared/reducers';
 import createCollectionReducers from '../shared/reducers/utils';
+import pure from '../shared/hoc/pure';
 
 let store = null;
 
@@ -56,4 +57,4 @@ const createRouter = ({
   });
 
 // Client side exports
-export { createRouter, logger, getStore };
+export { createRouter, logger, getStore, pure };

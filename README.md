@@ -126,6 +126,21 @@ Each produced HTML payload is tagged with a build date allowing capabilities
 to check if a reload is required. The reducer is named `buildDate` and it
 contains a UNIX date.
 
+### Performance helpers
+#### pure
+Asymetric HOC for transforming a functional component into a `React.PureComponent` on the client and leaving it unmodified on the server.
+
+``` js
+import React from 'react';
+import { pure } from 'meteor/ssrwpo:ssr';
+
+const MyComponent = (props) => ( ... );
+export default pure(MyComponent);
+```
+
+Example: [Performance](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/Performance.jsx "Performance")
+
+
 ## Configuration
 ### Universal logger
 #### Loglevel
@@ -253,3 +268,4 @@ yarn lint
 - [Caching best practices & max-age gotchas](https://jakearchibald.com/2016/caching-best-practices/)
 - [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers)
 - [Progressive Web Apps With React](https://addyosmani.com/blog/progressive-web-apps-with-react/)
+- [Discussion on main thread at client side initial rendering](https://github.com/developit/preact/issues/407)

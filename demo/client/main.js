@@ -1,4 +1,4 @@
-import { createRouter, logger } from 'meteor/ssrwpo:ssr';
+import { createRouter, logger, pure } from 'meteor/ssrwpo:ssr';
 import { BrowserRouter } from 'react-router';
 import * as appReducers from '/imports/reducers';
 import createLogger from 'redux-logger';
@@ -23,7 +23,7 @@ const appCursorNames = ['Folks', 'Places'];
 logger.info('Starting router');
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
-  MainApp,
+  MainApp: pure(MainApp),
   // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
@@ -33,6 +33,6 @@ createRouter({
   // Optional: An array of your collection names
   appCursorNames,
   // The router used in your client
-  BrowserRouter,
+  BrowserRouter: pure(BrowserRouter),
 })
 .then(() => logger.info('Router started'));
