@@ -12,6 +12,7 @@ import createAppAndPackageStore from './utils/createAppAndPackageStore';
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import queryParamsAnalysis from './steps/queryParamsAnalysis';
 import cacheAnalysis from './steps/cacheAnalysis';
+import urlAnalysis from './steps/urlAnalysis';
 import createDataContext from './steps/createDataContext';
 import applicationRendering from './steps/applicationRendering';
 import transport from './steps/transport';
@@ -88,15 +89,17 @@ const createRouter = ({
     userAgentAnalysis(stepResults);
     // STEP2 Analyse query params
     queryParamsAnalysis(stepResults);
-    // SETP3 Cache analysis
+    // STEP3 Create location
+    urlAnalysis(stepResults);
+    // SETP4 Cache analysis
     cacheAnalysis(stepResults);
-    // STEP4 Create data context
+    // STEP5 Create data context
     createDataContext(stepResults);
-    // STEP5 Application rendering if required
+    // STEP6 Application rendering if required
     applicationRendering(stepResults);
-    // STEP6 Transport
+    // STEP7 Transport
     transport(stepResults);
-    // STEP7 Cache filling if required
+    // STEP8 Cache filling if required
     cacheFilling(stepResults);
 
     // End performance cheking
