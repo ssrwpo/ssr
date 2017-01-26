@@ -61,7 +61,6 @@ const applicationRendering = (stepResults) => {
       helmetHead = rewind();
     }
   }
-  console.log(stepResults.store.getState().location);
   if (stepResults.body === null) {
     // Create body
     stepResults.body = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;

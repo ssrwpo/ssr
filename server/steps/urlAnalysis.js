@@ -1,9 +1,9 @@
 /* eslint-enable */
-import { url } from '../../shared/actions';
+import * as urlActions from '../../shared/actions';
 
 // Impure function
 /* eslint-disable no-param-reassign */
-const urlAnalysis = (stepResults) => {
-  stepResults.store.dispatch(url.set(stepResults.url));
+const urlAnalysis = ({ url }) => {
+  stepResults.store.dispatch(urlActions.set(url));
 };
 export default urlAnalysis;
