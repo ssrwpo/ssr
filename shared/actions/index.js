@@ -7,5 +7,5 @@ export {
   platform,
   buildDate,
   url,
-  redirect
+  redirect,
 };

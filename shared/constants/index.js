@@ -12,5 +12,5 @@ export {
   PLATFORM,
   BUILD_DATE,
   URL,
-  REDIRECT
+  REDIRECT,
 };
