@@ -108,8 +108,8 @@ const sitemapContent = sitemapFromArray([
   // ...
 ]);
 ```
-
-### Platform detection
+## Reducers
+### Platform detection, built-in reducer
 For the initial render, your app may require some defaults to ensure that
 it will server retina images or specific layout for a platform.
 
@@ -122,10 +122,26 @@ The `platform` detection reducer provides the following platforms:
 * `ie`: Any Internet Explorer before Edge.
 * `default`: All the other browsers and devices.
 
-### Build date
+### Build date, built-in reducer
 Each produced HTML payload is tagged with a build date allowing capabilities
 to check if a reload is required. The reducer is named `buildDate` and it
 contains a UNIX date.
+
+### Reducer helpers
+Store creation (see [Reducer](./shared/reducers/utils)):
+
+* Collections store: `createCollectionReducers`
+* Value store: `createValueReducer`
+
+Actions on reducers:
+
+* On collection store:
+  * `collectionAdd`
+  * `collectionChange`
+  * `collectionRemove`
+* On value store:
+  * `valueSet`
+  * `valueReset`
 
 ### Performance helpers
 #### pure
@@ -202,48 +218,6 @@ yarn lint
 ```
 
 :warning: All code must be linted before sending any PR. See the [Contributing guide](./CONTRIBUTING.md).
-
-## Roadmap
-### v1
-* [X] Universal logger
-* [X] Client side routing
-* [X] Server side routing
-  * [X] Main routing
-  * [X] Missed route (404)
-  * [X] Redirect route
-  * [X] URL query parameters
-* [X] Sitemaps
-* [X] Robots.txt
-* [X] Cache control (etag, max-age, if-none-match)
-* [X] User agent sniffing as data context
-* [X] Reactive collections as data context
-* [X] Server side only routes and REST API for webhooks
-* [X] Server side LRU cache with TTL for
-  * [X] Routes
-  * [X] User agent
-  * [X] Data context
-* [X] Counter measure when Meteor.Reload starts requesting the same URL over & over again
-
-### v2
-* [ ] Configurable browser policy
-* [ ] Application cache API
-* [ ] Service workers
-* [ ] i18n support
-* [ ] Cache prefilling
-* [ ] API for cache limit control
-* [ ] Server side routing
-  * [ ] No SSR routes
-* [ ] Component caching with Electrode
-* [ ] Server stats
-  * [ ] From cache vs rendered
-  * [ ] System usage: CPU, RAM
-  * [ ] Most rendered page
-  * [ ] Longest rendered page
-
-### v3
-* [ ] Styled components
-* [ ] Above the fold
-* [ ] Code splitting
 
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)

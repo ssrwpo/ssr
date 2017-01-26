@@ -1,4 +1,5 @@
-const createCollectionReducers = cursorNames =>
+// Create a store holding a collecion
+export const createCollectionReducers = cursorNames =>
   cursorNames.reduce((acc, cursorName) => (
     {
       ...acc,
@@ -28,4 +29,12 @@ const createCollectionReducers = cursorNames =>
     }
   ), {});
 
-export default createCollectionReducers;
+// Create a store holding a unique value
+export const createValueReducer = (storeName, initialState = null) =>
+  (state = initialState, { type, value }) => {
+    switch (type) {
+      case `${storeName}.SET`: return value;
+      case `${storeName}.RESET`: return initialState;
+      default: return state;
+    }
+  };

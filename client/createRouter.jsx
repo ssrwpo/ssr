@@ -8,11 +8,12 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
 /* eslint-enable */
-import logger from './utils/logger';
 import * as packageReducers from '../shared/reducers';
-import createCollectionReducers from '../shared/reducers/utils';
-import pure from '../shared/hoc/pure';
+import {
+  createCollectionReducers,
+} from '../shared/reducers/utils';
 
+// Global client side store
 let store = null;
 
 const getStore = () => store;
@@ -61,5 +62,4 @@ const createRouter = ({
     });
   });
 
-// Client side exports
-export { createRouter, logger, getStore, pure };
+export { createRouter, getStore };
