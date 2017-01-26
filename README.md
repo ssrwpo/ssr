@@ -22,7 +22,7 @@ git clone https://github.com/ssr-server/ssr.git && cd ssr
 meteor yarn install
 cd demo
 meteor yarn install
-meteor --settings ./settings.json
+yarn meteor
 ```
 
 ### Client side call
