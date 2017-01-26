@@ -1,8 +1,7 @@
 import { URL } from '../constants';
 
-export default function url(state = null, action) {
-  if (action.type === URL.SET) {
-    return action.value;
-  }
-  return state;
+const DEFAULT_URL = null;
+
+export default function url(state = DEFAULT_URL, action) {
+  return action.type === URL.SET ? action.value : state;
 }

@@ -1,6 +1,7 @@
 import PLATFORM from './platform';
 import BUILD_DATE from './buildDate';
 import URL from './url';
+import REDIRECT from './redirect';
 
 const LOG_LEVEL = 'debug';
 const NOT_FOUND_URL = '/not-found';
@@ -10,5 +11,6 @@ export {
   NOT_FOUND_URL,
   PLATFORM,
   BUILD_DATE,
-  URL
+  URL,
+  REDIRECT
 };
