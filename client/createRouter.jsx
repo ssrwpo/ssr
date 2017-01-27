@@ -3,10 +3,10 @@ import { EJSON } from 'meteor/ejson';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import React from 'react';
 import { Match } from 'react-router';
-import { url } from '../shared/actions';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
+import { url } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
 import {
@@ -50,10 +50,13 @@ const createRouter = ({
       render(
         <Provider store={store}>
           <BrowserRouter>
-            <Match pattern='*' render={({ location }) => {
+            <Match
+              pattern="*"
+              render={({ location }) => {
                 store.dispatch(url.set(location.pathname));
                 return <MainApp />;
-            }} />
+              }}
+            />
           </BrowserRouter>
         </Provider>,
         div,
