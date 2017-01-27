@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { pure } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 
@@ -14,4 +15,4 @@ const Places = ({ places }) => (
 Places.propTypes = {
   places: PropTypes.array.isRequired,
 };
-export default connect(state => ({ places: state.Places }))(Places);
+export default connect(state => ({ places: state.Places }))(pure(Places));

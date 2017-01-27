@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+import { pure } from 'meteor/ssrwpo:ssr';
 
 const About = ({ platform }) => (
   <div>
@@ -12,4 +13,4 @@ const About = ({ platform }) => (
 About.propTypes = {
   platform: PropTypes.string.isRequired,
 };
-export default connect(state => ({ platform: state.platform }))(About);
+export default connect(state => ({ platform: state.platform }))(pure(About));

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
+import { pure } from 'meteor/ssrwpo:ssr';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Folk from './routes/Folk';
@@ -34,4 +35,4 @@ Folks.propTypes = {
   folks: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
 };
-export default connect(state => ({ folks: state.Folks }))(Folks);
+export default connect(state => ({ folks: state.Folks }))(pure(Folks));

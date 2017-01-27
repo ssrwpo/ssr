@@ -1,5 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import Helmet from 'react-helmet';
+import { pure } from 'meteor/ssrwpo:ssr';
 
 const NotFound = ({ location }) => (
   <div>
@@ -11,4 +12,4 @@ const NotFound = ({ location }) => (
 NotFound.propTypes = {
   location: pt.object.isRequired,
 };
-export default NotFound;
+export default pure(NotFound);

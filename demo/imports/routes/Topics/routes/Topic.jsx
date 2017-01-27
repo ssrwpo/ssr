@@ -1,5 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import Helmet from 'react-helmet';
+import { pure } from 'meteor/ssrwpo:ssr';
 
 const Topic = ({ params }) => (
   <div>
@@ -10,4 +11,4 @@ const Topic = ({ params }) => (
 Topic.propTypes = {
   params: pt.object.isRequired,
 };
-export default Topic;
+export default pure(Topic);
