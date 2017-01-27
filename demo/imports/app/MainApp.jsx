@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { PropTypes } from 'react';
 import { Match, Miss, Link } from 'react-router';
 import { LocationSubscriber } from 'react-router/Broadcasts';
@@ -18,19 +19,22 @@ import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
 import Topics from '/imports/routes/Topics';
 
-
 const MainApp = ({ isLoggedIn }, { router }) => {
   const { transitionTo } = router;
   return (
     <div>
-      <LocationSubscriber>
-        {
-          (location) => {
-            logger.info('location', location);
-            return null;
+      {
+        <LocationSubscriber>
+          {
+            (location) => {
+              if (Meteor.isClient) {
+                logger.info('location', location);
+              }
+              return null;
+            }
           }
-        }
-      </LocationSubscriber>
+        </LocationSubscriber>
+      }
       <ul>
         <li><Link to="/">Home</Link></li>
         {isLoggedIn || <li><Link to="/login">Login</Link></li>}
@@ -43,7 +47,7 @@ const MainApp = ({ isLoggedIn }, { router }) => {
       </ul>
       <hr />
       {/* Programmatic transitions */}
-      <button onClick={() => transitionTo('/titi')}>Got to topics</button>
+      <button onClick={() => transitionTo('/topics')}>Got to topics</button>
       <hr />
       <Match exactly pattern="/" component={Home} />
       <MatchWhenAuthorized pattern="/protected" component={Protected} />

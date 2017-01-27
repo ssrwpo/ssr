@@ -32,6 +32,8 @@ createRouter({
   appMiddlewares,
   // Optional: An array of your collection names
   appCursorNames,
+  // Optional: Add a redux store that watches for URL changes
+  hasUrlStore: false,
   // The router used in your client
   BrowserRouter: pure(BrowserRouter),
 })

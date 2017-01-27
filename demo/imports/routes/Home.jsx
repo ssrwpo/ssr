@@ -1,6 +1,7 @@
 import moment from 'moment';
 import pick from 'lodash/pick';
 import React, { PropTypes } from 'react';
+import { pure } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { auth as authAction } from '/imports/actions';
@@ -33,4 +34,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Home);
+)(pure(Home));

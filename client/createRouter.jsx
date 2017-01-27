@@ -24,6 +24,7 @@ const createRouter = ({
   appReducers = {},
   appMiddlewares = [],
   appCursorNames = [],
+  hasUrlStore = true,
   BrowserRouter,
 }) =>
   new Promise((resolve) => {
@@ -50,13 +51,17 @@ const createRouter = ({
       render(
         <Provider store={store}>
           <BrowserRouter>
-            <Match
-              pattern="*"
-              render={({ location }) => {
-                store.dispatch(url.set(location.pathname));
-                return <MainApp />;
-              }}
-            />
+            {
+              hasUrlStore
+              ? <Match
+                pattern="*"
+                render={({ location }) => {
+                  store.dispatch(url.set(location.pathname));
+                  return <MainApp />;
+                }}
+              />
+              : <MainApp />
+            }
           </BrowserRouter>
         </Provider>,
         div,
