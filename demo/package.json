@@ -49,6 +49,7 @@
     "redux-logger": "^2.7.4",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
+    "url-pattern": "^1.0.3",
     "useragent": "^2.1.11",
     "winston": "^2.3.1"
   }

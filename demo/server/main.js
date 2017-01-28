@@ -14,7 +14,7 @@ import storeSubscription from '/imports/store';
 import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
 // URL query parameters
-import urlQueryParameters from './urlQueryParameters';
+import routes from './routes';
 // Webhooks
 import webhooks from './webhooks';
 
@@ -38,7 +38,7 @@ createRouter({
   // Optional: A function that returns the content of your sitemaps.xml
   sitemapXml,
   // Optional: An object with keys on URL with query parameters
-  urlQueryParameters,
+  routes,
   // Optional: An object with keys on route solver
   webhooks,
   // The server side router from react-router-4

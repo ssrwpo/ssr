@@ -11,7 +11,8 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 
 ```
 meteor yarn add react react-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent es6-enum redux react-redux moment
+  winston logatim receptacle useragent es6-enum redux react-redux moment \
+  lodash url-pattern
 meteor add ssrwpo:ssr
 ```
 

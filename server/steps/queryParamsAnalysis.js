@@ -1,28 +1,62 @@
-import url from 'url';
+const reduceParams = res => (acc, key) => ({ ...acc, [key]: res[key] });
 
 // Impure function
 /* eslint-disable no-param-reassign */
 const queryParamsAnalysis = (stepResults) => {
-  if (!stepResults.urlQueryParameters) {
+  const {
+    req,
+    routePattern,
+    routes,
+  } = stepResults;
+  const allowedParams = {};
+
+  const analyzer = [];
+
+  const reqParams = req.params;
+  if (!reqParams) {
     return;
   }
-  const query = stepResults.req.query;
-  if (!query) {
+
+  const reqQuery = req.query;
+  if (!reqQuery) {
     return;
   }
+
+  let i;
+  let res;
+
+  if (routes.urlQueryParameters
+    && typeof routes.urlQueryParameters !== 'function') {
+    throw new Error('urlQueryParameters must be a function.');
+  } else if (routes.urlQueryParameters) {
+    analyzer.push(routes.urlQueryParameters);
+  }
+
+  if (routePattern
+      && routes[routePattern]
+      && routes[routePattern].urlQueryParameters
+      && typeof routes[routePattern].urlQueryParameters !== 'function') {
+    throw new Error(`${routePattern} urlQueryParameters must be a function.`);
+  } else if (routePattern
+      && routes[routePattern]
+      && routes[routePattern].urlQueryParameters) {
+    analyzer.push(routes[routePattern].urlQueryParameters);
+  }
+
   // Check allowed query parameters on this route
-  const queryRouteAnalysis = stepResults.urlQueryParameters[stepResults.url];
-  if (!queryRouteAnalysis) {
-    return;
+  /* eslint-disable no-plusplus */
+  for (i = 0; i < analyzer.length; i++) {
+    res = analyzer[i](reqParams, reqQuery);
+    if (!res) {
+      stepResults.hasUnwantedQueryParameters = true;
+      return;
+    }
+    Object.assign(
+      allowedParams,
+      Object.keys(res).sort().reduce(reduceParams(res), {}),
+    );
   }
-  const res = queryRouteAnalysis(query, stepResults.store);
-  if (!res) {
-    stepResults.hasUnwantedQueryParameters = true;
-    return;
-  }
-  const sortedQuery = Object.keys(res).sort().reduce((acc, key) =>
-    ({ ...acc, [key]: res[key] })
-  , {});
-  stepResults.url = url.format({ pathname: stepResults.url, query: sortedQuery });
+
+  stepResults.sortedQuery = allowedParams;
 };
 export default queryParamsAnalysis;

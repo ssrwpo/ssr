@@ -5,10 +5,7 @@ import logger from '../utils/logger';
 // Impure function
 /* eslint-disable no-param-reassign */
 const cacheAnalysis = (stepResults) => {
-  if (stepResults.hasUnwantedQueryParameters) {
-    return;
-  }
-  const platform = stepResults.store.getState().platform;
+  const platform = stepResults.userAgent;
   if (!cache.has(platform, stepResults.url)) {
     return;
   }

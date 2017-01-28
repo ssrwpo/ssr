@@ -1,9 +1,15 @@
 /* eslint-enable */
-import { url as urlActions } from '../../shared/actions';
+import url from 'url';
 
 // Impure function
 /* eslint-disable no-param-reassign */
-const urlAnalysis = ({ store, url }) => {
-  store.dispatch(urlActions.set(url));
+const urlAnalysis = (stepResults) => {
+  if (!stepResults.hasUnwantedQueryParameters) {
+    stepResults.url = url.format({
+      pathname: stepResults.url,
+      query: stepResults.sortedQuery,
+    });
+  }
 };
+
 export default urlAnalysis;
