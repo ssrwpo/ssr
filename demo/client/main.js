@@ -33,7 +33,7 @@ createRouter({
   // Optional: An array of your collection names
   appCursorNames,
   // Optional: Add a redux store that watches for URL changes
-  hasUrlStore: false,
+  hasUrlStore: true,
   // The router used in your client
   BrowserRouter: pure(BrowserRouter),
 })
