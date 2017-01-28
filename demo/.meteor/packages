@@ -19,4 +19,5 @@ ejson
 ssrwpo:ssr
 
 ssrwpo:uglifyjs2
-#standard-minifier-js
+mdg:validated-method
+didericis:callpromise-mixin

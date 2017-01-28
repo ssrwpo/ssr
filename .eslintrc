@@ -24,6 +24,8 @@ settings:
     - meteor/check
     - meteor/tmeasday:check-npm-versions
     - meteor/ssrwpo:ssr
+    - meteor/mdg:validated-method
+    - meteor/didericis:callpromise-mixin
   import/resolver:
     meteor:
       extensions:
