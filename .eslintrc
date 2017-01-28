@@ -20,9 +20,10 @@ settings:
     - meteor/meteor
     - meteor/webapp
     - meteor/ejson
+    - meteor/mongo
+    - meteor/check
     - meteor/tmeasday:check-npm-versions
     - meteor/ssrwpo:ssr
-    - meteor/mongo
   import/resolver:
     meteor:
       extensions:

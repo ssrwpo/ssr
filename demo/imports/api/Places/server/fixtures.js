@@ -8,7 +8,7 @@ if (Places.find().count() === 0) {
     Places.insert({
       address: fake('{{address.streetAddress}} - {{address.city}} - {{address.country}}'),
       order,
-      lastMod: new Date(),
+      lastMod: (new Date()).valueOf(),
     }),
   );
   logger.info('Fixtures created for Places');

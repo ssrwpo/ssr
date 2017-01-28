@@ -8,7 +8,7 @@ if (Folks.find().count() === 0) {
     Folks.insert({
       name: fake('{{name.lastName}} {{name.firstName}}'),
       order,
-      lastMod: new Date(),
+      lastMod: (new Date()).valueOf(),
     }),
   );
   logger.info('Fixtures created for Folks');
