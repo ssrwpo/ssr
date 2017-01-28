@@ -18,7 +18,7 @@ const appMiddlewares = [
   }),
 ];
 
-const appCursorNames = ['Folks', 'Places'];
+const appCursorNames = ['Folks', 'Places', 'PubSub'];
 
 logger.info('Starting router');
 createRouter({
