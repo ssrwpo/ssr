@@ -8,8 +8,13 @@ import '/imports/api/Places/server';
 // Collections
 import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
+import PubSub from '/imports/api/PubSub';
+import '/imports/api/PubSub/server';
 // Store subscription
 import storeSubscription from '/imports/store';
+// i18n
+// eslint-disable-next-line no-unused-vars
+import i18n from '/imports/i18n/i18nServer';
 // Sitemaps & Robots
 import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
@@ -21,6 +26,7 @@ import webhooks from './webhooks';
 const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),
   Places: Places.find({}, { sort: { order: -1 } }),
+  PubSub: PubSub.find({}, { sort: { lastMod: -1 } }),
 };
 
 logger.info('Starting router');
@@ -41,6 +47,8 @@ createRouter({
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
+  // Optional: An i18n config for server side
+  i18n,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,

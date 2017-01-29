@@ -1,14 +1,16 @@
 /* eslint-disable import/first, no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import express from 'express';
 import helmet from 'helmet';
+import i18nMiddleware from 'i18next-express-middleware';
+/* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-/* eslint-enable */
 import './utils/peerDependencies';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import createAppAndPackageStore from './utils/createAppAndPackageStore';
 // Serving steps
+import learnForeignLanguages from './steps/learnForeignLanguages';
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import queryParamsAnalysis from './steps/queryParamsAnalysis';
 import cacheAnalysis from './steps/cacheAnalysis';
@@ -42,6 +44,7 @@ const createRouter = ({
   webhooks,
   ServerRouter,
   createServerRenderContext,
+  i18n,
 }) => {
   // Create a redux store
   const store = createAppAndPackageStore(appReducers, appCursors);
@@ -53,6 +56,10 @@ const createRouter = ({
   const app = express();
   // Secure Express
   app.use(helmet());
+  // express middleware to handle i18n
+  if (i18n) {
+    app.use(i18nMiddleware.handle(i18n));
+  }
   app
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
@@ -80,11 +87,16 @@ const createRouter = ({
       store,
       contextMarkup: null,
       MainApp,
+      // used for localization
+      i18n,
+      i18nOptions: null,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,
       createServerRenderContext,
     };
 
+    // STEP0 Do we want speak to world ?
+    learnForeignLanguages(stepResults);
     // STEP1 User agent analysis
     userAgentAnalysis(stepResults);
     // STEP2 Analyse query params

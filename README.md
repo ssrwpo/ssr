@@ -11,7 +11,8 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 
 ```
 meteor yarn add react react-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent es6-enum redux react-redux moment
+  winston logatim receptacle useragent es6-enum redux react-redux moment i18next \
+  i18next-node-remote-backend i18next-xhr-backend react-i18next lodash
 meteor add ssrwpo:ssr
 ```
 
@@ -32,8 +33,8 @@ import { BrowserRouter } from 'react-router';
 ...
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
-  MainApp,
-  // Optional: Store subscription (equivalent to `store.subscribe(store => storeSubscription(store))`)
+  MainApp: pure(MainApp),
+  // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
@@ -41,8 +42,12 @@ createRouter({
   appMiddlewares,
   // Optional: An array of your collection names
   appCursorNames,
+  // Optional: Add a redux store that watches for URL changes
+  hasUrlStore: false,
+  // Optional: An i18n config for client side
+  i18n,
   // The router used in your client
-  BrowserRouter,
+  BrowserRouter: pure(BrowserRouter),
 })
 .then(() => logger.info('Router started'));
 ```
@@ -55,28 +60,39 @@ import { ServerRouter, createServerRenderContext } from 'react-router';
 createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
-  // Optional: Store subscription (equivalent to `store.subscribe(store => storeSubscription(store))`)
+  // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
   // Optional: An object containing the cursors required as data context
   appCursors,
-  // Optional: A function returning a string with the content of your robots.txt
+  // Optional: A function that returns the content of your robots.txt
   robotsTxt,
-  // Optional: A function returning a string with the content of your sitemap.xml
+  // Optional: A function that returns the content of your sitemaps.xml
   sitemapXml,
   // Optional: An object with keys on URL with query parameters
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
+  // Optional: An i18n config for server side
+  i18n,
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
 });
 logger.info('Router started');
 ```
+### Localization and i18n
+We use i18next for server side rendered localization. It gets the user browser language and serves the right language with a default one(in case you don't serve for users one).
 
-### Robots.txt and Sitemap.xml
+You can find more about :
+* [i18next](http://i18next.com/)  
+* [react-i18next](https://github.com/i18next/react-i18next)
+
+Do not need it see [FAQ](https://github.com/ssr-server/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssr-server/ssr/tree/master/demo) app.
+
+## Sever side routes
+### Pre-made: Robots.txt and Sitemap.xml
 
 To set up your robots.txt, you need to have a key "robotsTxt" inside the object that you pass to the server-side createRouter function.  
 This key should contain a function that returns a string with the desired content of your robots.txt.  
@@ -108,6 +124,12 @@ const sitemapContent = sitemapFromArray([
   // ...
 ]);
 ```
+
+### Your own webhooks or REST API
+By passing a webhooks object, you can build your own server side routes powered
+by Express. A small example is setup in the demo:
+[webhooks](https://github.com/ssr-server/ssr/blob/master/demo/server/webhooks.js).
+
 ## Reducers
 ### Platform detection, built-in reducer
 For the initial render, your app may require some defaults to ensure that
@@ -128,7 +150,7 @@ to check if a reload is required. The reducer is named `buildDate` and it
 contains a UNIX date.
 
 ### Reducer helpers
-Store creation (see [Reducer](./shared/reducers/utils)):
+Store creation (see [Reducer](https://github.com/ssr-server/ssr/blob/master/shared/reducers/utils)):
 
 * Collections store: `createCollectionReducers`
 * Value store: `createValueReducer`
@@ -142,6 +164,16 @@ Actions on reducers:
 * On value store:
   * `valueSet`
   * `valueReset`
+
+### Synchronisation helper for collections: `createHandleSubscribe`
+When your collection is serialized in the store, you may want to re-subscribe
+to your data in order to synchronize them when your application has started, or
+when entering a page, or on a user action, ...
+
+As this is a common use case for Meteor, we provide an easy way to create
+a subscribe / unsubscribe function.
+
+Example: [PubSub](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
 
 ### Performance helpers
 #### pure

@@ -6,6 +6,8 @@ import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import MainApp from '/imports/app/MainApp';
 import storeSubscription from '/imports/store';
+// i18n
+import i18n from '/imports/i18n/i18nClient';
 
 const appMiddlewares = [
   thunk,
@@ -18,7 +20,7 @@ const appMiddlewares = [
   }),
 ];
 
-const appCursorNames = ['Folks', 'Places'];
+const appCursorNames = ['Folks', 'Places', 'PubSub'];
 
 logger.info('Starting router');
 createRouter({
@@ -32,6 +34,10 @@ createRouter({
   appMiddlewares,
   // Optional: An array of your collection names
   appCursorNames,
+  // Optional: Add a redux store that watches for URL changes
+  hasUrlStore: true,
+  // Optional: An i18n config for client side
+  i18n,
   // The router used in your client
   BrowserRouter: pure(BrowserRouter),
 })

@@ -9,6 +9,7 @@ meteor
 hot-code-push
 ddp
 mongo
+tracker
 
 standard-minifier-css
 
@@ -19,4 +20,6 @@ ejson
 ssrwpo:ssr
 
 ssrwpo:uglifyjs2
-#standard-minifier-js
+mdg:validated-method
+didericis:callpromise-mixin
+aldeed:simple-schema

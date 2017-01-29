@@ -1,6 +1,6 @@
 {
   "name": "ssr",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Server side rendering with Express, react-router-4 & redux for Meteor.",
   "main": "ssr.js",
   "scripts": {
@@ -36,7 +36,7 @@
     "chai": "^3.5.0",
     "dirty-chai": "^1.2.2",
     "es6-enum": "^1.1.0",
-    "eslint": "^3.14.0",
+    "eslint": "^3.14.1",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-import-resolver-meteor": "^0.3.4",
     "eslint-plugin-class-property": "^1.0.3",
@@ -55,5 +55,8 @@
   "jest": {
     "verbose": true,
     "setupTestFrameworkScriptFile": "./jest/config.js"
+  },
+  "dependencies": {
+    "serialize-javascript": "^1.3.0"
   }
 }

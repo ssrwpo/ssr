@@ -12,8 +12,13 @@ const cacheAnalysis = (stepResults) => {
   if (!cache.has(platform, stepResults.url)) {
     return;
   }
+  // check if user locale changed between requests
+  if (!cache.getLanguage(stepResults.req.language)) {
+    stepResults.isFromCache = false;
+    return;
+  }
   const cached = cache.get(platform, stepResults.url);
-  logger.debug('Cache hit: type:', cached.type);
+  logger.debug('cache hit: type:', cached.type);
   stepResults.isFromCache = true;
   switch (cached.type) {
     case 200:

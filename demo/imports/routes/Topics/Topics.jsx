@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { Match, Link } from 'react-router';
+import { pure } from 'meteor/ssrwpo:ssr';
 // Subroutes
 import Topic from './routes/Topic';
 
@@ -24,4 +25,4 @@ const Topics = ({ pathname }) => (
 Topics.propTypes = {
   pathname: PropTypes.string.isRequired,
 };
-export default Topics;
+export default pure(Topics);
