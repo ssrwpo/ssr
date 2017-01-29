@@ -36,7 +36,7 @@ createRouter({
   appCursorNames,
   // Optional: Add a redux store that watches for URL changes
   hasUrlStore: false,
-  // Optional: Internalization
+  // Optional: An i18n config for client side
   i18n,
   // The router used in your client
   BrowserRouter: pure(BrowserRouter),

@@ -44,7 +44,7 @@ createRouter({
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
-  // Optional: Localization
+  // Optional: An i18n config for server side
   i18n,
   // The server side router from react-router-4
   ServerRouter,

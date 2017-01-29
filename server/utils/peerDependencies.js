@@ -6,6 +6,7 @@ checkNpmVersions({
   helmet: '3.x',
   i18next: '6.0.x',
   'i18next-node-remote-backend': '0.0.x',
+  'i18next-xhr-backend': '1.3.x',
   logatim: '0.x',
   moment: '2.x',
   'react-dom': '15.x',
