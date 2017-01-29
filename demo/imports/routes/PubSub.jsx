@@ -136,7 +136,7 @@ export default connect(
             // eslint-disable-next-line no-param-reassign
             context.query = PubSubCol.find().observeChanges({
               added(id, fields) {
-                if (pubSubs.findIndex(item => item.id === id) === -1) {
+                if (fields.lastMod > buildDate) {
                   dispatch(collectionAdd('PubSub', id, fields));
                 }
               },
