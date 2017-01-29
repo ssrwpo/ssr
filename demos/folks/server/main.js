@@ -18,31 +18,31 @@ import routes from './routes';
 // Webhooks
 import webhooks from './webhooks';
 
-const appCursors = {
-  Folks: Folks.find({}, { sort: { order: -1 } }),
-  Places: Places.find({}, { sort: { order: -1 } }),
-};
+const observedCursors = [
+  Folks.find({}, { sort: { order: -1 } }),
+  Places.find({}, { sort: { order: -1 } }),
+];
 
 logger.info('Starting router');
-createRouter({
-  // Your MainApp as the top component rendered and injected in the HTML payload
-  MainApp,
-  // Optional: Store subscription
-  storeSubscription,
-  // Optional: An object containing your application reducers
-  appReducers,
-  // Optional: An object containing the cursors required as data context
-  appCursors,
-  // Optional: A function that returns the content of your robots.txt
-  robotsTxt,
-  // Optional: A function that returns the content of your sitemaps.xml
-  sitemapXml,
-  // Optional: An object with keys on URL with query parameters
-  routes,
-  // Optional: An object with keys on route solver
-  webhooks,
+// Your MainApp as the top component rendered and injected in the HTML payload
+createRouter(MainApp, {
   // The server side router from react-router-4
   ServerRouter,
   createServerRenderContext,
+  // Optional: An object containing the observed cursors to clear cache on change
+  observedCursors,
+  // Optional: A function that returns the content of your robots.txt
+  robotsTxt,
+  // Optional: An object describe route action and validator for url parameters
+  routes,
+  // Optional: A function that returns the content of your sitemaps.xml
+  sitemapXml,
+  // Optional: An object with keys on route solver
+  webhooks,
+}, {
+  // Optional: An object containing your application reducers
+  appReducers,
+  // Optional: Store subscription
+  storeSubscription,
 });
 logger.info('Router started');

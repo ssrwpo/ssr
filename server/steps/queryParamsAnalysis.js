@@ -10,7 +10,7 @@ const queryParamsAnalysis = (stepResults) => {
   } = stepResults;
   const allowedParams = {};
 
-  const analyzer = [];
+  const validators = [];
 
   const reqParams = req.params;
   if (!reqParams) {
@@ -29,7 +29,7 @@ const queryParamsAnalysis = (stepResults) => {
     && typeof routes.urlQueryParameters !== 'function') {
     throw new Error('urlQueryParameters must be a function.');
   } else if (routes.urlQueryParameters) {
-    analyzer.push(routes.urlQueryParameters);
+    validators.push(routes.urlQueryParameters);
   }
 
   if (routePattern
@@ -40,13 +40,13 @@ const queryParamsAnalysis = (stepResults) => {
   } else if (routePattern
       && routes[routePattern]
       && routes[routePattern].urlQueryParameters) {
-    analyzer.push(routes[routePattern].urlQueryParameters);
+    validators.push(routes[routePattern].urlQueryParameters);
   }
 
   // Check allowed query parameters on this route
   /* eslint-disable no-plusplus */
-  for (i = 0; i < analyzer.length; i++) {
-    res = analyzer[i](reqParams, reqQuery);
+  for (i = 0; i < validators.length; i++) {
+    res = validators[i](reqParams, reqQuery);
     if (!res) {
       stepResults.hasUnwantedQueryParameters = true;
       return;

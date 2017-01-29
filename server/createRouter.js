@@ -2,10 +2,16 @@
 import express from 'express';
 import helmet from 'helmet';
 import pull from 'lodash/pull';
+import Fiber from 'fibers';
+import {
+  ServerRouter as DefaultServerRouter,
+  createServerRenderContext as defaultCreateServerRenderContext,
+} from 'react-router';
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 /* eslint-enable */
 import './utils/peerDependencies';
+import cache from './utils/cache';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 // Serving steps
@@ -34,29 +40,45 @@ let debugLastResponse = null;
 // * contains no dot
 const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
 
+/* eslint-disable max-len */
 /**
- * @param {Object} routes
- * @param {Object} routes.<string> - Route path
- * @param {function(Object)} routes.<string>.urlQueryParameters - function(query)
- * @param {function(Object, Object)} routes.<string>.middleware - function(stepResults, store)
- * @param {Object} routes.<string>.options - options like enableCahing, routeComposition etc...
- * @param {function(Object)} routes.urlQueryParameters - Global urlQueryParameters
- * @param {function(Object, Object)} routes.middlewares - Global middlewares
+ * Create SSR router
+ * @function createRouter
+ * @param {Object} MainApp - app start point
+ * @param {Object=} routerConfig
+ * @param {Object=} routerConfig.ServerRouter
+ * @param {Function=} routerConfig.createServerRenderContext
+ * @param {Object=} routerConfig.observedCursors - Observe change on cursors to clear cache
+ * @param {Function=} routerConfig.robotsTxt - dynamically generate robots.txt
+ * @param {Object=} routerConfig.routes
+ * @param {Object=} routerConfig.routes.<string> - Route path
+ * @param {function(Object)=} routerConfig.routes.<string>.urlQueryParameters - function(query), callback validates params
+ * @param {function(Object, Object)=} routerConfig.routes.<string>.middleware - function(stepResults, store), callback for apply custom user action
+ * @param {Object=} routerConfig.routes.<string>.options - options like enableCahing
+ * @param {boolean=} routerConfig.routes.<string>.options.enableCahing - if true route is cached
+ * @param {function(Object)=} routerConfig.routes.urlQueryParameters - Global urlQueryParameters
+ * @param {function(Object, Object)=} routerConfig.routes.middlewares - Global middlewares
+ * @param {Function=} routerConfig.sitemapXml - dynamically generate sitemap.xml
+ * @param {Object=} routerConfig.webhooks
+ * @param {Object=} storeConfig
+ * @param {Object=} storeConfig.appReducers
+ * @param {Object=} storeConfig.storeSubscription
  */
+/* eslint-enable */
 
 /* eslint-disable no-param-reassign */
-const createRouter = ({
-  MainApp,
-  storeSubscription,
-  appReducers = {},
-  appCursors = {},
-  robotsTxt,
-  sitemapXml,
+const createRouter = (MainApp, {
+  ServerRouter = DefaultServerRouter,
+  createServerRenderContext = defaultCreateServerRenderContext,
+  observedCursors = {},
+  robotsTxt = null,
   routes = {},
-  webhooks,
-  ServerRouter,
-  createServerRenderContext,
-}) => {
+  sitemapXml = null,
+  webhooks = {},
+} = {}, {
+  appReducers = {},
+  storeSubscription = null,
+} = {}) => {
   // Create an Express server
   const app = express();
 
@@ -67,85 +89,102 @@ const createRouter = ({
   const routePatterns = Object.keys(routes);
   pull(routePatterns, 'middlewares', 'urlQueryParameters');
 
+  // Observe cursors change
+  observedCursors.forEach((cursor) => {
+    cursor.observeChanges({
+      added: () => cache.reset(),
+      changed: () => cache.reset(),
+      removed: () => cache.reset(),
+    });
+  });
+
   // Secure Express
   app.use(helmet());
   app
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
   .get((req, res, next) => {
-    const url = req.path;
+    const callback = () => {
+      const url = req.path;
 
-    // Start performance cheking
-    perfStart();
-    debugLastRequest = req;
-    debugLastResponse = res;
+      // Start performance cheking
+      perfStart();
+      debugLastRequest = req;
+      debugLastResponse = res;
 
-    // Inpure structure for storing results throughout steps
-    const stepResults = {
-      MainApp,
-      // Used for circumventing issues on checkNpmDependencies
-      ServerRouter,
-      body: null,
-      contextMarkup: null,
-      createServerRenderContext,
-      hasUnwantedQueryParameters: false,
-      hash: null,
-      head: null,
-      isFromCache: false,
-      is404fromCache: false,
-      Location: null,
-      next,
-      req,
-      res,
-      routePattern: null,
-      routes,
-      sortedQuery: {},
-      statusCode: 200,
-      store: null,
-      url,
-      userAgent: 'default',
+      // Inpure structure for storing results throughout steps
+      const stepResults = {
+        MainApp,
+        // Used for circumventing issues on checkNpmDependencies
+        ServerRouter,
+        body: null,
+        contextMarkup: null,
+        createServerRenderContext,
+        hasUnwantedQueryParameters: false,
+        hash: null,
+        head: null,
+        isFromCache: false,
+        is404fromCache: false,
+        Location: null,
+        next,
+        req,
+        res,
+        routePattern: null,
+        routes,
+        sortedQuery: {},
+        statusCode: 200,
+        store: null,
+        url,
+        userAgent: 'default',
+      };
+
+      // STEP1 User agent analysis
+      userAgentAnalysis(stepResults);
+
+      // STEP2 Find current route pattern and set req.params
+      routePatternAnalysis(stepResults, routePatterns);
+
+      // STEP3 Analyse query params
+      queryParamsAnalysis(stepResults);
+
+      // STEP4 Create location
+      urlAnalysis(stepResults);
+
+      // SETP5 Cache analysis
+      cacheAnalysis(stepResults);
+
+      if (!stepResults.isFromCache) {
+        // STEP7 Create store
+        createStore(stepResults, storeSubscription, appReducers);
+
+        // STEP8 Init store values like platform
+        initStoreValues(stepResults);
+
+        // STEP8 apply route middlewares
+        applyRouteMiddlewares(stepResults);
+
+        // STEP9 Create data context
+        createDataContext(stepResults);
+
+        // STEP10 Application rendering if required
+        applicationRendering(stepResults);
+
+        // STEP11 Cache filling if required
+        cacheFilling(stepResults);
+      }
+
+      // STEP12 Transport
+      transport(stepResults);
+
+      // End performance cheking
+      perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
     };
 
-    // STEP1 User agent analysis
-    userAgentAnalysis(stepResults);
-
-    // STEP2 Find current route pattern and set req.params
-    routePatternAnalysis(stepResults, routePatterns);
-
-    // STEP3 Analyse query params
-    queryParamsAnalysis(stepResults);
-
-    // STEP4 Create location
-    urlAnalysis(stepResults);
-
-    // SETP5 Cache analysis
-    cacheAnalysis(stepResults);
-
-    if (!stepResults.isFromCache) {
-      // STEP7 Create store
-      createStore(stepResults, storeSubscription, appReducers, appCursors);
-
-      // STEP8 Init store values like platform
-      initStoreValues(stepResults);
-
-      // STEP8 apply route middlewares
-      applyRouteMiddlewares(stepResults);
-
-      // STEP9 Create data context
-      createDataContext(stepResults);
-
-      // STEP10 Application rendering if required
-      applicationRendering(stepResults);
-
-      // STEP11 Cache filling if required
-      cacheFilling(stepResults);
+    if (Fiber.current) {
+      callback();
+    } else {
+      new Fiber(() => callback.call()).run();
     }
-
-    // STEP12 Transport
-    transport(stepResults);
-
-    // End performance cheking
-    perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
   });
 
   // Routes for robots.txt payload
@@ -165,7 +204,7 @@ const createRouter = ({
       const stepResults = { store: null };
       perfStart();
 
-      createStore(stepResults, storeSubscription, appReducers, appCursors);
+      createStore(stepResults, storeSubscription, appReducers);
 
       res.set('Content-Type', 'text/xml');
       res.end(sitemapXml(stepResults.store));

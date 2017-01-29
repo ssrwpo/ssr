@@ -30,7 +30,7 @@ const applyRouteMiddlewares = (stepResults) => {
     throw new Error(`${routePattern} middleware must be a function.`);
   } else if (routePattern
       && routes[routePattern]
-      && routes[routePattern].urlQueryParameters) {
+      && routes[routePattern].middleware) {
     routeMiddlewares.push(routes[routePattern].middleware);
   }
 

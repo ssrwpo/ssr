@@ -6,10 +6,9 @@ const createStore = (
   stepResults,
   storeSubscription,
   appReducers,
-  appCursors,
 ) => {
   // Create a redux store
-  stepResults.store = createAppAndPackageStore(appReducers, appCursors);
+  stepResults.store = createAppAndPackageStore(appReducers);
     // Set store subscription
   if (storeSubscription) {
     stepResults.store.subscribe(() => storeSubscription(stepResults.store));
