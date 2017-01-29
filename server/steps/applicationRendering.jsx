@@ -61,7 +61,7 @@ const applicationRendering = (stepResults) => {
     bodyMarkup = renderToStaticMarkup(
       <Provider store={stepResults.store}>
         <ServerRouter location={stepResults.url} context={routerContext}>
-          <MainApp context={stepResults.dataContext} />
+          <MainApp />
         </ServerRouter>
       </Provider>,
     );
