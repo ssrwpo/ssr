@@ -9,10 +9,15 @@ const learnForeignLanguages = (stepResults) => {
   }
   // get user language from request
   const locale = req.language;
+  // get namespaces
+  const namespaces = i18n.options.ns;
   // bundle resources from public directory
-  const resources = i18n.getResourceBundle(req.language, 'common');
+  const resources = {};
+  namespaces.forEach((ns) => {
+    Object.assign(resources, { [ns]: i18n.getResourceBundle(req.language, ns) });
+  });
   // prepare client side window object
-  const client = { locale, resources };
+  const client = { locale, resources, namespaces };
   // prepare i18n object for I18nextProvider
   const server = i18n.cloneInstance();
   // be sure language is set to user language

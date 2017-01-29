@@ -72,7 +72,13 @@ const createRouter = ({
       if (localization) {
         const decodedI18n = JSON.parse(localization);
         i18n.changeLanguage(decodedI18n.locale);
-        i18n.addResourceBundle(decodedI18n.locale, 'common', decodedI18n.resources, true);
+        decodedI18n.namespaces.forEach((ns) => {
+          i18n.addResourceBundle(
+            decodedI18n.locale,
+            ns,
+            decodedI18n.resources[ns],
+            true);
+        });
         app = (
           <I18nextProvider i18n={i18n}>
             { app }

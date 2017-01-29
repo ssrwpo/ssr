@@ -6,11 +6,12 @@ import { translate } from 'react-i18next';
 const Translations = ({ t }) => (
   <div>
     <Helmet title="Translations" />
-    <h2>{t('hello')}</h2>
+    <h2>{t('common:hello')}</h2>
+    <h2> {t('greetings:world')}</h2>
   </div>
 );
 Translations.propTypes = {
   t: PropTypes.func.isRequired,
 };
 
-export default translate()(pure(Translations));
+export default translate(['common', 'greetings'])(pure(Translations));
