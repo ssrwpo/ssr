@@ -114,7 +114,6 @@ export default connect(
           PubSubPublicationName,
           { lastMod: since },
           () => {
-            console.log(PubSubPublicationName, 'ready');
             // Check for removed items and changed items
             const fromCollection = PubSubCol.find().fetch();
             const dispatchActions = [];
@@ -137,18 +136,14 @@ export default connect(
             // eslint-disable-next-line no-param-reassign
             context.query = PubSubCol.find().observeChanges({
               added(id, fields) {
-                console.log('store adding?', id);
                 if (pubSubs.findIndex(item => item.id === id) === -1) {
-                  console.log('store added', id);
                   dispatch(collectionAdd('PubSub', id, fields));
                 }
               },
               changed(id, fields) {
-                console.log('store changed', id);
                 dispatch(collectionChange('PubSub', id, fields));
               },
               removed(id) {
-                console.log('store removed', id);
                 dispatch(collectionRemove('PubSub', id));
               },
             });
@@ -159,7 +154,6 @@ export default connect(
           context.query.stop();
         }
         context.sub.stop();
-        console.log(PubSubPublicationName, 'stop');
       }
     },
     handleInserRandom() {

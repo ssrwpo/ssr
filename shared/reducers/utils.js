@@ -6,10 +6,8 @@ export const createCollectionReducers = cursorNames =>
       [cursorName]: (state = [], action) => {
         switch (action.type) {
           case `${cursorName}.ADD`:
-            console.log('ADD', cursorName, action.value);
             return [...state, action.value];
           case `${cursorName}.CHANGE`: {
-            console.log('CHANGE', cursorName, action.value);
             const idx = state.findIndex(item => (item.id === action.value.id));
             const newItem = { ...state[idx], ...action.value.fields };
             return [
@@ -19,7 +17,6 @@ export const createCollectionReducers = cursorNames =>
             ];
           }
           case `${cursorName}.REMOVE`: {
-            console.log('REMOVE', cursorName, action.value);
             const idx = state.findIndex(item => (item.id === action.value.id));
             return [
               ...state.slice(0, idx),
