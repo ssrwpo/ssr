@@ -26,14 +26,23 @@ const createAppAndPackageStore = (appReducers, appCursors) => {
           cache.reset();
         }
         store.dispatch(collectionAdd(cursorName, id, fields));
+        if (cursorName === 'PubSub') {
+          console.log('PubSub added', id);
+        }
       },
       changed(id, fields) {
         cache.reset();
         store.dispatch(collectionChange(cursorName, id, fields));
+        if (cursorName === 'PubSub') {
+          console.log('PubSub changed', id);
+        }
       },
       removed(id) {
         cache.reset();
         store.dispatch(collectionRemove(cursorName, id));
+        if (cursorName === 'PubSub') {
+          console.log('PubSub removed', id);
+        }
       },
     });
   });

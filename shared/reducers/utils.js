@@ -5,8 +5,11 @@ export const createCollectionReducers = cursorNames =>
       ...acc,
       [cursorName]: (state = [], action) => {
         switch (action.type) {
-          case `${cursorName}.ADD`: return [...state, action.value];
+          case `${cursorName}.ADD`:
+            console.log('ADD', cursorName, action.value);
+            return [...state, action.value];
           case `${cursorName}.CHANGE`: {
+            console.log('CHANGE', cursorName, action.value);
             const idx = state.findIndex(item => (item.id === action.value.id));
             const newItem = { ...state[idx], ...action.value.fields };
             return [
@@ -16,7 +19,7 @@ export const createCollectionReducers = cursorNames =>
             ];
           }
           case `${cursorName}.REMOVE`: {
-            // eslint-disable-next-line no-underscore-dangle
+            console.log('REMOVE', cursorName, action.value);
             const idx = state.findIndex(item => (item.id === action.value.id));
             return [
               ...state.slice(0, idx),
