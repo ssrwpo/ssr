@@ -22,6 +22,7 @@ settings:
     - meteor/ejson
     - meteor/mongo
     - meteor/check
+    - meteor/tracker
     - meteor/tmeasday:check-npm-versions
     - meteor/ssrwpo:ssr
     - meteor/mdg:validated-method
