@@ -7,7 +7,11 @@ import Folk from './routes/Folk';
 const Nav = ({ folks }) => (
   <nav><ul>
     {folks.map(folk => <li key={folk.id}>
-      <Link to={{ query: { folkId: folk.id } }}>{folk.name}</Link>
+      <Link to={`/folks/${folk.id}`}>{`Url parameter: ${folk.name}`}</Link>
+      <br />
+      <Link to={{ query: { folkId: folk.id } }}>
+        {`Query params: ${folk.name}`}
+      </Link>
     </li>)}
   </ul></nav>
 );
@@ -15,8 +19,8 @@ Nav.propTypes = {
   folks: PropTypes.array.isRequired,
 };
 
-const Folks = ({ folks, location }) => {
-  const folkId = location.query && location.query.folkId;
+const Folks = ({ folks, location, params }) => {
+  const folkId = (location.query && location.query.folkId) || params.folkId;
   const folk = folkId && folks.find(item => item.id === folkId);
   return (
     <div>
@@ -33,5 +37,6 @@ const Folks = ({ folks, location }) => {
 Folks.propTypes = {
   folks: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
 };
 export default connect(state => ({ folks: state.Folks }))(Folks);

@@ -6,8 +6,23 @@ import { folkAdd } from '../imports/actions/folks';
 import { placeAdd } from '../imports/actions/places';
 
 const routes = {
-  // Query specific to routes
   '/folks': {
+    urlQueryParameters: (params, query) => {
+      const allowedKeys = ['folkId'];
+      const allowedQueryParams = pick(query, allowedKeys);
+      if (Object.keys(allowedQueryParams).length !== allowedKeys.length) {
+        return allowedQueryParams;
+      }
+      // const folk = store.getState().Folks.find(item => item.id === allowedQueryParams.folkId);
+      const folk = Folks.find(allowedQueryParams.folkId);
+      if (!folk) {
+        return null;
+      }
+      return allowedQueryParams;
+    },
+  },
+  // Query specific to routes
+  '/folks/:folkId': {
     urlQueryParameters: (params, query) => {
       const allowedKeys = ['folkId'];
       const allowedQueryParams = pick(query, allowedKeys);

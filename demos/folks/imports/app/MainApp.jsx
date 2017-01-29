@@ -48,7 +48,8 @@ const MainApp = ({ isLoggedIn }, { router }) => {
       <Match exactly pattern="/" component={Home} />
       <MatchWhenAuthorized pattern="/protected" component={Protected} />
       <Match exactly pattern="/login" component={Login} />
-      <Match pattern="/folks" component={Folks} />
+      <Match pattern="/folks/:folkId" component={Folks} />
+      <Match exactly pattern="/folks" component={Folks} />
       <Match exactly pattern="/places" component={Places} />
       <Match exactly pattern="/performance" component={Performance} />
       <Match exactly pattern="/about" component={About} />
