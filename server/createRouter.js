@@ -1,9 +1,9 @@
 /* eslint-disable import/first, no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import express from 'express';
 import helmet from 'helmet';
+/* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-/* eslint-enable */
 import './utils/peerDependencies';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';

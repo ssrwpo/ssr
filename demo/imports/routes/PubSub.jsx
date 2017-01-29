@@ -1,10 +1,5 @@
 import React, { PureComponent, PropTypes as pt } from 'react';
-import { Meteor } from 'meteor/meteor';
-import omit from 'lodash/omit';
-import isEqual from 'lodash/isEqual';
-import {
-  logger, pure, valueSet, collectionAdd, collectionChange, collectionRemove,
-} from 'meteor/ssrwpo:ssr';
+import { logger, pure, createHandleSubscribe } from 'meteor/ssrwpo:ssr';
 import moment from 'moment';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
@@ -53,7 +48,7 @@ Item = pure(Item);
 class PubSub extends PureComponent {
   static propTypes = {
     buildDate: pt.number.isRequired,
-    pubSubs: pt.array.isRequired,
+    PubSubStore: pt.array.isRequired,
     isPubSubSubscribed: pt.bool.isRequired,
     handleSubscribe: pt.func.isRequired,
     handleInserRandom: pt.func.isRequired,
@@ -66,7 +61,7 @@ class PubSub extends PureComponent {
   }
   render() {
     const {
-      pubSubs, isPubSubSubscribed, handleSubscribe, handleInserRandom, buildDate,
+      PubSubStore, isPubSubSubscribed, handleSubscribe, handleInserRandom, buildDate,
     } = this.props;
     return (
       <div>
@@ -75,7 +70,7 @@ class PubSub extends PureComponent {
         <hr />
         <button
           style={styles.button}
-          onClick={() => handleSubscribe(this, isPubSubSubscribed, buildDate, pubSubs)}
+          onClick={() => handleSubscribe(this, isPubSubSubscribed, buildDate, PubSubStore)}
         >
           {isPubSubSubscribed ? 'Unsubscribe' : 'Subscribe'} to collection
         </button>
@@ -84,7 +79,7 @@ class PubSub extends PureComponent {
         </button>
         <hr />
         {
-          pubSubs
+          PubSubStore
           .sort((a, b) => b.lastMod - a.lastMod)
           .map(item => <Item key={`${item.id}-${item.lastMod}`} {...{ ...item, isPubSubSubscribed }} />)
         }
@@ -96,66 +91,17 @@ class PubSub extends PureComponent {
 export default connect(
   state => ({
     buildDate: state.buildDate,
-    pubSubs: state.PubSub,
+    PubSubStore: state.PubSub,
     isPubSubSubscribed: state.isPubSubSubscribed,
   }),
   dispatch => ({
-    handleSubscribe(context, isPubSubSubscribed, buildDate, pubSubs) {
-      const newState = !isPubSubSubscribed;
-      dispatch(valueSet('isPubSubSubscribed', !isPubSubSubscribed));
-      if (newState) {
-        // Find the first appropriate date
-        const since = pubSubs.reduce((acc, item) => Math.min(buildDate, item.lastMod));
-        // eslint-disable-next-line no-param-reassign
-        context.query = null;
-        // Subscribe to collection
-        // eslint-disable-next-line no-param-reassign
-        context.sub = Meteor.subscribe(
-          PubSubPublicationName,
-          { lastMod: since },
-          () => {
-            // Check for removed items and changed items
-            const fromCollection = PubSubCol.find().fetch();
-            const dispatchActions = [];
-            pubSubs.forEach((storeItem) => {
-              // eslint-disable-next-line no-underscore-dangle
-              const colItemIdx = fromCollection.findIndex(item => item._id === storeItem.id);
-              if (colItemIdx !== -1) {
-                // Check for updated items
-                const colFields = omit(fromCollection[colItemIdx], '_id');
-                const storeFields = omit(storeItem, 'id');
-                if (!isEqual(colFields, storeFields)) {
-                  dispatchActions.push(collectionAdd('PubSub', storeItem.id, colFields));
-                }
-              } else {
-                // Item is not anymore in the collection and must be removed from store
-                dispatchActions.push(collectionRemove('PubSub', storeItem.id));
-              }
-            });
-            dispatchActions.forEach(action => dispatch(action));
-            // eslint-disable-next-line no-param-reassign
-            context.query = PubSubCol.find().observeChanges({
-              added(id, fields) {
-                if (fields.lastMod > buildDate) {
-                  dispatch(collectionAdd('PubSub', id, fields));
-                }
-              },
-              changed(id, fields) {
-                dispatch(collectionChange('PubSub', id, fields));
-              },
-              removed(id) {
-                dispatch(collectionRemove('PubSub', id));
-              },
-            });
-          },
-        );
-      } else {
-        if (context.query) {
-          context.query.stop();
-        }
-        context.sub.stop();
-      }
-    },
+    handleSubscribe: createHandleSubscribe(
+      dispatch,
+      PubSubPublicationName,
+      PubSubCol.find(),
+      'isPubSubSubscribed',
+      'PubSub',
+    ),
     handleInserRandom() {
       insertRandomPubSubItem.callPromise()
       .then(() => logger.info('Item inserted'))

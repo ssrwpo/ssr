@@ -13,6 +13,7 @@ import {
   valueSet,
   valueReset,
 } from '../shared/actions/utils';
+import createHandleSubscribe from '../shared/selectors/createHandleSubscribe';
 
 // Server side exports
 export {
@@ -33,6 +34,8 @@ export {
   collectionRemove,
   valueSet,
   valueReset,
+  // Helpers on selectors,
+  createHandleSubscribe,
   // Acces to last reques, mainly for debug in `meteor shell`
   debugLastRequest,
   debugLastResponse,

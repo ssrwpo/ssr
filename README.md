@@ -11,7 +11,7 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 
 ```
 meteor yarn add react react-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent es6-enum redux react-redux moment
+  winston logatim receptacle useragent es6-enum redux react-redux moment lodash
 meteor add ssrwpo:ssr
 ```
 
@@ -151,6 +151,16 @@ Actions on reducers:
 * On value store:
   * `valueSet`
   * `valueReset`
+
+### Synchronisation helper for collections: `createHandleSubscribe`
+When your collection is serialized in the store, you may want to re-subscribe
+to your data in order to synchronize them when your application has started, or
+when entering a page, or on a user action, ...
+
+As this is a common use case for Meteor, we provide an easy way to create
+a subscribe / unsubscribe function.
+
+Example: [PubSub](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
 
 ### Performance helpers
 #### pure
