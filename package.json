@@ -55,5 +55,8 @@
   "jest": {
     "verbose": true,
     "setupTestFrameworkScriptFile": "./jest/config.js"
+  },
+  "dependencies": {
+    "serialize-javascript": "^1.3.0"
   }
 }

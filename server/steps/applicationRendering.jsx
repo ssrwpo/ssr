@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import React from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
 import { rewind } from 'react-helmet';
 /* eslint-enable */
 import cache from '../utils/cache';
@@ -17,18 +18,30 @@ const applicationRendering = (stepResults) => {
   let routerResult = null;
   let helmetHead = null;
   let bodyMarkup = null;
-  const { MainApp, ServerRouter, createServerRenderContext } = stepResults;
+  const { MainApp, ServerRouter, createServerRenderContext, i18nOptions } = stepResults;
   const routerContext = createServerRenderContext();
-  // Avoid the initial app rendering in case there's an unwanted URL query parameter
-  if (!stepResults.hasUnwantedQueryParameters) {
-    // Create and render application main entry point
-    bodyMarkup = renderToString(
-      <Provider store={stepResults.store}>
+
+  // TODO find a better way to conditional providers
+  // there could be much more in the future
+  const app = (
+    i18nOptions ?
+      (<I18nextProvider i18n={i18nOptions.server}>
+        <Provider store={stepResults.store}>
+          <ServerRouter location={stepResults.url} context={routerContext}>
+            <MainApp />
+          </ServerRouter>
+        </Provider>
+      </I18nextProvider>) :
+      (<Provider store={stepResults.store}>
         <ServerRouter location={stepResults.url} context={routerContext}>
           <MainApp />
         </ServerRouter>
-      </Provider>,
-    );
+      </Provider>)
+   );
+  // Avoid the initial app rendering in case there's an unwanted URL query parameter
+  if (!stepResults.hasUnwantedQueryParameters) {
+    // Create and render application main entry point
+    bodyMarkup = renderToString(app);
     helmetHead = rewind();
     // Get router results
     routerResult = routerContext.getResult();
@@ -51,13 +64,7 @@ const applicationRendering = (stepResults) => {
       // @NOTE There's an odd behavior while rerendering the app as depicted
       // in react-router docs. The client side does not compute the ID
       // properly leading to inconsistencies during the application re-hydratation.
-      bodyMarkup = renderToStaticMarkup(
-        <Provider store={stepResults.store}>
-          <ServerRouter location={stepResults.url} context={routerContext}>
-            <MainApp context={stepResults.dataContext} />
-          </ServerRouter>
-        </Provider>,
-      );
+      bodyMarkup = renderToStaticMarkup(app);
       helmetHead = rewind();
     }
   }
