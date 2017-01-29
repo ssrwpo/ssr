@@ -27,6 +27,7 @@ settings:
     - meteor/ssrwpo:ssr
     - meteor/mdg:validated-method
     - meteor/didericis:callpromise-mixin
+    - meteor/aldeed:simple-schema
   import/resolver:
     meteor:
       extensions:

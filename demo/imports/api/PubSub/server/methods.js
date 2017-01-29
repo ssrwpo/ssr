@@ -11,7 +11,23 @@ function insertRandomPubSubItem() {
   logger.info('PubSub item inserted');
 }
 
+function updatePubSubItem({ id }) {
+  PubSub.update(id, {
+    $set: {
+      avatar: faker.internet.avatar(),
+      email: faker.internet.email(),
+      lastMod: (new Date()).valueOf(),
+    },
+  });
+  logger.info('PubSub item updated');
+}
+function removePubSubItem({ id }) {
+  PubSub.remove(id);
+  logger.info('PubSub item removed');
+}
+
 export {
-  // eslint-disable-next-line import/prefer-default-export
   insertRandomPubSubItem,
+  updatePubSubItem,
+  removePubSubItem,
 };
