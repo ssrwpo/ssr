@@ -14,6 +14,7 @@ import Protected from '/imports/routes/Protected';
 import Login from '/imports/routes/Login';
 import Folks from '/imports/routes/Folks';
 import Places from '/imports/routes/Places';
+import Translations from '/imports/routes/Translations';
 import Performance from '/imports/routes/Performance';
 import PubSub from '/imports/routes/PubSub';
 import About from '/imports/routes/About';
@@ -41,15 +42,17 @@ const MainApp = ({ isLoggedIn }, { router }) => {
         </LocationSubscriber>
       }
       <ul style={styles.ul}>
-        <li style={styles.li} ><Link to="/">Home</Link></li>
+        <li style={styles.li}><Link to="/">Home</Link></li>
         {isLoggedIn || <li style={styles.li} ><Link to="/login">Login</Link></li>}
-        <li style={styles.li} ><Link to="/protected">Protected</Link></li>
-        <li style={styles.li} ><Link to="/folks">Folks</Link></li>
-        <li style={styles.li} ><Link to="/places">Places</Link></li>
-        <li style={styles.li} ><Link to="/performance">Performance</Link></li>
-        <li style={styles.li} ><Link to="/pubsub">Reactive cases</Link></li>
-        <li style={styles.li} ><Link to="/topics">Topics</Link></li>
-        <li style={styles.li} ><Link to="/about">About</Link></li>
+        <li style={styles.li}><Link to="/protected">Protected</Link></li>
+        <li style={styles.li}><Link to="/folks">Folks</Link></li>
+        <li style={styles.li}><Link to="/places">Places</Link></li>
+        {/* TODO only show if localization enabled */}
+        <li style={styles.li}><Link to="/translations">Translations</Link></li>
+        <li style={styles.li}><Link to="/performance">Performance</Link></li>
+        <li style={styles.li}><Link to="/pubsub">Reactive cases</Link></li>
+        <li style={styles.li}><Link to="/topics">Topics</Link></li>
+        <li style={styles.li}><Link to="/about">About</Link></li>
       </ul>
       <hr />
       {/* Programmatic transitions */}
@@ -60,6 +63,7 @@ const MainApp = ({ isLoggedIn }, { router }) => {
       <Match exactly pattern="/login" component={Login} />
       <Match pattern="/folks" component={Folks} />
       <Match exactly pattern="/places" component={Places} />
+      <Match exactly pattern="/translations" component={Translations} />
       <Match exactly pattern="/performance" component={Performance} />
       <Match exactly pattern="/pubsub" component={PubSub} />
       <Match pattern="/topics" component={Topics} />
