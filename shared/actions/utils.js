@@ -4,7 +4,7 @@ const collectionAdd = (collectionName, id, fields) =>
 const collectionChange = (collectionName, id, fields) =>
   ({ type: `${collectionName}.CHANGE`, value: { id, fields } });
 const collectionRemove = (collectionName, id) =>
-  ({ type: `${collectionName}.REMOVE`, value: id });
+  ({ type: `${collectionName}.REMOVE`, value: { id } });
 
 // Actions on value stores
 const valueSet = (storeName, value) => ({ type: `${storeName}.SET`, value });

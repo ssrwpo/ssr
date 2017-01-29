@@ -8,6 +8,8 @@ import '/imports/api/Places/server';
 // Collections
 import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
+import PubSub from '/imports/api/PubSub';
+import '/imports/api/PubSub/server';
 // Store subscription
 import storeSubscription from '/imports/store';
 // Sitemaps & Robots
@@ -21,6 +23,7 @@ import webhooks from './webhooks';
 const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),
   Places: Places.find({}, { sort: { order: -1 } }),
+  PubSub: PubSub.find({}, { sort: { lastMod: -1 } }),
 };
 
 logger.info('Starting router');

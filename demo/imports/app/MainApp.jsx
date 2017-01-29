@@ -15,12 +15,17 @@ import Login from '/imports/routes/Login';
 import Folks from '/imports/routes/Folks';
 import Places from '/imports/routes/Places';
 import Performance from '/imports/routes/Performance';
+import PubSub from '/imports/routes/PubSub';
 import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
 import Topics from '/imports/routes/Topics';
 
 const MainApp = ({ isLoggedIn }, { router }) => {
   const { transitionTo } = router;
+  const styles = {
+    ul: { listStyleType: 'none', padding: 0, textAlign: 'center' },
+    li: { display: 'inline', margin: 5 },
+  };
   return (
     <div>
       {
@@ -35,15 +40,16 @@ const MainApp = ({ isLoggedIn }, { router }) => {
           }
         </LocationSubscriber>
       }
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        {isLoggedIn || <li><Link to="/login">Login</Link></li>}
-        <li><Link to="/protected">Protected</Link></li>
-        <li><Link to="/folks">Folks</Link></li>
-        <li><Link to="/places">Places</Link></li>
-        <li><Link to="/performance">Performance</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/topics">Topics</Link></li>
+      <ul style={styles.ul}>
+        <li style={styles.li} ><Link to="/">Home</Link></li>
+        {isLoggedIn || <li style={styles.li} ><Link to="/login">Login</Link></li>}
+        <li style={styles.li} ><Link to="/protected">Protected</Link></li>
+        <li style={styles.li} ><Link to="/folks">Folks</Link></li>
+        <li style={styles.li} ><Link to="/places">Places</Link></li>
+        <li style={styles.li} ><Link to="/performance">Performance</Link></li>
+        <li style={styles.li} ><Link to="/pubsub">Reactive cases</Link></li>
+        <li style={styles.li} ><Link to="/topics">Topics</Link></li>
+        <li style={styles.li} ><Link to="/about">About</Link></li>
       </ul>
       <hr />
       {/* Programmatic transitions */}
@@ -55,8 +61,9 @@ const MainApp = ({ isLoggedIn }, { router }) => {
       <Match pattern="/folks" component={Folks} />
       <Match exactly pattern="/places" component={Places} />
       <Match exactly pattern="/performance" component={Performance} />
-      <Match exactly pattern="/about" component={About} />
+      <Match exactly pattern="/pubsub" component={PubSub} />
       <Match pattern="/topics" component={Topics} />
+      <Match exactly pattern="/about" component={About} />
       <Miss component={NotFound} />
     </div>
   );

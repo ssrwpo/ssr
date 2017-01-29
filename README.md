@@ -11,7 +11,7 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 
 ```
 meteor yarn add react react-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent es6-enum redux react-redux moment
+  winston logatim receptacle useragent es6-enum redux react-redux moment lodash
 meteor add ssrwpo:ssr
 ```
 
@@ -78,7 +78,8 @@ createRouter({
 logger.info('Router started');
 ```
 
-### Robots.txt and Sitemap.xml
+## Sever side routes
+### Pre-made: Robots.txt and Sitemap.xml
 
 To set up your robots.txt, you need to have a key "robotsTxt" inside the object that you pass to the server-side createRouter function.  
 This key should contain a function that returns a string with the desired content of your robots.txt.  
@@ -110,6 +111,12 @@ const sitemapContent = sitemapFromArray([
   // ...
 ]);
 ```
+
+### Your own webhooks or REST API
+By passing a webhooks object, you can build your own server side routes powered
+by Express. A small example is setup in the demo:
+[webhooks](https://github.com/ssr-server/ssr/blob/master/demo/server/webhooks.js).
+
 ## Reducers
 ### Platform detection, built-in reducer
 For the initial render, your app may require some defaults to ensure that
@@ -130,7 +137,7 @@ to check if a reload is required. The reducer is named `buildDate` and it
 contains a UNIX date.
 
 ### Reducer helpers
-Store creation (see [Reducer](./shared/reducers/utils)):
+Store creation (see [Reducer](https://github.com/ssr-server/ssr/blob/master/shared/reducers/utils)):
 
 * Collections store: `createCollectionReducers`
 * Value store: `createValueReducer`
@@ -144,6 +151,16 @@ Actions on reducers:
 * On value store:
   * `valueSet`
   * `valueReset`
+
+### Synchronisation helper for collections: `createHandleSubscribe`
+When your collection is serialized in the store, you may want to re-subscribe
+to your data in order to synchronize them when your application has started, or
+when entering a page, or on a user action, ...
+
+As this is a common use case for Meteor, we provide an easy way to create
+a subscribe / unsubscribe function.
+
+Example: [PubSub](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
 
 ### Performance helpers
 #### pure
