@@ -4,8 +4,6 @@ import { Match, Miss, Link } from 'react-router';
 import { LocationSubscriber } from 'react-router/Broadcasts';
 import { connect } from 'react-redux';
 import { pure, logger } from 'meteor/ssrwpo:ssr';
-// Shared selectors
-import { selectIsLoggedIn } from '/imports/reducers/auth';
 // Components
 import MatchWhenAuthorized from '/imports/components/MatchWhenAuthorized';
 // Pages import
@@ -78,4 +76,4 @@ MainApp.propTypes = {
 MainApp.contextTypes = {
   router: PropTypes.object.isRequired,
 };
-export default connect(selectIsLoggedIn)(pure(MainApp));
+export default connect((state => ({ isLoggedIn: state.auth })))(pure(MainApp));

@@ -1,10 +1,9 @@
 import moment from 'moment';
 import pick from 'lodash/pick';
 import React, { PropTypes } from 'react';
-import { pure } from 'meteor/ssrwpo:ssr';
+import { pure, valueReset } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { auth as authAction } from '/imports/actions';
 
 const Home = ({ auth, logout, platform, buildDate, retina }) => (
   <div>
@@ -28,7 +27,7 @@ const mapStateToProps = state => pick(state, ['auth', 'platform', 'buildDate', '
 const mapDispatchToProps = dispatch => ({
   logout(e) {
     e.preventDefault();
-    dispatch(authAction.logout());
+    dispatch(valueReset('auth'));
   },
 });
 export default connect(

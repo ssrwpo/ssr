@@ -1,4 +1,4 @@
-import { retina } from '/imports/actions';
+import { valueSet } from 'meteor/ssrwpo:ssr';
 
 let lastPlatform = null;
 
@@ -11,10 +11,10 @@ const storeSubscription = (store) => {
       case 'iphone':
       case 'ipad':
       case 'android':
-        store.dispatch(retina.set(true));
+        store.dispatch(valueSet('retina', true));
         break;
       default:
-        store.dispatch(retina.set(false));
+        store.dispatch(valueSet('retina', false));
     }
   }
 };
