@@ -14,7 +14,7 @@ const routes = {
         return allowedQueryParams;
       }
       // const folk = store.getState().Folks.find(item => item.id === allowedQueryParams.folkId);
-      const folk = Folks.find(allowedQueryParams.folkId);
+      const folk = Folks.findOne(allowedQueryParams.folkId);
       if (!folk) {
         return null;
       }
@@ -23,14 +23,14 @@ const routes = {
   },
   // Query specific to routes
   '/folks/:folkId': {
-    urlQueryParameters: (params, query) => {
+    urlQueryParameters: (params) => {
       const allowedKeys = ['folkId'];
-      const allowedQueryParams = pick(query, allowedKeys);
+      const allowedQueryParams = pick(params, allowedKeys);
       if (Object.keys(allowedQueryParams).length !== allowedKeys.length) {
         return allowedQueryParams;
       }
       // const folk = store.getState().Folks.find(item => item.id === allowedQueryParams.folkId);
-      const folk = Folks.find(allowedQueryParams.folkId);
+      const folk = Folks.findOne(allowedQueryParams.folkId);
       if (!folk) {
         return null;
       }
