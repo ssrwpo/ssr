@@ -9,13 +9,20 @@ import {
   collectionChange,
   collectionRemove,
 } from '../../shared/actions/utils';
+import * as optionalReducers from '../../shared/reducers/optionals';
 
-const createAppAndPackageStore = (appReducers, appCursors) => {
+const createAppAndPackageStore = (appReducers, appCursors, platformTransformers) => {
   let isStoreInitDone = false;
   const cursorNames = Object.keys(appCursors);
   const cursorReducers = createCollectionReducers(cursorNames);
   // Create a redux store
-  const allReducers = combineReducers({ ...appReducers, ...packageReducers, ...cursorReducers });
+  const allReducers = combineReducers({
+    ...appReducers,
+    ...Object.assign(
+      packageReducers,
+      platformTransformers ? optionalReducers : null),
+    ...cursorReducers,
+  });
   const store = createStore(allReducers);
   // Observe changes on cursors from the app
   cursorNames.forEach((cursorName) => {

@@ -1,4 +1,4 @@
-import { createRouter, logger, pure } from 'meteor/ssrwpo:ssr';
+import { createRouter, logger, pure, getStore } from 'meteor/ssrwpo:ssr';
 import { BrowserRouter } from 'react-router';
 import * as appReducers from '/imports/reducers';
 import createLogger from 'redux-logger';
@@ -41,4 +41,8 @@ createRouter({
   // The router used in your client
   BrowserRouter: pure(BrowserRouter),
 })
-.then(() => logger.info('Router started'));
+.then(() => {
+  // For easing debug
+  window.store = getStore();
+  logger.info('Router started');
+});

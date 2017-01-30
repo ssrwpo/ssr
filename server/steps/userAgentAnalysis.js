@@ -9,18 +9,21 @@ const userAgentAnalysis = (stepResults) => {
   const ua = useragent.lookup(stepResults.req.headers['user-agent']);
   const os = ua.os;
   const device = ua.device;
-  let res = 'default';
+  let platform = 'default';
   if (os.family === 'Android') {
-    res = 'android';
+    platform = 'android';
   } else if (device.family === 'iPad') {
-    res = 'ipad';
+    platform = 'ipad';
   } else if (device.family === 'iPhone') {
-    res = 'iphone';
+    platform = 'iphone';
   } else if (ua.family === 'Safari') {
-    res = 'safari';
+    platform = 'safari';
   } else if (ua.family === 'IE') {
-    res = 'ie';
+    platform = 'ie';
   }
-  stepResults.store.dispatch(valueSet('platform', res));
+  stepResults.store.dispatch(valueSet('platform', platform));
+  if (stepResults.platformTransformers) {
+    stepResults.platformTransformers(stepResults.store.dispatch, platform);
+  }
 };
 export default userAgentAnalysis;

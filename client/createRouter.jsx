@@ -10,6 +10,7 @@ import { combineReducers, applyMiddleware, createStore } from 'redux';
 import { url } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
+import * as optionalReducers from '../shared/reducers/optionals';
 import {
   createCollectionReducers,
 } from '../shared/reducers/utils';
@@ -28,10 +29,15 @@ const createRouter = ({
   hasUrlStore = false,
   BrowserRouter,
   i18n,
+  hasPlatformTransformer = true,
 }) =>
   new Promise((resolve) => {
     const cursorReducers = createCollectionReducers(appCursorNames);
-    const allReducers = combineReducers({ ...appReducers, ...packageReducers, ...cursorReducers });
+    const allReducers = combineReducers({
+      ...appReducers,
+      ...Object.assign(packageReducers, hasPlatformTransformer ? optionalReducers : null),
+      ...cursorReducers,
+    });
     Meteor.startup(() => {
       // Get initial context transmitted as a script
       // eslint-disable-next-line no-underscore-dangle
