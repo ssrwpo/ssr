@@ -17,6 +17,7 @@ import {
   createHandleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
+import { BrowserStats } from '../shared/components';
 
 // Server side exports
 export {
@@ -40,7 +41,9 @@ export {
   // Helpers on selectors,
   createHandleSubscribe,
   createHandleSyncViaMethod,
-  // Acces to last reques, mainly for debug in `meteor shell`
+  // Ready made components
+  BrowserStats,
+  // Acces to last request, mainly for debug in `meteor shell`
   debugLastRequest,
   debugLastResponse,
 };

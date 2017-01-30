@@ -18,7 +18,7 @@ const Home = ({
     <p><em>Build date: {moment(buildDate).format('DD/MM/YYYY HH:mm')}</em></p>
     <p>Define as {retina ? 'Retina display' : 'Normal display'}</p>
     <p>Devive is considered as mobile? <strong>{mobile ? 'Yes' : 'No'}</strong></p>
-    <p>Viewport: <pre>{viewportWidth}x{viewportHeight}</pre></p>
+    <p>Viewport: <code>{viewportWidth}x{viewportHeight}</code></p>
   </div>
 );
 Home.propTypes = {

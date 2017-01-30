@@ -16,6 +16,7 @@ import {
   createHandleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
+import { BrowserStats } from '../shared/components';
 
 // Client side exports
 export {
@@ -37,6 +38,8 @@ export {
   // Helpers on selectors,
   createHandleSubscribe,
   createHandleSyncViaMethod,
+  // Ready made components
+  BrowserStats,
   // Store access, mainly for debug
   getStore,
 };
