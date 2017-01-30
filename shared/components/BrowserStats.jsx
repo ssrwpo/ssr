@@ -32,7 +32,7 @@ class BrowserStats extends React.PureComponent {
   debounce = null
   handleResizeEvent = () => {
     const { handleResizeEvent, mobileBreakpoint } = this.props;
-    handleResizeEvent(mobileBreakpoint);
+    requestAnimationFrame(() => handleResizeEvent(mobileBreakpoint));
   }
   render() {
     return null;

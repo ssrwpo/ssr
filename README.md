@@ -46,6 +46,8 @@ createRouter({
   hasUrlStore: false,
   // Optional: An i18n config for client side
   i18n,
+  // Optional: Server uses a platform transformer, client must load optional reducers
+  hasPlatformTransformer = true,
   // The router used in your client
   BrowserRouter: pure(BrowserRouter),
 })
@@ -76,7 +78,9 @@ createRouter({
   webhooks,
   // Optional: An i18n config for server side
   i18n,
-  // The server side router from react-router-4
+  // Optional: A platform transformer (see hereafter), a default transformer is provided
+  platformTransformers,
+  // The server side router from react-router-4,
   ServerRouter,
   createServerRenderContext,
 });
@@ -143,6 +147,25 @@ The `platform` detection reducer provides the following platforms:
 * `safari`: Any MacOS Safari (not iPhone or iPad).
 * `ie`: Any Internet Explorer before Edge.
 * `default`: All the other browsers and devices.
+
+By default, a `platformTransformers` is provided and adds 4 built-in reducers to
+the app: `retina`, `mobile`, `viewportWidth`, `viewportHeight`. It only applies
+to server side rendering. When your client side app is rendered, you can patch
+the default values that the server has injected with a bult-in component:
+
+`<BrowserStats retinaMinDpi={<number>} mobileBreakpoint={<number>} debounceTimer={<number>} />`
+where :
+
+* `retinaMinDpi`: 144, by default (1.5 x 96 in dpi).
+* `mobileBreakpoint`: 992, by default (in px).
+* `debounceTimer`: 64, by default (4 x 16 in ms).
+
+If you want to build your own `platformTransformers` and `<BrowserStats />`, please
+refer to the following sources for inspiration:
+
+* [`platformTransformers`](https://github.com/ssr-server/ssr/blob/master/server/utils/platformTransformers.js).
+* [`<BrowserStats />`](https://github.com/ssr-server/ssr/blob/master/shared/components/BrowserStats.jsx)
+
 
 ### Build date, built-in reducer
 Each produced HTML payload is tagged with a build date allowing capabilities
@@ -216,7 +239,6 @@ export default pure(MyComponent);
 ```
 
 Example: [Performance](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/Performance.jsx "Performance")
-
 
 ## Configuration
 ### Universal logger
