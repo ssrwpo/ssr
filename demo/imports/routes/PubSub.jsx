@@ -1,11 +1,16 @@
 import React, { PureComponent, PropTypes as pt } from 'react';
-import { logger, pure, createHandleSubscribe } from 'meteor/ssrwpo:ssr';
+import {
+  logger, pure,
+  // Helpers for collectionStore synchronization
+  createHandleSubscribe, createHandleSyncViaMethod,
+} from 'meteor/ssrwpo:ssr';
 import moment from 'moment';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import PubSubCol, {
   PubSubPublicationName,
   insertRandomPubSubItem, updatePubSubItem, removePubSubItem,
+  valuesFromLastMod,
 } from '/imports/api/PubSub';
 
 const styles = {
@@ -52,6 +57,7 @@ class PubSub extends PureComponent {
     isPubSubSubscribed: pt.bool.isRequired,
     handleSubscribe: pt.func.isRequired,
     handleInserRandom: pt.func.isRequired,
+    handleSyncViaMethod: pt.func.isRequired,
   }
   componentWillUnmount() {
     const { isPubSubSubscribed, handleSubscribe, buildDate } = this.props;
@@ -61,7 +67,8 @@ class PubSub extends PureComponent {
   }
   render() {
     const {
-      PubSubStore, isPubSubSubscribed, handleSubscribe, handleInserRandom, buildDate,
+      PubSubStore, isPubSubSubscribed, buildDate,
+      handleSubscribe, handleInserRandom, handleSyncViaMethod,
     } = this.props;
     return (
       <div>
@@ -72,8 +79,17 @@ class PubSub extends PureComponent {
           style={styles.button}
           onClick={() => handleSubscribe(this, isPubSubSubscribed, buildDate, PubSubStore)}
         >
-          {isPubSubSubscribed ? 'Unsubscribe' : 'Subscribe'} to collection
+          {isPubSubSubscribed ? 'Stop subscription' : 'Synchronize via subscribe'}
         </button>
+        {
+          isPubSubSubscribed ||
+            <button
+              style={styles.button}
+              onClick={() => handleSyncViaMethod(buildDate, PubSubStore)}
+            >
+              Synchronize via method
+            </button>
+        }
         <button style={styles.button} onClick={handleInserRandom}>
           Insert a random item
         </button>
@@ -107,5 +123,10 @@ export default connect(
       .then(() => logger.info('Item inserted'))
       .catch(err => logger.warn('Insertion failed', err.toString()));
     },
+    handleSyncViaMethod: createHandleSyncViaMethod(
+      dispatch,
+      valuesFromLastMod,
+      'PubSub',
+    ),
   }),
 )(PubSub);

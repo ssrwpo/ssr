@@ -12,7 +12,10 @@ import {
   valueSet,
   valueReset,
 } from '../shared/actions/utils';
-import createHandleSubscribe from '../shared/selectors/createHandleSubscribe';
+import {
+  createHandleSubscribe,
+  createHandleSyncViaMethod,
+} from '../shared/selectors/createHandles';
 
 // Client side exports
 export {
@@ -33,6 +36,7 @@ export {
   valueReset,
   // Helpers on selectors,
   createHandleSubscribe,
+  createHandleSyncViaMethod,
   // Store access, mainly for debug
   getStore,
 };

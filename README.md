@@ -165,15 +165,43 @@ Actions on reducers:
   * `valueSet`
   * `valueReset`
 
-### Synchronisation helper for collections: `createHandleSubscribe`
-When your collection is serialized in the store, you may want to re-subscribe
-to your data in order to synchronize them when your application has started, or
-when entering a page, or on a user action, ...
-
+### Synchronisation helpers for collections
+When your collection is serialized in the store, you may want to synchronize it
+when your application starts, or when entering a page, or on a user action ...
 As this is a common use case for Meteor, we provide an easy way to create
-a subscribe / unsubscribe function.
+`mapDispatchToProps` methods for subscribing/subscribing or calling a validated
+method that will synchronize your collection store.
 
 Example: [PubSub](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
+
+#### Via subscribe: `createHandleSubscribe`
+The subscribe / unsubscribe based synchronization helper has the following API:
+```js
+/**
+ * `createHandleSubscribe`
+ * Create an `handleSubscribe` function for your `mapDispatchToProps`.
+ * @param dispatch Store's dispatch.
+ * @param publicationName Your publication name which must accept an UNIX date value as `lastMod`.
+ * @param cursor A cursor on Mongo collection with a `lastMod` set on each item.
+ * @param valueStoreNameForSubscription Name of the value store identifying subscription state.
+ * @param collectionStoreName Name of the collection store holding replica of collection.
+ * @return A function allowing to subscribe and unsubscribe.
+ */
+```
+
+#### Via validated method: `createHandleSyncViaMethod`
+The validated method based synchronization helper has the following API:
+```js
+/**
+ * `createHandleSyncViaMethod`
+ * Create an `handleSyncViaMethod` function for your `mapDispatchToProps`.
+ * @param dispatch Store's dispatch.
+ * @param validatedMethod A validated method, promised based
+ *  (see didericis:callpromise-mixin) that accepts { lastMod } as its params.
+ * @param collectionStoreName Name of the collection store holding replica of collection.
+ * @return A function allowing to subscribe and unsubscribe.
+ */
+```
 
 ### Performance helpers
 #### pure
