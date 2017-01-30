@@ -31,6 +31,10 @@ acorn@^4.0.1:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.4.tgz#17a8d6a7a6c4ef538b814ec9abac2779293bf30a"
 
+actual@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/actual/-/actual-0.4.0.tgz#2fc10ba427bf20cf15c71c63dde250687336a8c4"
+
 ajv-keywords@^1.0.0:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.5.1.tgz#314dd0a4b3368fad3dfcdc54ede6171b886daf3c"
@@ -1366,10 +1370,6 @@ es5-ext@^0.10.7, es5-ext@^0.10.8, es5-ext@~0.10.11, es5-ext@~0.10.2, es5-ext@~0.
   dependencies:
     es6-iterator "2"
     es6-symbol "~3.1"
-
-es6-enum@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/es6-enum/-/es6-enum-1.1.0.tgz#6f23485d9617ad2daaa42d0df303846a6488a361"
 
 es6-iterator@2:
   version "2.0.0"

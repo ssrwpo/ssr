@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { Match, Miss, Link } from 'react-router';
 import { LocationSubscriber } from 'react-router/Broadcasts';
 import { connect } from 'react-redux';
-import { pure, logger } from 'meteor/ssrwpo:ssr';
+import { pure, logger, BrowserStats } from 'meteor/ssrwpo:ssr';
 // Components
 import MatchWhenAuthorized from '/imports/components/MatchWhenAuthorized';
 // Pages import
@@ -39,6 +39,7 @@ const MainApp = ({ isLoggedIn }, { router }) => {
           }
         </LocationSubscriber>
       }
+      <BrowserStats />
       <ul style={styles.ul}>
         <li style={styles.li}><Link to="/">Home</Link></li>
         {isLoggedIn || <li style={styles.li} ><Link to="/login">Login</Link></li>}
