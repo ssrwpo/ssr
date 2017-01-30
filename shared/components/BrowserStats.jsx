@@ -7,17 +7,10 @@ import debounce from 'lodash/debounce';
 import { valueSet } from '../actions/utils';
 
 class BrowserStats extends React.PureComponent {
-  static propTypes = {
-    fixInitialValue: pt.func.isRequired,
-    handleResizeEvent: pt.func.isRequired,
-    retinaMinDpi: pt.number,
-    mobileBreakpoint: pt.number,
-    debounceTimer: pt.number,
-  }
-  static defaultProps = {
-    retinaMinDpi: 144,
-    mobileBreakpoint: 992,
-    debounceTimer: 16 * 4,
+  constructor(props) {
+    super(props);
+    this.debounce = null;
+    this.handleResizeEvent = this.handleResizeEvent.bind(this);
   }
   componentDidMount() {
     const { fixInitialValue, retinaMinDpi, mobileBreakpoint, debounceTimer } = this.props;
@@ -29,8 +22,7 @@ class BrowserStats extends React.PureComponent {
     this.debounce.cancel();
     window.removeEventListener('resize', this.debounce);
   }
-  debounce = null
-  handleResizeEvent = () => {
+  handleResizeEvent() {
     const { handleResizeEvent, mobileBreakpoint } = this.props;
     requestAnimationFrame(() => handleResizeEvent(mobileBreakpoint));
   }
@@ -38,6 +30,18 @@ class BrowserStats extends React.PureComponent {
     return null;
   }
 }
+BrowserStats.propTypes = {
+  fixInitialValue: pt.func.isRequired,
+  handleResizeEvent: pt.func.isRequired,
+  retinaMinDpi: pt.number,
+  mobileBreakpoint: pt.number,
+  debounceTimer: pt.number,
+};
+BrowserStats.defaultProps = {
+  retinaMinDpi: 144,
+  mobileBreakpoint: 992,
+  debounceTimer: 16 * 4,
+};
 
 // Analysis shared while initilizing the component and resizing window
 const sharedAnalysis = (mobileBreakpoint) => {
