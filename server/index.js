@@ -13,7 +13,11 @@ import {
   valueSet,
   valueReset,
 } from '../shared/actions/utils';
-import createHandleSubscribe from '../shared/selectors/createHandleSubscribe';
+import {
+  createHandleSubscribe,
+  createHandleSyncViaMethod,
+} from '../shared/selectors/createHandles';
+import { BrowserStats } from '../shared/components';
 
 // Server side exports
 export {
@@ -36,7 +40,10 @@ export {
   valueReset,
   // Helpers on selectors,
   createHandleSubscribe,
-  // Acces to last reques, mainly for debug in `meteor shell`
+  createHandleSyncViaMethod,
+  // Ready made components
+  BrowserStats,
+  // Acces to last request, mainly for debug in `meteor shell`
   debugLastRequest,
   debugLastResponse,
 };

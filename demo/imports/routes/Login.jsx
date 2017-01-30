@@ -1,9 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
+import { valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { auth } from '/imports/actions';
-import { selectIsLoggedIn } from '/imports/reducers/auth';
 
 class Login extends PureComponent {
   static propTypes = {
@@ -33,7 +32,7 @@ class Login extends PureComponent {
 const mapDispatchToProps = dispatch => ({
   login(e) {
     e.preventDefault();
-    dispatch(auth.login());
+    dispatch(valueSet('auth', true));
   },
 });
-export default connect(selectIsLoggedIn, mapDispatchToProps)(Login);
+export default connect(state => ({ isLoggedIn: state.auth }), mapDispatchToProps)(Login);

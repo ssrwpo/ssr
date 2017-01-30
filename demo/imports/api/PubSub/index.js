@@ -3,6 +3,7 @@ import {
   insertRandomPubSubItem,
   updatePubSubItem,
   removePubSubItem,
+  valuesFromLastMod,
 } from './methods';
 
 const PubSub = new Mongo.Collection('PubSub');
@@ -14,4 +15,5 @@ export {
   insertRandomPubSubItem,
   updatePubSubItem,
   removePubSubItem,
+  valuesFromLastMod,
 };

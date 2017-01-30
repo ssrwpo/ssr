@@ -3,9 +3,7 @@ import React, { PropTypes } from 'react';
 import { Match, Miss, Link } from 'react-router';
 import { LocationSubscriber } from 'react-router/Broadcasts';
 import { connect } from 'react-redux';
-import { pure, logger } from 'meteor/ssrwpo:ssr';
-// Shared selectors
-import { selectIsLoggedIn } from '/imports/reducers/auth';
+import { pure, logger, BrowserStats } from 'meteor/ssrwpo:ssr';
 // Components
 import MatchWhenAuthorized from '/imports/components/MatchWhenAuthorized';
 // Pages import
@@ -41,6 +39,7 @@ const MainApp = ({ isLoggedIn }, { router }) => {
           }
         </LocationSubscriber>
       }
+      <BrowserStats />
       <ul style={styles.ul}>
         <li style={styles.li}><Link to="/">Home</Link></li>
         {isLoggedIn || <li style={styles.li} ><Link to="/login">Login</Link></li>}
@@ -78,4 +77,4 @@ MainApp.propTypes = {
 MainApp.contextTypes = {
   router: PropTypes.object.isRequired,
 };
-export default connect(selectIsLoggedIn)(pure(MainApp));
+export default connect((state => ({ isLoggedIn: state.auth })))(pure(MainApp));

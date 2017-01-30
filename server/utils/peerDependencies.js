@@ -1,7 +1,7 @@
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 
 checkNpmVersions({
-  'es6-enum': '1.x',
+  actual: '0.x',
   express: '4.x',
   helmet: '3.x',
   i18next: '6.0.x',

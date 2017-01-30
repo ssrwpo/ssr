@@ -42,8 +42,21 @@ const removePubSubItem = new ValidatedMethod({
   },
 });
 
+const valuesFromLastMod = new ValidatedMethod({
+  name: 'PubSub.methods.valuesFromLastMod',
+  validate: new SimpleSchema({ lastMod: { type: Number } }).validator(),
+  mixins: [CallPromiseMixin],
+  run(content) {
+    if (Meteor.isServer) {
+      return serverMethods.valuesFromLastMod.call(this, content);
+    }
+    return [];
+  },
+});
+
 export {
   insertRandomPubSubItem,
   updatePubSubItem,
   removePubSubItem,
+  valuesFromLastMod,
 };

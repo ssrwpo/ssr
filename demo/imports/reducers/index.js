@@ -1,13 +1,11 @@
 import { createValueReducer } from 'meteor/ssrwpo:ssr';
-import auth from './auth';
-import retina from './retina';
-import perfItems from './perfItems';
 
+const auth = createValueReducer('auth', false);
+const perfItems = createValueReducer('perfItems', 2000);
 const isPubSubSubscribed = createValueReducer('isPubSubSubscribed', false);
 
 export {
   auth,
-  retina,
   perfItems,
   isPubSubSubscribed,
 };

@@ -9,6 +9,7 @@ import './utils/peerDependencies';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import createAppAndPackageStore from './utils/createAppAndPackageStore';
+import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
 import learnForeignLanguages from './steps/learnForeignLanguages';
 import userAgentAnalysis from './steps/userAgentAnalysis';
@@ -45,9 +46,10 @@ const createRouter = ({
   ServerRouter,
   createServerRenderContext,
   i18n,
+  platformTransformers = defaultPlatformTransformers,
 }) => {
   // Create a redux store
-  const store = createAppAndPackageStore(appReducers, appCursors);
+  const store = createAppAndPackageStore(appReducers, appCursors, platformTransformers);
   // Set store subscription
   if (storeSubscription) {
     store.subscribe(() => storeSubscription(store));
@@ -90,6 +92,7 @@ const createRouter = ({
       // used for localization
       i18n,
       i18nOptions: null,
+      platformTransformers,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,
       createServerRenderContext,

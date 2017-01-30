@@ -38,7 +38,7 @@ class Cache {
     this.receptacle.set(lng);
   }
   getLanguage(lng) {
-    this.receptacle.has(lng);
+    return this.receptacle.has(lng);
   }
   reset() {
     logger.debug('cache reset');
