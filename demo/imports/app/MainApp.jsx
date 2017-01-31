@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PropTypes } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-// import { LocationSubscriber } from 'react-router/Broadcasts';
 import { connect } from 'react-redux';
 import { pure, logger, BrowserStats } from 'meteor/ssrwpo:ssr';
 // Components
