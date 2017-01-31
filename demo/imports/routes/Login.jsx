@@ -1,14 +1,14 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent, PropTypes as pt } from 'react';
 import { valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 class Login extends PureComponent {
   static propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired,
-    login: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
+    isLoggedIn: pt.bool.isRequired,
+    login: pt.func.isRequired,
+    location: pt.object.isRequired,
   }
   state = { redirectToReferrer: false }
   onLogin = (e) => {

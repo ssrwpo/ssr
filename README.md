@@ -10,9 +10,9 @@ To install yarn : https://yarnpkg.com/en/docs/install
 To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
-meteor yarn add react react-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent redux react-redux moment i18next \
-  i18next-node-remote-backend i18next-xhr-backend react-i18next \
+meteor yarn add react react-dom react-router-dom@4.0.0-beta.3 express helmet \
+  react-helmet winston logatim receptacle useragent redux react-redux moment \
+  i18next i18next-node-remote-backend i18next-xhr-backend react-i18next \
   i18next-express-middleware serialize-javascript lodash actual
 meteor add ssrwpo:ssr
 ```
@@ -30,11 +30,10 @@ yarn meteor
 ### Client side call
 ```js
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
-import { BrowserRouter } from 'react-router';
 ...
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
-  MainApp: pure(MainApp),
+  MainApp,
   // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
@@ -49,8 +48,6 @@ createRouter({
   i18n,
   // Optional: Server uses a platform transformer, client must load optional reducers
   hasPlatformTransformer = true,
-  // The router used in your client
-  BrowserRouter: pure(BrowserRouter),
 })
 .then(() => logger.info('Router started'));
 ```
@@ -58,7 +55,6 @@ createRouter({
 ### Server side call
 ```js
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
-import { ServerRouter, createServerRenderContext } from 'react-router';
 ...
 createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
@@ -81,12 +77,10 @@ createRouter({
   i18n,
   // Optional: A platform transformer (see hereafter), a default transformer is provided
   platformTransformers,
-  // The server side router from react-router-4,
-  ServerRouter,
-  createServerRenderContext,
 });
 logger.info('Router started');
 ```
+
 ### Localization and i18n
 We use i18next for server side rendered localization. It gets the user browser language and serves the right language with a default one(in case you don't serve for users one).
 
@@ -96,16 +90,27 @@ You can find more about :
 
 Do not need it see [FAQ](https://github.com/ssr-server/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssr-server/ssr/tree/master/demo) app.
 
+### 404 - Not found route
+`react-router` will always render your application. For identifying a `404`, you
+have to tell to the server that while rendering the app, one of the displayed
+component is due to a `404`. This is achieved via the `react-router`'s `staticContext`
+and by setting into it a `has404` boolean used by the server to identify the route
+as `404` Not found route.
+
+Example: [NotFound](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/NotFound.jsx)
+
 ## Sever side routes
 ### Pre-made: Robots.txt and Sitemap.xml
 
-To set up your robots.txt, you need to have a key "robotsTxt" inside the object that you pass to the server-side createRouter function.  
-This key should contain a function that returns a string with the desired content of your robots.txt.  
-The same principle applies to sitemap.xml, with the key "sitemapXml".  
-The function that you pass will receive store as it's first parameter.  
-This allows you to programmatically build your sitemap.xml or robots.txt based on the store contents.  
-For example, you can populate your sitemap.xml of dynamic routes generated based on the store data.  
-You can see examples of building these functions here:  
+To set up your robots.txt, you need to have a key "robotsTxt" inside the object
+that you pass to the server-side createRouter function. This key should contain
+a function that returns a string with the desired content of your robots.txt.
+The same principle applies to sitemap.xml, with the key "sitemapXml". The function
+that you pass will receive store as it's first parameter. This allows you to
+programmatically build your sitemap.xml or robots.txt based on the store contents.  
+
+For example, you can populate your sitemap.xml of dynamic routes generated based
+on the store data. You can see examples of building these functions here:  
 * [Robots.txt](https://github.com/ssr-server/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
 * [Sitemap.xml](https://github.com/ssr-server/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
 

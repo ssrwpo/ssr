@@ -1,5 +1,5 @@
-import { createRouter, logger } from 'meteor/ssrwpo:ssr';
-import { ServerRouter, createServerRenderContext } from 'react-router';
+import React from 'react';
+import { createRouter, pure, logger } from 'meteor/ssrwpo:ssr';
 import MainApp from '/imports/app/MainApp';
 import * as appReducers from '/imports/reducers';
 // Fixtures
@@ -49,8 +49,5 @@ createRouter({
   webhooks,
   // Optional: An i18n config for server side
   i18n,
-  // The server side router from react-router-4
-  ServerRouter,
-  createServerRenderContext,
 });
 logger.info('Router started');

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { EJSON } from 'meteor/ejson';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import React from 'react';
-import { Match } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
@@ -27,7 +27,6 @@ const createRouter = ({
   appMiddlewares = [],
   appCursorNames = [],
   hasUrlStore = false,
-  BrowserRouter,
   i18n,
   hasPlatformTransformer = true,
 }) =>
@@ -58,17 +57,7 @@ const createRouter = ({
       let app = (
         <Provider store={store}>
           <BrowserRouter>
-            {
-              hasUrlStore
-              ? <Match
-                pattern="*"
-                render={({ location }) => {
-                  requestAnimationFrame(() => store.dispatch(url.set(location.pathname)));
-                  return <MainApp />;
-                }}
-              />
-              : <MainApp />
-            }
+            <MainApp />
           </BrowserRouter>
         </Provider>
       );
@@ -78,18 +67,14 @@ const createRouter = ({
       if (localization) {
         const decodedI18n = JSON.parse(localization);
         i18n.changeLanguage(decodedI18n.locale);
-        decodedI18n.namespaces.forEach((ns) => {
+        decodedI18n.namespaces.forEach(ns =>
           i18n.addResourceBundle(
             decodedI18n.locale,
             ns,
             decodedI18n.resources[ns],
-            true);
-        });
-        app = (
-          <I18nextProvider i18n={i18n}>
-            { app }
-          </I18nextProvider>
+            true),
         );
+        app = (<I18nextProvider i18n={i18n}>{app}</I18nextProvider>);
       }
       // Render and start the application
       render(app, div);

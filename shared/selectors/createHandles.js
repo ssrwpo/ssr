@@ -142,7 +142,6 @@ const createHandleSyncViaMethod = (
         }
       }
     });
-    console.log('dispatchActions', dispatchActions);
     dispatchActions.forEach(action => dispatch(action));
   });
 };
