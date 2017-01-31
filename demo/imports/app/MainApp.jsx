@@ -4,7 +4,8 @@ import { Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { pure, logger, BrowserStats } from 'meteor/ssrwpo:ssr';
 // Components
-// import Privateroute from '/imports/components/Privateroute';
+import TransitionButton from '/imports/components/TransitionButton';
+import Privateroute from '/imports/components/Privateroute';
 // Pages import
 import Home from '/imports/routes/Home';
 import Protected from '/imports/routes/Protected';
@@ -53,11 +54,11 @@ const MainApp = ({ isLoggedIn }, { router }) => {
       </ul>
       <hr />
       {/* Programmatic transitions */}
-      <button onClick={() => transitionTo('/topics')}>Got to topics</button>
+      <TransitionButton href="/topics">Go to topics</TransitionButton>
       <hr />
       <Switch>
         <Route exact path="/" component={Home} />
-        {/* <Privateroute path="/protected" component={Protected} /> */}
+        <Privateroute path="/protected" component={Protected} />
         <Route path="/login" component={Login} />
         <Route path="/folks" component={Folks} />
         <Route exact path="/places" component={Places} />

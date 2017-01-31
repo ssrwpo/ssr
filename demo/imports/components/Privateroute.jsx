@@ -1,9 +1,9 @@
-import React, { createElement, PropTypes as pt } from 'react';
+import React, { PropTypes as pt } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const Privateroute = ({ isLoggedIn, component: Component, ...rest }) => (
-  <Match
+  <Route
     {...rest}
     render={
       props => (

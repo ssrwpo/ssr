@@ -21,16 +21,6 @@ const applicationRendering = (stepResults) => {
   let bodyMarkup = null;
   const { MainApp, i18nOptions } = stepResults;
   const routerContext = {};
-
-  // TODO find a better way to conditional providers
-  // there could be much more in the future
-  // const app = (
-    /* i18nOptions ?
-      (<I18nextProvider i18n={i18nOptions.server}>
-        <Provider store={stepResults.store}>
-          <MainApp location={stepResults.url} context={routerContext} />
-        </Provider>
-      </I18nextProvider>) : */
   let app = (
     <Provider store={stepResults.store}>
       <StaticRouter location={stepResults.url} context={routerContext}>

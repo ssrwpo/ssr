@@ -11,28 +11,6 @@ const MyPureConnectedComponent = connect(
 )(pure(MyComponent));
 ```
 
-## Programmatic transitions
-`react-router` uses a context named `router` to propagate its methods in your components:
-
-* `blockTransitions`
-* `createHref`
-* `replaceWith`
-* `transitionTo`
-
-```js
-import React, { PropTypes as pt } from 'react';
-
-const Button = (_, { router }) => {
-  const { transitionTo } = router;
-  return (
-    <button onClick={() => transitionTo('/topics')}>Go to Topics</button>
-  );
-};
-Button.contextTypes = {
-  router: pt.object.isRequired,
-};
-```
-
 ## Listening to route transitions
 When doing analytics, you need to listen to every route transition. This capability
 is provided by `LocationSubscriber` from `react-router`
