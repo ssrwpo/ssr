@@ -1,5 +1,6 @@
 import React, { PropTypes as pt } from 'react';
 import { withRouter } from 'react-router-dom';
+import { pure } from 'meteor/ssrwpo:ssr';
 
 const TransitionButton = ({ href, push, children }) => (
   <button onClick={() => push(href)}>
@@ -11,4 +12,4 @@ TransitionButton.propTypes = {
   push: pt.func.isRequired,
   children: pt.oneOfType([pt.string, pt.element]).isRequired,
 };
-export default withRouter(TransitionButton);
+export default withRouter(pure(TransitionButton));
