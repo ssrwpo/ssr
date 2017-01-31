@@ -43,24 +43,18 @@ const applicationRendering = (stepResults) => {
     stepResults.Location = routerContext.location.pathname;
     return;
   }
-  // // Not found, re-render for <Miss> component
-  // } else if (stepResults.hasUnwantedQueryParameters || (routerResult && routerResult.missed)) {
-  //   stepResults.statusCode = 404;
-  //   // Check if a former not found page has been cached
-  //   const platform = stepResults.store.getState().platform;
-  //   if (cache.has(platform, NOT_FOUND_URL)) {
-  //     stepResults.is404fromCache = true;
-  //     const cachedPage = cache.get(platform, NOT_FOUND_URL);
-  //     stepResults.head = cachedPage.head;
-  //     stepResults.body = cachedPage.body;
-  //   } else {
-      // // @NOTE There's an odd behavior while rerendering the app as depicted
-      // in react-router docs. The client side does not compute the ID
-      // properly leading to inconsistencies during the application re-hydratation.
-      // bodyMarkup = renderToStaticMarkup(app);
-      // helmetHead = rewind();
-  //   }
-  // }
+  // Not found, check if re-render for <Miss> component
+  if (stepResults.hasUnwantedQueryParameters || routerContext.has404) {
+    stepResults.statusCode = 404;
+    // Check if a former not found page has been cached
+    const platform = stepResults.store.getState().platform;
+    if (cache.has(platform, NOT_FOUND_URL)) {
+      stepResults.is404fromCache = true;
+      const cachedPage = cache.get(platform, NOT_FOUND_URL);
+      stepResults.head = cachedPage.head;
+      stepResults.body = cachedPage.body;
+    }
+  }
   if (stepResults.body === null) {
     // Create body
     stepResults.body = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;
