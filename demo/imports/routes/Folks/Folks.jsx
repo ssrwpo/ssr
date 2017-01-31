@@ -3,7 +3,7 @@ import querystring from 'querystring';
 import Helmet from 'react-helmet';
 import { pure } from 'meteor/ssrwpo:ssr';
 import { connect } from 'react-redux';
-import { Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import Folk from './routes/Folk';
 
 const Nav = ({ folks }) => (
