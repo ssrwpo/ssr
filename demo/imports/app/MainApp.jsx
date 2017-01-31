@@ -1,9 +1,9 @@
-import { Meteor } from 'meteor/meteor';
 import React, { PropTypes } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { pure, logger, BrowserStats } from 'meteor/ssrwpo:ssr';
+import { pure, BrowserStats } from 'meteor/ssrwpo:ssr';
 // Components
+import TransitionLogger from '/imports/components/TransitionLogger';
 import TransitionButton from '/imports/components/TransitionButton';
 import Privateroute from '/imports/components/Privateroute';
 // Pages import
@@ -19,26 +19,14 @@ import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
 import Topics from '/imports/routes/Topics';
 
-const MainApp = ({ isLoggedIn }, { router }) => {
-  const { transitionTo } = router;
+const MainApp = ({ isLoggedIn }) => {
   const styles = {
     ul: { listStyleType: 'none', padding: 0, textAlign: 'center' },
     li: { display: 'inline', margin: 5 },
   };
   return (
     <div>
-      {/* {
-        <LocationSubscriber>
-          {
-            (location) => {
-              if (Meteor.isClient) {
-                logger.info('location', location);
-              }
-              return null;
-            }
-          }
-        </LocationSubscriber>
-      } */}
+      <TransitionLogger />
       <BrowserStats />
       <ul style={styles.ul}>
         <li style={styles.li}><Link to="/">Home</Link></li>
@@ -74,8 +62,5 @@ const MainApp = ({ isLoggedIn }, { router }) => {
 };
 MainApp.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-};
-MainApp.contextTypes = {
-  router: PropTypes.object.isRequired,
 };
 export default connect((state => ({ isLoggedIn: state.auth })))(pure(MainApp));

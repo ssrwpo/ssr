@@ -11,22 +11,6 @@ const MyPureConnectedComponent = connect(
 )(pure(MyComponent));
 ```
 
-## Listening to route transitions
-When doing analytics, you need to listen to every route transition. This capability
-is provided by `LocationSubscriber` from `react-router`
-
-```js
-import { LocationSubscriber } from 'react-router/Broadcasts';
-...
-<LocationSubscriber>
-  {
-    (location) => {
-      logger.info('location', location);
-      return null;
-    }
-  }
-</LocationSubscriber>
-```
 ## Removing i18n
 
 1) Delete i18n folder inside [demo/imports](https://github.com/ssr-server/ssr/tree/master/demo/imports)
