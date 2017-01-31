@@ -1,6 +1,6 @@
 {
   "name": "ssr",
-  "version": "1.9.2",
+  "version": "2.0.0",
   "description": "Server side rendering with Express, react-router-4 & redux for Meteor.",
   "main": "ssr.js",
   "scripts": {

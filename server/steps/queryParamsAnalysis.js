@@ -7,7 +7,6 @@ const queryParamsAnalysis = (stepResults) => {
     return;
   }
   const query = stepResults.req.query;
-  console.log('query', query);
   if (!query || Object.keys(query).length === 0) {
     return;
   }
@@ -17,7 +16,6 @@ const queryParamsAnalysis = (stepResults) => {
     return;
   }
   const res = queryRouteAnalysis(query, stepResults.store);
-  console.log('res', res);
   if (!res) {
     stepResults.hasUnwantedQueryParameters = true;
     return;
