@@ -44,7 +44,6 @@ const createRouter = ({
   urlQueryParameters,
   webhooks,
   ServerRouter,
-  createServerRenderContext,
   i18n,
   platformTransformers = defaultPlatformTransformers,
 }) => {
@@ -95,7 +94,6 @@ const createRouter = ({
       platformTransformers,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,
-      createServerRenderContext,
     };
 
     // STEP0 Do we want speak to world ?

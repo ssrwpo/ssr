@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { EJSON } from 'meteor/ejson';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import React from 'react';
-import { Match } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
@@ -27,7 +27,6 @@ const createRouter = ({
   appMiddlewares = [],
   appCursorNames = [],
   hasUrlStore = false,
-  BrowserRouter,
   i18n,
   hasPlatformTransformer = true,
 }) =>
@@ -58,17 +57,7 @@ const createRouter = ({
       let app = (
         <Provider store={store}>
           <BrowserRouter>
-            {
-              hasUrlStore
-              ? <Match
-                pattern="*"
-                render={({ location }) => {
-                  requestAnimationFrame(() => store.dispatch(url.set(location.pathname)));
-                  return <MainApp />;
-                }}
-              />
-              : <MainApp />
-            }
+            <MainApp />
           </BrowserRouter>
         </Provider>
       );
