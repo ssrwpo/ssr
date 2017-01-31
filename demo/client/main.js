@@ -1,5 +1,6 @@
+import React from 'react';
 import { createRouter, logger, pure, getStore } from 'meteor/ssrwpo:ssr';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import * as appReducers from '/imports/reducers';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -25,7 +26,7 @@ const appCursorNames = ['Folks', 'Places', 'PubSub'];
 logger.info('Starting router');
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
-  MainApp: pure(MainApp),
+  MainApp,
   // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
@@ -38,8 +39,6 @@ createRouter({
   hasUrlStore: true,
   // Optional: An i18n config for client side
   i18n,
-  // The router used in your client
-  BrowserRouter: pure(BrowserRouter),
 })
 .then(() => {
   // For easing debug

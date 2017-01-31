@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { PropTypes as pt } from 'react';
+import { Link } from 'react-router-dom';
 import { pure } from 'meteor/ssrwpo:ssr';
 
 const Folk = ({ name }) => (
@@ -10,6 +10,6 @@ const Folk = ({ name }) => (
   </section>
 );
 Folk.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: pt.string.isRequired,
 };
 export default pure(Folk);

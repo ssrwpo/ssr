@@ -7,7 +7,8 @@ const queryParamsAnalysis = (stepResults) => {
     return;
   }
   const query = stepResults.req.query;
-  if (!query) {
+  console.log('query', query);
+  if (!query || Object.keys(query).length === 0) {
     return;
   }
   // Check allowed query parameters on this route
@@ -16,6 +17,7 @@ const queryParamsAnalysis = (stepResults) => {
     return;
   }
   const res = queryRouteAnalysis(query, stepResults.store);
+  console.log('res', res);
   if (!res) {
     stepResults.hasUnwantedQueryParameters = true;
     return;

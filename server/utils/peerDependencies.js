@@ -15,6 +15,7 @@ checkNpmVersions({
   'react-helmet': '4.x',
   'react-i18next': '2.0.x',
   'react-redux': '5.x',
+  'react-router-dom': '4.0.0-beta.3',
   receptacle: '1.x',
   redux: '3.x',
   'serialize-javascript': '1.x',

@@ -10,11 +10,14 @@ const cacheAnalysis = (stepResults) => {
   }
   const platform = stepResults.store.getState().platform;
   if (!cache.has(platform, stepResults.url)) {
+    stepResults.isFromCache = false;
+    logger.debug('cache missed: url:', platform, stepResults.url);
     return;
   }
   // check if user locale changed between requests
   if (!cache.getLanguage(stepResults.req.language)) {
     stepResults.isFromCache = false;
+    logger.debug('cache missed: lang:', stepResults.req.language);
     return;
   }
   const cached = cache.get(platform, stepResults.url);
