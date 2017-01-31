@@ -19,11 +19,13 @@ const cacheFilling = (stepResults) => {
       if (stepResults.hasUnwantedQueryParameters) {
         cache.setNotFound(stepResults.url);
       }
-    } else {
+    } else if (stepResults.statusCode === 200) {
       cache.setPage(
         platform, stepResults.url,
         stepResults.head, stepResults.body, stepResults.hash,
       );
+    } else if (stepResults.statusCode === 301) {
+      cache.setRedirect(stepResults.url, stepResults.Location);
     }
   });
 };

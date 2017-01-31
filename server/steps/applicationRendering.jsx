@@ -16,7 +16,6 @@ const applicationRendering = (stepResults) => {
   if (stepResults.isFromCache) {
     return;
   }
-  let routerResult = null;
   let helmetHead = null;
   let bodyMarkup = null;
   const { MainApp, i18nOptions } = stepResults;
@@ -37,13 +36,13 @@ const applicationRendering = (stepResults) => {
     bodyMarkup = renderToString(app);
     helmetHead = rewind();
     console.log('routerContext', routerContext);
-    // Get router results
-    // routerResult = routerContext.getResult();
   }
   // Redirect case
-  // if (routerResult && routerResult.redirect) {
-  //   stepResults.statusCode = 301;
-  //   stepResults.Location = routerResult.redirect.pathname;
+  if (routerContext.location && routerContext.location.pathname) {
+    stepResults.statusCode = 301;
+    stepResults.Location = routerContext.location.pathname;
+    return;
+  }
   // // Not found, re-render for <Miss> component
   // } else if (stepResults.hasUnwantedQueryParameters || (routerResult && routerResult.missed)) {
   //   stepResults.statusCode = 404;
