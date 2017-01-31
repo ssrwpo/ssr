@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
-import { Match, Link } from 'react-router';
+import { Route, Link } from 'react-router-dom';
 import { pure } from 'meteor/ssrwpo:ssr';
 // Subroutes
 import Topic from './routes/Topic';
@@ -14,10 +14,10 @@ const Topics = ({ pathname }) => (
       <li><Link to={`${pathname}/components`}>Components</Link></li>
       <li><Link to={`${pathname}/props-v-state`}>Props v. State</Link></li>
     </ul>
-    <Match pattern={`${pathname}/:topicId`} component={Topic} />
-    <Match
-      exactly
-      pattern={pathname}
+    <Route path={`${pathname}/:topicId`} component={Topic} />
+    <Route
+      exact
+      path={pathname}
       render={() => (<h3>Please select a topic</h3>)}
     />
   </div>

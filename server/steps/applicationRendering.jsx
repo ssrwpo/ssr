@@ -19,24 +19,28 @@ const applicationRendering = (stepResults) => {
   let routerResult = null;
   let helmetHead = null;
   let bodyMarkup = null;
-  const { MainApp, ServerRouter, i18nOptions } = stepResults;
+  const { MainApp, i18nOptions } = stepResults;
   const routerContext = {};
 
   // TODO find a better way to conditional providers
   // there could be much more in the future
-  const app = (
-    /*i18nOptions ?
+  // const app = (
+    /* i18nOptions ?
       (<I18nextProvider i18n={i18nOptions.server}>
         <Provider store={stepResults.store}>
           <MainApp location={stepResults.url} context={routerContext} />
         </Provider>
       </I18nextProvider>) : */
-      (<Provider store={stepResults.store}>
-        <StaticRouter location={stepResults.url} context={routerContext}>
-          <MainApp />
-        </StaticRouter>
-      </Provider>)
-   );
+  let app = (
+    <Provider store={stepResults.store}>
+      <StaticRouter location={stepResults.url} context={routerContext}>
+        <MainApp />
+      </StaticRouter>
+    </Provider>
+  );
+  if (i18nOptions) {
+    app = <I18nextProvider i18n={i18nOptions.server}>{app}</I18nextProvider>;
+  }
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
   if (!stepResults.hasUnwantedQueryParameters) {
     // Create and render application main entry point
@@ -61,18 +65,13 @@ const applicationRendering = (stepResults) => {
   //     stepResults.head = cachedPage.head;
   //     stepResults.body = cachedPage.body;
   //   } else {
-      // @NOTE There's an odd behavior while rerendering the app as depicted
+      // // @NOTE There's an odd behavior while rerendering the app as depicted
       // in react-router docs. The client side does not compute the ID
       // properly leading to inconsistencies during the application re-hydratation.
-      bodyMarkup = renderToStaticMarkup(app);
-      helmetHead = rewind();
+      // bodyMarkup = renderToStaticMarkup(app);
+      // helmetHead = rewind();
   //   }
   // }
-
-
-  stepResults.statusCode = 200;
-
-
   if (stepResults.body === null) {
     // Create body
     stepResults.body = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;

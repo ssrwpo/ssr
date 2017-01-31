@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import { valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 class Login extends PureComponent {
   static propTypes = {
