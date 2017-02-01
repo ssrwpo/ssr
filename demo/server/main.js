@@ -1,5 +1,4 @@
-import React from 'react';
-import { createRouter, pure, logger } from 'meteor/ssrwpo:ssr';
+import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import MainApp from '/imports/app/MainApp';
 import * as appReducers from '/imports/reducers';
 // Fixtures
