@@ -1,6 +1,4 @@
-import React from 'react';
-import { createRouter, logger, pure, getStore } from 'meteor/ssrwpo:ssr';
-import { BrowserRouter } from 'react-router-dom';
+import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
 import * as appReducers from '/imports/reducers';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';

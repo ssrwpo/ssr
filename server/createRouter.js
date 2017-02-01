@@ -96,23 +96,23 @@ const createRouter = ({
       ServerRouter,
     };
 
-    // STEP0 Do we want speak to world ?
+    // STEP1 Do we want speak to world?
     learnForeignLanguages(stepResults);
-    // STEP1 User agent analysis
+    // STEP2 User agent analysis
     userAgentAnalysis(stepResults);
-    // STEP2 Analyse query params
+    // STEP3 Analyse query params
     queryParamsAnalysis(stepResults);
-    // STEP3 Create location
+    // STEP4 Create location
     urlAnalysis(stepResults);
-    // SETP4 Cache analysis
+    // SETP5 Cache analysis
     cacheAnalysis(stepResults);
-    // STEP5 Create data context
+    // STEP6 Create data context
     createDataContext(stepResults);
-    // STEP6 Application rendering if required
+    // STEP7 Application rendering if required
     applicationRendering(stepResults);
-    // STEP7 Transport
+    // STEP8 Transport
     transport(stepResults);
-    // STEP8 Cache filling if required
+    // STEP9 Cache filling if required
     cacheFilling(stepResults);
 
     // End performance cheking
