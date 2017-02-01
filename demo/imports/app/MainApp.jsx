@@ -15,9 +15,10 @@ import Places from '/imports/routes/Places';
 import Translations from '/imports/routes/Translations';
 import Performance from '/imports/routes/Performance';
 import PubSub from '/imports/routes/PubSub';
+import AsymetricSsr from '/imports/routes/AsymetricSsr';
+import Topics from '/imports/routes/Topics';
 import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
-import Topics from '/imports/routes/Topics';
 
 const MainApp = ({ isLoggedIn }) => {
   const styles = {
@@ -37,6 +38,7 @@ const MainApp = ({ isLoggedIn }) => {
         <li style={styles.li}><Link to="/translations">Translations</Link></li>
         <li style={styles.li}><Link to="/performance">Performance</Link></li>
         <li style={styles.li}><Link to="/pubsub">Reactive cases</Link></li>
+        <li style={styles.li}><Link to="/asymetric-ssr">Asymetric SSR</Link></li>
         <li style={styles.li}><Link to="/topics">Topics</Link></li>
         <li style={styles.li}><Link to="/about">About</Link></li>
       </ul>
@@ -53,6 +55,7 @@ const MainApp = ({ isLoggedIn }) => {
         <Route exact path="/translations" component={Translations} />
         <Route exact path="/performance" component={Performance} />
         <Route exact path="/pubsub" component={PubSub} />
+        <Route exact path="/asymetric-ssr" component={AsymetricSsr} />
         <Route path="/topics" component={Topics} />
         <Route exact path="/about" component={About} />
         <Route component={NotFound} />
