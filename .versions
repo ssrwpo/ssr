@@ -26,11 +26,7 @@ reactive-var@1.0.10
 routepolicy@1.0.12
 spacebars@1.0.12
 spacebars-compiler@1.0.13
-<<<<<<< HEAD
-ssrwpo:ssr@2.0.0
-=======
-ssrwpo:ssr@2.0.1
->>>>>>> release/2.0.1
+ssrwpo:ssr@2.1.0
 tmeasday:check-npm-versions@0.3.1
 tracker@1.1.1
 ui@1.0.11
