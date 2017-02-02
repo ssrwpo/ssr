@@ -1,13 +1,14 @@
 import React, { PropTypes as pt } from 'react';
 import Helmet from 'react-helmet';
+import { pure } from 'meteor/ssrwpo:ssr';
 
-const Topic = ({ params }) => (
+const Topic = ({ match }) => (
   <div>
-    <Helmet title={`Topics - ${params.topicId}`} />
-    <h3>{params.topicId}</h3>
+    <Helmet title={`Topics - ${match.params.topicId}`} />
+    <h3>{match.params.topicId}</h3>
   </div>
 );
 Topic.propTypes = {
-  params: pt.object.isRequired,
+  match: pt.object.isRequired,
 };
-export default Topic;
+export default pure(Topic);

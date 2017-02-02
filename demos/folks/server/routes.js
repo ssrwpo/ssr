@@ -1,9 +1,10 @@
 import pick from 'lodash/pick';
+
+import { collectionAdd } from 'meteor/ssrwpo:ssr';
+
 import Folks from '../imports/api/Folks';
 import Places from '../imports/api/Places';
-
-import { folkAdd } from '../imports/actions/folks';
-import { placeAdd } from '../imports/actions/places';
+import PubSub from '../imports/api/PubSub';
 
 const routes = {
   '/folks': {
@@ -39,10 +40,13 @@ const routes = {
   },
   middlewares: (params, store) => {
     Folks.find({}, { sort: { order: -1 } }).fetch().forEach((folk) => {
-      store.dispatch(folkAdd(folk));
+      store.dispatch(collectionAdd('Folks', folk));
     });
     Places.find({}, { sort: { order: -1 } }).fetch().forEach((place) => {
-      store.dispatch(placeAdd(place));
+      store.dispatch(collectionAdd('Places', place));
+    });
+    PubSub.find({}, { sort: { lastMod: -1 } }).fetch().forEach((ps) => {
+      store.dispatch(collectionAdd('PubSub', ps));
     });
   },
   options: {

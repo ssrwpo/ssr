@@ -12,6 +12,11 @@ import {
   valueSet,
   valueReset,
 } from '../shared/actions/utils';
+import {
+  createHandleSubscribe,
+  createHandleSyncViaMethod,
+} from '../shared/selectors/createHandles';
+import { BrowserStats } from '../shared/components';
 
 // Client side exports
 export {
@@ -30,6 +35,11 @@ export {
   collectionRemove,
   valueSet,
   valueReset,
+  // Helpers on selectors,
+  createHandleSubscribe,
+  createHandleSyncViaMethod,
+  // Ready made components
+  BrowserStats,
   // Store access, mainly for debug
   getStore,
 };

@@ -1,11 +1,12 @@
-import { createRouter, logger, pure } from 'meteor/ssrwpo:ssr';
-import { BrowserRouter } from 'react-router';
-import * as appReducers from '/imports/reducers';
+import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
+import appReducers from '/imports/reducers';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import MainApp from '/imports/app/MainApp';
 import storeSubscription from '/imports/store';
+// i18n
+import i18n from '/imports/i18n/i18nClient';
 
 const appMiddlewares = [
   thunk,
@@ -18,12 +19,12 @@ const appMiddlewares = [
   }),
 ];
 
-const appCursorNames = ['Folks', 'Places'];
+const appCursorNames = ['Folks', 'Places', 'PubSub'];
 
 logger.info('Starting router');
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
-  MainApp: pure(MainApp),
+  MainApp,
   // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
@@ -32,7 +33,13 @@ createRouter({
   appMiddlewares,
   // Optional: An array of your collection names
   appCursorNames,
-  // The router used in your client
-  BrowserRouter: pure(BrowserRouter),
+  // Optional: Add a redux store that watches for URL changes
+  hasUrlStore: true,
+  // Optional: An i18n config for client side
+  i18n,
 })
-.then(() => logger.info('Router started'));
+.then(() => {
+  // For easing debug
+  window.store = getStore();
+  logger.info('Router started');
+});

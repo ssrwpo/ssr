@@ -1,11 +1,14 @@
 import moment from 'moment';
 import pick from 'lodash/pick';
-import React, { PropTypes } from 'react';
+import React, { PropTypes as pt } from 'react';
+import { pure, valueReset } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { auth as authAction } from '/imports/actions';
 
-const Home = ({ auth, logout, platform, buildDate, retina }) => (
+const Home = ({
+  auth, logout, platform, buildDate,
+  retina, mobile, viewportWidth, viewportHeight,
+}) => (
   <div>
     <Helmet title="Home" />
     <h2>Home</h2>
@@ -13,24 +16,32 @@ const Home = ({ auth, logout, platform, buildDate, retina }) => (
     { auth && <p><button onClick={logout}>Log out</button></p>}
     <p>Current platform is: <strong>{platform}</strong></p>
     <p><em>Build date: {moment(buildDate).format('DD/MM/YYYY HH:mm')}</em></p>
-    <p>Define as {retina ? 'Retina display' : 'Normal display'} by server</p>
+    <p>Define as {retina ? 'Retina display' : 'Normal display'}</p>
+    <p>Devive is considered as mobile? <strong>{mobile ? 'Yes' : 'No'}</strong></p>
+    <p>Viewport: <code>{viewportWidth}x{viewportHeight}</code></p>
   </div>
 );
 Home.propTypes = {
-  auth: PropTypes.bool.isRequired,
-  logout: PropTypes.func.isRequired,
-  platform: PropTypes.string.isRequired,
-  buildDate: PropTypes.number.isRequired,
-  retina: PropTypes.bool.isRequired,
+  auth: pt.bool.isRequired,
+  logout: pt.func.isRequired,
+  platform: pt.string.isRequired,
+  buildDate: pt.number.isRequired,
+  retina: pt.bool.isRequired,
+  mobile: pt.bool.isRequired,
+  viewportWidth: pt.number.isRequired,
+  viewportHeight: pt.number.isRequired,
 };
-const mapStateToProps = state => pick(state, ['auth', 'platform', 'buildDate', 'retina']);
+const mapStateToProps = state => pick(state, [
+  'auth', 'platform', 'buildDate',
+  'retina', 'mobile', 'viewportWidth', 'viewportHeight',
+]);
 const mapDispatchToProps = dispatch => ({
   logout(e) {
     e.preventDefault();
-    dispatch(authAction.logout());
+    dispatch(valueReset('auth'));
   },
 });
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Home);
+)(pure(Home));

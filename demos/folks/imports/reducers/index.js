@@ -1,13 +1,20 @@
-import auth from './auth';
-import Folks from './folks';
-import Places from './places';
-import retina from './retina';
-import perfItems from './perfItems';
+import {
+  createCollectionReducers,
+  createValueReducer,
+} from 'meteor/ssrwpo:ssr';
 
-export {
+const auth = createValueReducer('auth', false);
+const collectionReducers = createCollectionReducers([
+  'Folks',
+  'Places',
+  'PubSub',
+]);
+const perfItems = createValueReducer('perfItems', 2000);
+const isPubSubSubscribed = createValueReducer('isPubSubSubscribed', false);
+
+export default {
   auth,
-  Folks,
-  Places,
-  retina,
+  ...collectionReducers,
   perfItems,
+  isPubSubSubscribed,
 };

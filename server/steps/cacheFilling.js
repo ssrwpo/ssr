@@ -1,3 +1,4 @@
+import logger from '../utils/logger';
 import cache from '../utils/cache';
 import nextTick from '../utils/nextTick';
 import { NOT_FOUND_URL } from '../../shared/constants';
@@ -28,7 +29,9 @@ const canEnableCache = (routePattern, routes, statusCode) => {
 const cacheFilling = ({
   body,
   hash,
+  hasUnwantedQueryParameters,
   head,
+  Location,
   routePattern,
   routes,
   statusCode,
@@ -38,21 +41,38 @@ const cacheFilling = ({
   nextTick(() => {
     // const platform = stepResults.userAgent;
     // if (stepResults.statusCode === 404) {
-      // if (!stepResults.is404fromCache) {
-      //   cache.setPage(
-      //     platform, NOT_FOUND_URL,
-      //     stepResults.head, stepResults.body, stepResults.hash,
-      //   );
-      // }
-      // // Don't cache 404 for URL query parameters
-      // if (stepResults.hasUnwantedQueryParameters) {
-      //   cache.setNotFound(stepResults.url);
-      // }
-    // } else {
-    if (canEnableCache(routePattern, routes, statusCode)) {
-      cache.setPage(userAgent, url, head, body, hash);
-    }
+    //   if (!stepResults.is404fromCache) {
+    //     cache.setPage(
+    //       platform, NOT_FOUND_URL,
+    //       stepResults.head, stepResults.body, stepResults.hash,
+    //     );
+    //   }
+    //   // Don't cache 404 for wrong URL query parameters
+    //   if (!stepResults.hasUnwantedQueryParameters) {
+    //     cache.setNotFound(stepResults.url);
+    //   }
+    // } else if (stepResults.statusCode === 200) {
+    //   cache.setPage(
+    //     platform, stepResults.url,
+    //     stepResults.head, stepResults.body, stepResults.hash,
+    //   );
+    // } else if (stepResults.statusCode === 301) {
+    //   cache.setRedirect(stepResults.url, stepResults.Location);
     // }
+    if (canEnableCache(routePattern, routes, statusCode)) {
+      logger.debug(
+        'cache fill:',
+        userAgent,
+        statusCode,
+        url,
+        hasUnwantedQueryParameters,
+      );
+      if (statusCode === 301) {
+        cache.setRedirect(url, Location);
+      } else {
+        cache.setPage(userAgent, url, head, body, hash, statusCode);
+      }
+    }
   });
 };
 export default cacheFilling;

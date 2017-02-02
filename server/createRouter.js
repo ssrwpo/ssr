@@ -7,14 +7,17 @@ import {
   ServerRouter as DefaultServerRouter,
   createServerRenderContext as defaultCreateServerRenderContext,
 } from 'react-router';
+import i18nMiddleware from 'i18next-express-middleware';
+/* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-/* eslint-enable */
 import './utils/peerDependencies';
 import cache from './utils/cache';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
+import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
+import learnForeignLanguages from './steps/learnForeignLanguages';
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import routePatternAnalysis from './steps/routePatternAnalysis';
 import queryParamsAnalysis from './steps/queryParamsAnalysis';
@@ -70,6 +73,7 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
 const createRouter = (MainApp, {
   ServerRouter = DefaultServerRouter,
   createServerRenderContext = defaultCreateServerRenderContext,
+  i18n,
   observedCursors = {},
   robotsTxt = null,
   routes = {},
@@ -77,6 +81,7 @@ const createRouter = (MainApp, {
   webhooks = {},
 } = {}, {
   appReducers = {},
+  platformTransformers = defaultPlatformTransformers,
   storeSubscription = null,
 } = {}) => {
   // Create an Express server
@@ -100,6 +105,10 @@ const createRouter = (MainApp, {
 
   // Secure Express
   app.use(helmet());
+  // express middleware to handle i18n
+  if (i18n) {
+    app.use(i18nMiddleware.handle(i18n));
+  }
   app
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
@@ -123,6 +132,8 @@ const createRouter = (MainApp, {
         hasUnwantedQueryParameters: false,
         hash: null,
         head: null,
+        i18n,
+        i18nOptions: null,
         isFromCache: false,
         is404fromCache: false,
         Location: null,
@@ -138,42 +149,53 @@ const createRouter = (MainApp, {
         userAgent: 'default',
       };
 
-      // STEP1 User agent analysis
+
+      // STEP1 Do we want speak to world?
+      learnForeignLanguages(stepResults);
+
+      // STEP2 User agent analysis
       userAgentAnalysis(stepResults);
 
-      // STEP2 Find current route pattern and set req.params
+      // STEP3 Find current route pattern and set req.params
       routePatternAnalysis(stepResults, routePatterns);
 
-      // STEP3 Analyse query params
+      // STEP4 Analyse query params
       queryParamsAnalysis(stepResults);
 
-      // STEP4 Create location
+      // STEP5 Create location
       urlAnalysis(stepResults);
 
-      // SETP5 Cache analysis
+      // SETP6 Cache analysis
       cacheAnalysis(stepResults);
 
       if (!stepResults.isFromCache) {
         // STEP7 Create store
-        createStore(stepResults, storeSubscription, appReducers);
+        createStore(
+          stepResults,
+          storeSubscription,
+          appReducers,
+          platformTransformers,
+        );
 
         // STEP8 Init store values like platform
         initStoreValues(stepResults);
 
-        // STEP8 apply route middlewares
+        // STEP9 apply route middlewares
         applyRouteMiddlewares(stepResults);
 
-        // STEP9 Create data context
+        // STEP10 Create data context
         createDataContext(stepResults);
 
-        // STEP10 Application rendering if required
+        // STEP11 Application rendering if required
         applicationRendering(stepResults);
 
-        // STEP11 Cache filling if required
+        // STEP12 Cache filling if required
         cacheFilling(stepResults);
+      } else {
+        logger.debug('cache fill: avoided');
       }
 
-      // STEP12 Transport
+      // STEP13 Transport
       transport(stepResults);
 
       // End performance cheking

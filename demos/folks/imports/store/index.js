@@ -1,4 +1,4 @@
-import { retina } from '/imports/actions';
+import { logger } from 'meteor/ssrwpo:ssr';
 
 let lastPlatform = null;
 
@@ -7,15 +7,7 @@ const storeSubscription = (store) => {
   const platform = store.getState().platform;
   if (lastPlatform !== platform) {
     lastPlatform = platform;
-    switch (platform) {
-      case 'iphone':
-      case 'ipad':
-      case 'android':
-        store.dispatch(retina.set(true));
-        break;
-      default:
-        store.dispatch(retina.set(false));
-    }
+    logger.info('Platform set', platform);
   }
 };
 

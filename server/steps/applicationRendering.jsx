@@ -1,71 +1,61 @@
 import crypto from 'crypto';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import React from 'react';
-import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
+import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
 import { rewind } from 'react-helmet';
 /* eslint-enable */
 
 // Impure function
 /* eslint-disable no-param-reassign */
 const applicationRendering = (stepResults) => {
-  let routerResult = null;
   let helmetHead = null;
   let bodyMarkup = null;
 
   const {
     MainApp,
-    ServerRouter,
     contextMarkup,
-    createServerRenderContext,
     hasUnwantedQueryParameters,
+    i18nOptions,
   } = stepResults;
-  const routerContext = createServerRenderContext();
+  const routerContext = {};
+
+  let app = (
+    <Provider store={stepResults.store}>
+      <StaticRouter location={stepResults.url} context={routerContext}>
+        <MainApp />
+      </StaticRouter>
+    </Provider>
+  );
+
+  if (i18nOptions) {
+    app = <I18nextProvider i18n={i18nOptions.server}>{app}</I18nextProvider>;
+  }
 
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
   if (!hasUnwantedQueryParameters) {
     // Create and render application main entry point
-    bodyMarkup = renderToString(
-      <Provider store={stepResults.store}>
-        <ServerRouter location={stepResults.url} context={routerContext}>
-          <MainApp />
-        </ServerRouter>
-      </Provider>,
-    );
+    bodyMarkup = renderToString(app);
     helmetHead = rewind();
-    // Get router results
-    routerResult = routerContext.getResult();
   }
 
   // Redirect case
-  if (routerResult && routerResult.redirect) {
+  if (routerContext.location && routerContext.location.pathname) {
     stepResults.statusCode = 301;
-    stepResults.Location = routerResult.redirect.pathname;
-  // Not found, re-render for <Miss> component
-  } else if (hasUnwantedQueryParameters
-    || (routerResult && routerResult.missed)
-  ) {
-    stepResults.statusCode = 404;
+    stepResults.Location = routerContext.location.pathname;
+    return;
+  }
 
+  if (hasUnwantedQueryParameters || routerContext.has404) {
+    stepResults.statusCode = 404;
     // const platform = stepResults.store.getState().platform;
     // if (cache.has(platform, NOT_FOUND_URL)) {
     //   stepResults.is404fromCache = true;
     //   const cachedPage = cache.get(platform, NOT_FOUND_URL);
     //   stepResults.head = cachedPage.head;
     //   stepResults.body = cachedPage.body;
-    // } else {
-
-    // @NOTE There's an odd behavior while rerendering the app as depicted
-    // in react-router docs. The client side does not compute the ID
-    // properly leading to inconsistencies during the application re-hydratation.
-    bodyMarkup = renderToStaticMarkup(
-      <Provider store={stepResults.store}>
-        <ServerRouter location={stepResults.url} context={routerContext}>
-          <MainApp />
-        </ServerRouter>
-      </Provider>,
-    );
-    helmetHead = rewind();
     // }
   }
 

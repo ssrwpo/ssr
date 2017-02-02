@@ -13,12 +13,11 @@ const queryParamsAnalysis = (stepResults) => {
   const validators = [];
 
   const reqParams = req.params;
-  if (!reqParams) {
-    return;
-  }
-
   const reqQuery = req.query;
-  if (!reqQuery) {
+
+  if ((!reqParams || Object.keys(reqParams).length === 0)
+    && (!reqQuery || Object.keys(reqQuery).length === 0)
+  ) {
     return;
   }
 

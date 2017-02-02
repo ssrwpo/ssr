@@ -10,9 +10,10 @@ To install yarn : https://yarnpkg.com/en/docs/install
 To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
-meteor yarn add react react-dom react-router@next express helmet react-helmet \
-  winston logatim receptacle useragent es6-enum redux react-redux moment \
-  lodash url-pattern
+meteor yarn add react react-dom react-router-dom@4.0.0-beta.3 express helmet \
+  react-helmet winston logatim receptacle useragent redux react-redux moment \
+  i18next i18next-node-remote-backend i18next-xhr-backend react-i18next \
+  i18next-express-middleware serialize-javascript lodash actual url-pattern
 meteor add ssrwpo:ssr
 ```
 
@@ -29,12 +30,11 @@ yarn meteor
 ### Client side call
 ```js
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
-import { BrowserRouter } from 'react-router';
 ...
 createRouter({
   // Your MainApp as the top component that will get rendered in <div id='react' />
   MainApp,
-  // Optional: Store subscription (equivalent to `store.subscribe(store => storeSubscription(store))`)
+  // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
@@ -42,8 +42,12 @@ createRouter({
   appMiddlewares,
   // Optional: An array of your collection names
   appCursorNames,
-  // The router used in your client
-  BrowserRouter,
+  // Optional: Add a redux store that watches for URL changes
+  hasUrlStore: false,
+  // Optional: An i18n config for client side
+  i18n,
+  // Optional: Server uses a platform transformer, client must load optional reducers
+  hasPlatformTransformer = true,
 })
 .then(() => logger.info('Router started'));
 ```
@@ -51,41 +55,62 @@ createRouter({
 ### Server side call
 ```js
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
-import { ServerRouter, createServerRenderContext } from 'react-router';
 ...
 createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
-  // Optional: Store subscription (equivalent to `store.subscribe(store => storeSubscription(store))`)
+  // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
   // Optional: An object containing the cursors required as data context
   appCursors,
-  // Optional: A function returning a string with the content of your robots.txt
+  // Optional: A function that returns the content of your robots.txt
   robotsTxt,
-  // Optional: A function returning a string with the content of your sitemap.xml
+  // Optional: A function that returns the content of your sitemaps.xml
   sitemapXml,
   // Optional: An object with keys on URL with query parameters
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
-  // The server side router from react-router-4
-  ServerRouter,
-  createServerRenderContext,
+  // Optional: An i18n config for server side
+  i18n,
+  // Optional: A platform transformer (see hereafter), a default transformer is provided
+  platformTransformers,
 });
 logger.info('Router started');
 ```
 
-### Robots.txt and Sitemap.xml
+### Localization and i18n
+We use i18next for server side rendered localization. It gets the user browser language and serves the right language with a default one(in case you don't serve for users one).
 
-To set up your robots.txt, you need to have a key "robotsTxt" inside the object that you pass to the server-side createRouter function.  
-This key should contain a function that returns a string with the desired content of your robots.txt.  
-The same principle applies to sitemap.xml, with the key "sitemapXml".  
-The function that you pass will receive store as it's first parameter.  
-This allows you to programmatically build your sitemap.xml or robots.txt based on the store contents.  
-For example, you can populate your sitemap.xml of dynamic routes generated based on the store data.  
-You can see examples of building these functions here:  
+You can find more about :
+* [i18next](http://i18next.com/)  
+* [react-i18next](https://github.com/i18next/react-i18next)
+
+Do not need it see [FAQ](https://github.com/ssr-server/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssr-server/ssr/tree/master/demo) app.
+
+### 404 - Not found route
+`react-router` will always render your application. For identifying a `404`, you
+have to tell to the server that while rendering the app, one of the displayed
+component is due to a `404`. This is achieved via the `react-router`'s `staticContext`
+and by setting into it a `has404` boolean used by the server to identify the route
+as `404` Not found route.
+
+Example: [NotFound](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/NotFound.jsx)
+
+## Sever side routes
+### Pre-made: Robots.txt and Sitemap.xml
+
+To set up your robots.txt, you need to have a key "robotsTxt" inside the object
+that you pass to the server-side createRouter function. This key should contain
+a function that returns a string with the desired content of your robots.txt.
+The same principle applies to sitemap.xml, with the key "sitemapXml". The function
+that you pass will receive store as it's first parameter. This allows you to
+programmatically build your sitemap.xml or robots.txt based on the store contents.  
+
+For example, you can populate your sitemap.xml of dynamic routes generated based
+on the store data. You can see examples of building these functions here:  
 * [Robots.txt](https://github.com/ssr-server/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
 * [Sitemap.xml](https://github.com/ssr-server/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
 
@@ -109,6 +134,12 @@ const sitemapContent = sitemapFromArray([
   // ...
 ]);
 ```
+
+### Your own webhooks or REST API
+By passing a webhooks object, you can build your own server side routes powered
+by Express. A small example is setup in the demo:
+[webhooks](https://github.com/ssr-server/ssr/blob/master/demo/server/webhooks.js).
+
 ## Reducers
 ### Platform detection, built-in reducer
 For the initial render, your app may require some defaults to ensure that
@@ -123,13 +154,32 @@ The `platform` detection reducer provides the following platforms:
 * `ie`: Any Internet Explorer before Edge.
 * `default`: All the other browsers and devices.
 
+By default, a `platformTransformers` is provided and adds 4 built-in reducers to
+the app: `retina`, `mobile`, `viewportWidth`, `viewportHeight`. It only applies
+to server side rendering. When your client side app is rendered, you can patch
+the default values that the server has injected with a bult-in component:
+
+`<BrowserStats retinaMinDpi={<number>} mobileBreakpoint={<number>} debounceTimer={<number>} />`
+where :
+
+* `retinaMinDpi`: 144, by default (1.5 x 96 in dpi).
+* `mobileBreakpoint`: 992, by default (in px).
+* `debounceTimer`: 64, by default (4 x 16 in ms).
+
+If you want to build your own `platformTransformers` and `<BrowserStats />`, please
+refer to the following sources for inspiration:
+
+* [`platformTransformers`](https://github.com/ssr-server/ssr/blob/master/server/utils/platformTransformers.js).
+* [`<BrowserStats />`](https://github.com/ssr-server/ssr/blob/master/shared/components/BrowserStats.jsx)
+
+
 ### Build date, built-in reducer
 Each produced HTML payload is tagged with a build date allowing capabilities
 to check if a reload is required. The reducer is named `buildDate` and it
 contains a UNIX date.
 
 ### Reducer helpers
-Store creation (see [Reducer](./shared/reducers/utils)):
+Store creation (see [Reducer](https://github.com/ssr-server/ssr/blob/master/shared/reducers/utils)):
 
 * Collections store: `createCollectionReducers`
 * Value store: `createValueReducer`
@@ -144,6 +194,44 @@ Actions on reducers:
   * `valueSet`
   * `valueReset`
 
+### Synchronisation helpers for collections
+When your collection is serialized in the store, you may want to synchronize it
+when your application starts, or when entering a page, or on a user action ...
+As this is a common use case for Meteor, we provide an easy way to create
+`mapDispatchToProps` methods for subscribing/subscribing or calling a validated
+method that will synchronize your collection store.
+
+Example: [PubSub](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
+
+#### Via subscribe: `createHandleSubscribe`
+The subscribe / unsubscribe based synchronization helper has the following API:
+```js
+/**
+ * `createHandleSubscribe`
+ * Create an `handleSubscribe` function for your `mapDispatchToProps`.
+ * @param dispatch Store's dispatch.
+ * @param publicationName Your publication name which must accept an UNIX date value as `lastMod`.
+ * @param cursor A cursor on Mongo collection with a `lastMod` set on each item.
+ * @param valueStoreNameForSubscription Name of the value store identifying subscription state.
+ * @param collectionStoreName Name of the collection store holding replica of collection.
+ * @return A function allowing to subscribe and unsubscribe.
+ */
+```
+
+#### Via validated method: `createHandleSyncViaMethod`
+The validated method based synchronization helper has the following API:
+```js
+/**
+ * `createHandleSyncViaMethod`
+ * Create an `handleSyncViaMethod` function for your `mapDispatchToProps`.
+ * @param dispatch Store's dispatch.
+ * @param validatedMethod A validated method, promised based
+ *  (see didericis:callpromise-mixin) that accepts { lastMod } as its params.
+ * @param collectionStoreName Name of the collection store holding replica of collection.
+ * @return A function allowing to subscribe and unsubscribe.
+ */
+```
+
 ### Performance helpers
 #### pure
 Asymetric HOC for transforming a functional component into a `React.PureComponent` on the client and leaving it unmodified on the server.
@@ -157,7 +245,6 @@ export default pure(MyComponent);
 ```
 
 Example: [Performance](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/Performance.jsx "Performance")
-
 
 ## Configuration
 ### Universal logger
