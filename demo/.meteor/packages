@@ -11,7 +11,8 @@ ddp
 mongo
 tracker
 
-standard-minifier-css
+stylus
+juliancwirko:postcss
 
 shell-server
 
@@ -22,4 +23,3 @@ ssrwpo:ssr
 ssrwpo:uglifyjs2
 mdg:validated-method
 didericis:callpromise-mixin
-aldeed:simple-schema
