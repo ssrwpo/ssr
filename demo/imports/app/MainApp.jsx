@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { pure, BrowserStats } from 'meteor/ssrwpo:ssr';
 // Components
 import TransitionLogger from '/imports/components/TransitionLogger';
-import TransitionButton from '/imports/components/TransitionButton';
 import Privateroute from '/imports/components/Privateroute';
 // Pages import
 import Home from '/imports/routes/Home';
@@ -29,37 +28,37 @@ const MainApp = ({ isLoggedIn }) => {
     <div>
       <TransitionLogger />
       <BrowserStats />
-      <ul style={styles.ul}>
-        <li style={styles.li}><Link to="/">Home</Link></li>
-        {isLoggedIn || <li style={styles.li} ><Link to="/login">Login</Link></li>}
-        <li style={styles.li}><Link to="/protected">Protected</Link></li>
-        <li style={styles.li}><Link to="/folks">Folks</Link></li>
-        <li style={styles.li}><Link to="/places">Places</Link></li>
-        <li style={styles.li}><Link to="/translations">Translations</Link></li>
-        <li style={styles.li}><Link to="/performance">Performance</Link></li>
-        <li style={styles.li}><Link to="/pubsub">Reactive cases</Link></li>
-        <li style={styles.li}><Link to="/asymetric-ssr">Asymetric SSR</Link></li>
-        <li style={styles.li}><Link to="/topics">Topics</Link></li>
-        <li style={styles.li}><Link to="/about">About</Link></li>
-      </ul>
-      <hr />
-      {/* Programmatic transitions */}
-      <TransitionButton href="/topics">Go to topics</TransitionButton>
-      <hr />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Privateroute path="/protected" component={Protected} />
-        <Route path="/login" component={Login} />
-        <Route path="/folks" component={Folks} />
-        <Route exact path="/places" component={Places} />
-        <Route exact path="/translations" component={Translations} />
-        <Route exact path="/performance" component={Performance} />
-        <Route exact path="/pubsub" component={PubSub} />
-        <Route exact path="/asymetric-ssr" component={AsymetricSsr} />
-        <Route path="/topics" component={Topics} />
-        <Route exact path="/about" component={About} />
-        <Route component={NotFound} />
-      </Switch>
+      <nav>
+        <ul style={styles.ul}>
+          <li style={styles.li}><Link to="/">Home</Link></li>
+          {isLoggedIn || <li style={styles.li} ><Link to="/login">Login</Link></li>}
+          <li style={styles.li}><Link to="/protected">Protected</Link></li>
+          <li style={styles.li}><Link to="/folks">Folks</Link></li>
+          <li style={styles.li}><Link to="/places">Places</Link></li>
+          <li style={styles.li}><Link to="/translations">Translations</Link></li>
+          <li style={styles.li}><Link to="/performance">Performance</Link></li>
+          <li style={styles.li}><Link to="/pubsub">Reactive cases</Link></li>
+          <li style={styles.li}><Link to="/asymetric-ssr">Asymetric SSR</Link></li>
+          <li style={styles.li}><Link to="/topics">Topics</Link></li>
+          <li style={styles.li}><Link to="/about">About</Link></li>
+        </ul>
+      </nav>
+      <main>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Privateroute path="/protected" component={Protected} />
+          <Route path="/login" component={Login} />
+          <Route path="/folks" component={Folks} />
+          <Route exact path="/places" component={Places} />
+          <Route exact path="/translations" component={Translations} />
+          <Route exact path="/performance" component={Performance} />
+          <Route exact path="/pubsub" component={PubSub} />
+          <Route exact path="/asymetric-ssr" component={AsymetricSsr} />
+          <Route path="/topics" component={Topics} />
+          <Route exact path="/about" component={About} />
+          <Route component={NotFound} />
+        </Switch>
+      </main>
     </div>
   );
 };

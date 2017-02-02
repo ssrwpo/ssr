@@ -6,14 +6,30 @@ body, button
 html, body
   background: $bgColor
   color: $primaryColor
+  margin: 0
+  padding: 0
 
 h1, h2, h3, h4, h5, h6, a, a:visited
   color: $secondaryColor
 
 button
-  background: $primaryColor
+  background: $bgColor
   border: 1px solid $secondaryColor
   border-radius: .5em
-  color: $bgColor
-  font-weight: bold
+  color: $primaryColor
   font-size: 1em
+  font-weight: bold
+
+nav
+  background: $primaryColor
+  margin: 0
+  padding: 1em
+  width: 100%
+
+main
+  padding: 0 1em
+
+hr
+  background-image: linear-gradient(to right, alpha($primaryColor, 0), alpha($primaryColor, .95), alpha($primaryColor, 0))
+  border: 0
+  height: 1px
