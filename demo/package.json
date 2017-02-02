@@ -35,10 +35,6 @@
     "faker": "^3.1.0",
     "helmet": "^3.4.0",
     "history": "^4.5.1",
-    "i18next": "^6.0.2",
-    "i18next-express-middleware": "^1.0.2",
-    "i18next-node-remote-backend": "0.0.4",
-    "i18next-xhr-backend": "^1.3.0",
     "lodash": "^4.17.4",
     "logatim": "^0.9.0",
     "meteor-node-stubs": "~0.2.5",
@@ -46,7 +42,6 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-helmet": "^4.0.0",
-    "react-i18next": "^2.0.1",
     "react-redux": "^5.0.2",
     "react-router-dom": "4.0.0-beta.3",
     "receptacle": "^1.1.0",
@@ -54,7 +49,6 @@
     "redux-logger": "^2.7.4",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
-    "serialize-javascript": "^1.3.0",
     "useragent": "^2.1.11",
     "winston": "^2.3.1"
   }

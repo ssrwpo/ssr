@@ -1,7 +1,6 @@
 /* eslint-disable import/first, no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import express from 'express';
 import helmet from 'helmet';
-import i18nMiddleware from 'i18next-express-middleware';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
@@ -11,7 +10,6 @@ import { perfStart, perfStop } from './utils/perfMeasure';
 import createAppAndPackageStore from './utils/createAppAndPackageStore';
 import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
-import learnForeignLanguages from './steps/learnForeignLanguages';
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import queryParamsAnalysis from './steps/queryParamsAnalysis';
 import cacheAnalysis from './steps/cacheAnalysis';
@@ -44,7 +42,6 @@ const createRouter = ({
   urlQueryParameters,
   webhooks,
   ServerRouter,
-  i18n,
   platformTransformers = defaultPlatformTransformers,
 }) => {
   // Create a redux store
@@ -57,10 +54,6 @@ const createRouter = ({
   const app = express();
   // Secure Express
   app.use(helmet());
-  // express middleware to handle i18n
-  if (i18n) {
-    app.use(i18nMiddleware.handle(i18n));
-  }
   app
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
@@ -88,31 +81,26 @@ const createRouter = ({
       store,
       contextMarkup: null,
       MainApp,
-      // used for localization
-      i18n,
-      i18nOptions: null,
       platformTransformers,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,
     };
 
-    // STEP1 Do we want speak to world?
-    learnForeignLanguages(stepResults);
-    // STEP2 User agent analysis
+    // STEP1 User agent analysis
     userAgentAnalysis(stepResults);
-    // STEP3 Analyse query params
+    // STEP2 Analyse query params
     queryParamsAnalysis(stepResults);
-    // STEP4 Create location
+    // STEP3 Create location
     urlAnalysis(stepResults);
-    // SETP5 Cache analysis
+    // SETP4 Cache analysis
     cacheAnalysis(stepResults);
-    // STEP6 Create data context
+    // STEP5 Create data context
     createDataContext(stepResults);
-    // STEP7 Application rendering if required
+    // STEP6 Application rendering if required
     applicationRendering(stepResults);
-    // STEP8 Transport
+    // STEP7 Transport
     transport(stepResults);
-    // STEP9 Cache filling if required
+    // STEP8 Cache filling if required
     cacheFilling(stepResults);
 
     // End performance cheking

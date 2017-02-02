@@ -14,12 +14,6 @@ const cacheAnalysis = (stepResults) => {
     logger.debug('cache missed: url:', platform, stepResults.url);
     return;
   }
-  // check if user locale changed between requests
-  if (stepResults.i18n && !cache.getLanguage(stepResults.req.language)) {
-    stepResults.isFromCache = false;
-    logger.debug('cache missed: lang:', stepResults.req.language);
-    return;
-  }
   const cached = cache.get(platform, stepResults.url);
   logger.debug('cache hit: type:', cached.type);
   stepResults.isFromCache = true;

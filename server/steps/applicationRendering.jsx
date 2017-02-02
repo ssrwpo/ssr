@@ -4,7 +4,6 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { I18nextProvider } from 'react-i18next';
 import { rewind } from 'react-helmet';
 /* eslint-enable */
 import cache from '../utils/cache';
@@ -18,18 +17,15 @@ const applicationRendering = (stepResults) => {
   }
   let helmetHead = null;
   let bodyMarkup = null;
-  const { MainApp, i18nOptions } = stepResults;
+  const { MainApp } = stepResults;
   const routerContext = {};
-  let app = (
+  const app = (
     <Provider store={stepResults.store}>
       <StaticRouter location={stepResults.url} context={routerContext}>
         <MainApp />
       </StaticRouter>
     </Provider>
   );
-  if (i18nOptions) {
-    app = <I18nextProvider i18n={i18nOptions.server}>{app}</I18nextProvider>;
-  }
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
   if (!stepResults.hasUnwantedQueryParameters) {
     // Create and render application main entry point

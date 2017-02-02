@@ -11,9 +11,6 @@ import PubSub from '/imports/api/PubSub';
 import '/imports/api/PubSub/server';
 // Store subscription
 import storeSubscription from '/imports/store';
-// i18n
-// eslint-disable-next-line no-unused-vars
-import i18n from '/imports/i18n/i18nServer';
 // Sitemaps & Robots
 import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
@@ -46,7 +43,5 @@ createRouter({
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
-  // Optional: An i18n config for server side
-  i18n,
 });
 logger.info('Router started');

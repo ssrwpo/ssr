@@ -1,17 +1,15 @@
 import React, { PropTypes as pt } from 'react';
 import { pure } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
-import { translate } from 'react-i18next';
 
-const Translations = ({ t }) => (
+const Translations = () => (
   <div>
     <Helmet title="Translations" />
-    <h2>{t('common:hello')}</h2>
-    <h2> {t('greetings:world')}</h2>
+    <h2>Hello</h2>
+    <h2> World</h2>
   </div>
 );
 Translations.propTypes = {
-  t: pt.func.isRequired,
 };
 
-export default translate(['common', 'greetings'])(pure(Translations));
+export default pure(Translations);
