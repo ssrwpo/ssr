@@ -1,10 +1,10 @@
 // Actions on collection stores
-const collectionAdd = (collectionName, { _id, ...fields }) =>
-  ({ type: `${collectionName}.ADD`, value: { id: _id, ...fields } });
-const collectionChange = (collectionName, { _id, ...fields }) =>
-  ({ type: `${collectionName}.CHANGE`, value: { id: _id, ...fields } });
-const collectionRemove = (collectionName, { _id }) =>
-  ({ type: `${collectionName}.REMOVE`, value: { id: _id } });
+const collectionAdd = (collectionName, id, fields) =>
+  ({ type: `${collectionName}.ADD`, value: { id, ...fields } });
+const collectionChange = (collectionName, id, fields) =>
+  ({ type: `${collectionName}.CHANGE`, value: { id, fields } });
+const collectionRemove = (collectionName, id) =>
+  ({ type: `${collectionName}.REMOVE`, value: { id } });
 
 // Actions on value stores
 const valueSet = (storeName, value) => ({ type: `${storeName}.SET`, value });

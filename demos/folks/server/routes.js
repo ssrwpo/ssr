@@ -1,3 +1,4 @@
+import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 
 import { collectionAdd } from 'meteor/ssrwpo:ssr';
@@ -40,13 +41,28 @@ const routes = {
   },
   middlewares: (params, store) => {
     Folks.find({}, { sort: { order: -1 } }).fetch().forEach((folk) => {
-      store.dispatch(collectionAdd('Folks', folk));
+      store.dispatch(collectionAdd(
+        'Folks',
+        // eslint-disable-next-line no-underscore-dangle
+        folk._id,
+        omit(folk, '_id'),
+      ));
     });
     Places.find({}, { sort: { order: -1 } }).fetch().forEach((place) => {
-      store.dispatch(collectionAdd('Places', place));
+      store.dispatch(collectionAdd(
+        'Places',
+        // eslint-disable-next-line no-underscore-dangle
+        place._id,
+        omit(place, '_id'),
+      ));
     });
     PubSub.find({}, { sort: { lastMod: -1 } }).fetch().forEach((ps) => {
-      store.dispatch(collectionAdd('PubSub', ps));
+      store.dispatch(collectionAdd(
+        'PubSub',
+        // eslint-disable-next-line no-underscore-dangle
+        ps._id,
+        omit(ps, '_id'),
+      ));
     });
   },
   options: {
