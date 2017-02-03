@@ -3,7 +3,7 @@
 const name = 'ssrwpo:ssr';
 Package.describe({
   name,
-  version: '1.5.0',
+  version: '2.1.0',
   summary: 'SSR - Router with SSR for Node & Meteor',
   git: 'https://github.com/ssr-server/ssr',
   documentation: 'README.md',
@@ -11,7 +11,7 @@ Package.describe({
 
 const pkgs = [
   // MDG packages
-  'ecmascript', 'ejson', 'webapp', 'mongo', 'tracker',
+  'ecmascript', 'ejson', 'webapp',
   // Community packages
   'tmeasday:check-npm-versions@0.3.1',
 ];

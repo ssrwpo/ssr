@@ -2,6 +2,7 @@ import { createRouter, debugLastRequest, debugLastResponse } from './createRoute
 import logger from './utils/logger';
 import sitemapFromArray from './utils/sitemaps';
 import pure from '../shared/hoc/pure';
+import asymetricSsr from '../shared/hoc/asymetricSsr';
 import {
   createCollectionReducers,
   createValueReducer,
@@ -13,6 +14,11 @@ import {
   valueSet,
   valueReset,
 } from '../shared/actions/utils';
+import {
+  createHandleSubscribe,
+  createHandleSyncViaMethod,
+} from '../shared/selectors/createHandles';
+import { BrowserStats } from '../shared/components';
 
 // Server side exports
 export {
@@ -24,6 +30,7 @@ export {
   sitemapFromArray,
   // HOC
   pure,
+  asymetricSsr,
   // Store creation
   createCollectionReducers,
   createValueReducer,
@@ -33,7 +40,12 @@ export {
   collectionRemove,
   valueSet,
   valueReset,
-  // Acces to last reques, mainly for debug in `meteor shell`
+  // Helpers on selectors,
+  createHandleSubscribe,
+  createHandleSyncViaMethod,
+  // Ready made components
+  BrowserStats,
+  // Acces to last request, mainly for debug in `meteor shell`
   debugLastRequest,
   debugLastResponse,
 };
