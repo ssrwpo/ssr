@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import omit from 'lodash/omit';
-import once from 'lodash/once';
-import { pure, collectionAdd, logger, BrowserStats } from 'meteor/ssrwpo:ssr';
+import { pure, collectionAdd, logger, BrowserStats, valueSet } from 'meteor/ssrwpo:ssr';
 // Collections
 import FolksCollection from '/imports/api/Folks';
 import PlacesCollection from '/imports/api/Places';
@@ -19,6 +18,7 @@ import Places from '/imports/routes/Places';
 import Translations from '/imports/routes/Translations';
 import Performance from '/imports/routes/Performance';
 import PubSub from '/imports/routes/PubSub';
+import AsyncData from '/imports/routes/AsyncData';
 import AsymetricSsr from '/imports/routes/AsymetricSsr';
 import Topics from '/imports/routes/Topics';
 import About from '/imports/routes/About';
@@ -28,23 +28,28 @@ import NotFound from '/imports/routes/NotFound';
 // server-side rendering. Since we may wish to prepare the same store from several
 // different components, it's good practise to ensure that the function can only be
 // called once
-export const prepareGlobalStores = once((store) => {
+export const prepareGlobalStores = (store) => {
   logger.debug('Preparing Folks and Places store');
 
-  const globalCollections = [
-    { collection: PlacesCollection, name: 'Places' },
-    { collection: FolksCollection, name: 'Folks' }];
+  const { areGlobalStoresInitialised } = store.getState();
+  if (!areGlobalStoresInitialised) {
+    const globalCollections = [
+      { collection: PlacesCollection, name: 'Places' },
+      { collection: FolksCollection, name: 'Folks' }];
 
-  globalCollections.forEach(({ collection, name }) => {
-    collection.find({}, { sort: { order: -1 } }).fetch().forEach((item) => {
-      store.dispatch(collectionAdd(
-        name,
-        item._id, // eslint-disable-line no-underscore-dangle
-        omit(item, '_id'),
-      ));
+    globalCollections.forEach(({ collection, name }) => {
+      collection.find({}, { sort: { order: -1 } }).fetch().forEach((item) => {
+        store.dispatch(collectionAdd(
+          name,
+          item._id, // eslint-disable-line no-underscore-dangle
+          omit(item, '_id'),
+        ));
+      });
     });
-  });
-});
+
+    store.dispatch(valueSet('areGlobalStoresInitialised', true));
+  }
+};
 
 const MainApp = ({ isLoggedIn }) => {
   const styles = {
@@ -65,6 +70,7 @@ const MainApp = ({ isLoggedIn }) => {
           <li style={styles.li}><Link to="/translations">Translations</Link></li>
           <li style={styles.li}><Link to="/performance">Performance</Link></li>
           <li style={styles.li}><Link to="/pubsub">Reactive cases</Link></li>
+          <li style={styles.li}><Link to="/async">Asynchronous data</Link></li>
           <li style={styles.li}><Link to="/asymetric-ssr">Asymetric SSR</Link></li>
           <li style={styles.li}><Link to="/topics">Topics</Link></li>
           <li style={styles.li}><Link to="/about">About</Link></li>
@@ -82,6 +88,7 @@ const MainApp = ({ isLoggedIn }) => {
           <Route exact path="/translations" component={Translations} />
           <Route exact path="/performance" component={Performance} />
           <Route exact path="/pubsub" component={PubSub} />
+          <Route exact path="/async" component={AsyncData} />
           <Route exact path="/asymetric-ssr" component={AsymetricSsr} />
           <Route path="/topics" component={Topics} />
           <Route exact path="/about" component={About} />

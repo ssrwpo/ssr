@@ -2,6 +2,7 @@
 import React, { Children } from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import logger from '../utils/logger';
 /* eslint-enable */
 
 // Recurse an React Element tree, running visitor on each element.
@@ -81,7 +82,7 @@ function processSSRRequirementsAndReturnPromises(store, rootElement, rootContext
 
       // Prepare the store if required
       if (typeof prepareStore === 'function') {
-        const result = prepareStore(store);
+        const result = prepareStore(store, element.props, context);
         const isPromise = result && typeof result.then === 'function';
         if (isPromise) {
           promises.push({ promise: result, element, context });
@@ -106,13 +107,20 @@ function processSSRRequirementsForElement(store, rootElement, rootContext = {}, 
 
   // No promises found, nothing to do
   if (!promises.length) return Promise.resolve();
-
+  logger.debug('processSSRRequirementsForElement waiting for Promises');
   // Wait on each promise that we found, re-rendering the subtree when it's done
-  const mappedPromises = promises.map(({ promise, theElement, theContext }) =>
+  const mappedPromises = promises.map(({ promise, element, context }) =>
     // We've just grabbed the promise for element, so don't try and get it again
-    promise.then(() => processSSRRequirementsForElement(store, theElement, theContext, false)));
+    promise
+    .catch((err) => {
+      logger.debug('Error from promise');
+      logger.debug(err);
+    })
+    .then(() => {
+      processSSRRequirementsForElement(store, element, context, false);
+    }));
 
-  return Promise.all(mappedPromises).then(() => null);
+  return Promise.all(mappedPromises);
 }
 
 const processSSRRequirements = (stepResults) => {
@@ -130,7 +138,10 @@ const processSSRRequirements = (stepResults) => {
     </Provider>
   );
 
-  return processSSRRequirementsForElement(stepResults.store, app);
+  return processSSRRequirementsForElement(stepResults.store, app).then(() => {
+    logger.debug('processSSRRequirements completed');
+    return null;
+  });
 };
 
 export default processSSRRequirements;

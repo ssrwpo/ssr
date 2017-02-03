@@ -167,38 +167,42 @@ const createRouter = (MainApp, {
       // STEP 6: Cache analysis
       cacheAnalysis(stepResults);
 
-      if (!stepResults.isFromCache) {
-        // STEP 7: Create store
-        createStore(
-          stepResults,
-          storeSubscription,
-          appReducers,
-          platformTransformers,
-        );
-
-        // STEP 8: Init store values such as platform
-        initStoreValues(stepResults);
-
-        // STEP 9: process per-component SSR Requirements
-        processSSRRequirements(stepResults).then(() => {
-          // STEP 10: Create data context
-          createDataContext(stepResults);
-
-          // STEP 11: Application rendering if required
-          applicationRendering(stepResults);
-
-          // STEP 12: Cache filling if required
-          cacheFilling(stepResults);
-        });
-      } else {
+      // If we have a cached page, return that now
+      if (stepResults.isFromCache) {
         logger.debug('cache fill: avoided');
+        transport(stepResults);
+        perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
+        return;
       }
 
-      // STEP 13: Transport
-      transport(stepResults);
+      // STEP 7: Create store
+      createStore(
+        stepResults,
+        storeSubscription,
+        appReducers,
+        platformTransformers,
+      );
 
-      // End performance cheking
-      perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
+      // STEP 8: Init store values such as platform
+      initStoreValues(stepResults);
+
+      // STEP 9: process per-component SSR Requirements
+      processSSRRequirements(stepResults).then(() => {
+        // STEP 10: Create data context
+        createDataContext(stepResults);
+
+        // STEP 11: Application rendering if required
+        applicationRendering(stepResults);
+
+        // STEP 12: Cache filling if required
+        cacheFilling(stepResults);
+
+        // STEP 13: Transport
+        transport(stepResults);
+
+        // End performance cheking
+        perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
+      });
     };
 
     if (Fiber.current) {

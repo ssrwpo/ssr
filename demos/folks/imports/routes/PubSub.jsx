@@ -1,8 +1,7 @@
 import React, { PureComponent, PropTypes as pt } from 'react';
 import once from 'lodash/once';
-import omit from 'lodash/omit';
 import {
-  logger, pure, collectionAdd,
+  logger, pure,
   // Helpers for collectionStore synchronization
   valueSet, createHandleSubscribe, createHandleSyncViaMethod,
 } from 'meteor/ssrwpo:ssr';
@@ -14,25 +13,6 @@ import PubSubCol, {
   insertRandomPubSubItem, updatePubSubItem, removePubSubItem,
   valuesFromLastMod,
 } from '/imports/api/PubSub';
-
-// This function will be called by the server to prepare the store before the
-// server-side rendering. Since we may wish to prepare the same store from several
-// different components, it's good practise to ensure that the function can only be
-// called once
-export const preparePubSubStore = once((store) => {
-  logger.debug('Preparing PubSub store');
-  PubSubCol.find({}, { sort: { order: -1 } }).fetch().forEach((ps) => {
-    store.dispatch(collectionAdd(
-      'PubSub',
-      ps._id, // eslint-disable-line no-underscore-dangle
-      omit(ps, '_id'),
-    ));
-  });
-
-  // We set a flag on the store so that we know that we don't need to fetch any
-  // data when mounting the component.
-  store.dispatch(valueSet('isPubSubInitialised', true));
-});
 
 const styles = {
   button: { marginRight: '1em' },
@@ -95,14 +75,16 @@ class PubSub extends PureComponent {
     // specifically presses the button to do that, but we do wish to display the initial
     // data set.
     //
-    // If the user has visited this route directly then the initial data will already be
-    // in the store (hydrated by the `preparePubSubStore`). In this case we don't need
-    // to do anything (`preparePubSubStore` will have set `isPubSubInitialised` to
-    // let us know that).
+    // ssrwpo:ssr will scan the render tree once before it's actually rendered, giving
+    // all components an opportunity to prepare the store for rendering.
+    // We can do this in a synchronous fashion in componentWillMount().
+    // Not only will data added to the store here will be rendered on the server,
+    // it will also be injected into the Redux store in the initial HTML payload.
+    // This means that if we access this route directly, we don't need to re-fetch the data.
     //
-    // If we're coming from another route then we won't have any data yet, so we need
-    // to fetch it now. The next time we visit this route, the store will still
-    // contain the data.
+    // If the app is already loaded and we're coming from another route then we won't
+    // have any data yet, so we need to fetch it. We use a store parameter to flag
+    // whether or not the store data has been initialised.
 
     const {
       isPubSubInitialised,
@@ -123,19 +105,6 @@ class PubSub extends PureComponent {
       handleSubscribe(this, isPubSubSubscribed, buildDate);
     }
   }
-
-  // SSR requirements for this component
-  ssr = {
-    // If you supply a `prepareStore` function then it will be called to hydrate the store
-    // for server-side-rendering. This pre-hydrated store will also be send with the initial
-    // HTML payload.
-    //
-    // Here we prepare the PubSub store. Note however that this doesn't mean that the data
-    // we always be available on the client. The store will only be pre-hydrated if this component
-    // has been rendered on the server. If the client visits the route from another one after
-    // the app is loaded then we'll need to get the data during initialisation.
-    prepareStore: preparePubSubStore,
-  };
 
   render() {
     const {
