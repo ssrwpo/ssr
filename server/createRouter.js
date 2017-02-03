@@ -56,7 +56,6 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
  * @param {Object=} routerConfig.routes
  * @param {Object=} routerConfig.routes.<string> - Route path
  * @param {function(Object)=} routerConfig.routes.<string>.urlQueryParameters - function(query), callback validates params
- * @param {function(Object, Object)=} routerConfig.routes.<string>.middleware - function(stepResults, store), callback for apply custom user action
  * @param {Object=} routerConfig.routes.<string>.options - options like enableCahing
  * @param {boolean=} routerConfig.routes.<string>.options.enableCahing - if true route is cached
  * @param {function(Object)=} routerConfig.routes.urlQueryParameters - Global urlQueryParameters

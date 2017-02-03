@@ -38,8 +38,6 @@ createRouter({
   storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
-  // Optional: An array of your redux middleware of choice
-  appMiddlewares,
   // Optional: An array of your collection names
   appCursorNames,
   // Optional: Add a redux store that watches for URL changes
