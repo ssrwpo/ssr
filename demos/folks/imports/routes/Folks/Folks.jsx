@@ -41,9 +41,13 @@ const Folks = ({ folks, match, location }) => {
     </div>
   );
 };
+
 Folks.propTypes = {
   folks: pt.array.isRequired,
   match: pt.object.isRequired,
   location: pt.object.isRequired,
 };
+
+// state.Folks is the the redux store that was pre-hydrated from the Mongo collection by
+// the server. The hydration was performed by `prepareGlobalStores`.
 export default connect(state => ({ folks: state.Folks }))(pure(Folks));

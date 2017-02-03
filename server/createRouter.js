@@ -25,8 +25,8 @@ import cacheAnalysis from './steps/cacheAnalysis';
 import urlAnalysis from './steps/urlAnalysis';
 import createStore from './steps/createStore';
 import initStoreValues from './steps/initStoreValues';
+import processSSRRequirements from './steps/processSSRRequirements';
 import createDataContext from './steps/createDataContext';
-import applyRouteMiddlewares from './steps/applyRouteMiddlewares';
 import applicationRendering from './steps/applicationRendering';
 import transport from './steps/transport';
 import cacheFilling from './steps/cacheFilling';
@@ -105,7 +105,8 @@ const createRouter = (MainApp, {
 
   // Secure Express
   app.use(helmet());
-  // express middleware to handle i18n
+
+  // Express middleware to handle i18n
   if (i18n) {
     app.use(i18nMiddleware.handle(i18n));
   }
@@ -116,12 +117,12 @@ const createRouter = (MainApp, {
     const callback = () => {
       const url = req.path;
 
-      // Start performance cheking
+      // Start performance checking
       perfStart();
       debugLastRequest = req;
       debugLastResponse = res;
 
-      // Inpure structure for storing results throughout steps
+      // Impure structure for storing results throughout steps
       const stepResults = {
         MainApp,
         // Used for circumventing issues on checkNpmDependencies
@@ -149,27 +150,26 @@ const createRouter = (MainApp, {
         userAgent: 'default',
       };
 
-
-      // STEP1 Do we want speak to world?
+      // STEP 1: Do we want speak to world?
       learnForeignLanguages(stepResults);
 
-      // STEP2 User agent analysis
+      // STEP 2: User agent analysis
       userAgentAnalysis(stepResults);
 
-      // STEP3 Find current route pattern and set req.params
+      // STEP 3: Find current route pattern and set req.params
       routePatternAnalysis(stepResults, routePatterns);
 
-      // STEP4 Analyse query params
+      // STEP 4: Analyse query params
       queryParamsAnalysis(stepResults);
 
-      // STEP5 Create location
+      // STEP 5: Create location
       urlAnalysis(stepResults);
 
-      // SETP6 Cache analysis
+      // STEP 6: Cache analysis
       cacheAnalysis(stepResults);
 
       if (!stepResults.isFromCache) {
-        // STEP7 Create store
+        // STEP 7: Create store
         createStore(
           stepResults,
           storeSubscription,
@@ -177,25 +177,25 @@ const createRouter = (MainApp, {
           platformTransformers,
         );
 
-        // STEP8 Init store values like platform
+        // STEP 8: Init store values such as platform
         initStoreValues(stepResults);
 
-        // STEP9 apply route middlewares
-        applyRouteMiddlewares(stepResults);
+        // STEP 9: process per-component SSR Requirements
+        processSSRRequirements(stepResults);
 
-        // STEP10 Create data context
+        // STEP 10: Create data context
         createDataContext(stepResults);
 
-        // STEP11 Application rendering if required
+        // STEP 11: Application rendering if required
         applicationRendering(stepResults);
 
-        // STEP12 Cache filling if required
+        // STEP 12: Cache filling if required
         cacheFilling(stepResults);
       } else {
         logger.debug('cache fill: avoided');
       }
 
-      // STEP13 Transport
+      // STEP 13: Transport
       transport(stepResults);
 
       // End performance cheking

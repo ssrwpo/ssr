@@ -12,7 +12,11 @@ const Places = ({ places }) => (
     }
   </div>
 );
+
 Places.propTypes = {
   places: pt.array.isRequired,
 };
+
+// state.Places is the the redux store that was pre-hydrated from the Mongo collection by
+// the server. The hydration was performed by `prepareGlobalStores`.
 export default connect(state => ({ places: state.Places }))(pure(Places));

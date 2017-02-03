@@ -29,6 +29,7 @@ const observedCursors = [
 ];
 
 logger.info('Starting router');
+
 // Your MainApp as the top component rendered and injected in the HTML payload
 createRouter(MainApp, {
   // Optional: An i18n config for server side
@@ -49,4 +50,5 @@ createRouter(MainApp, {
   // Optional: Store subscription
   storeSubscription,
 });
+
 logger.info('Router started');

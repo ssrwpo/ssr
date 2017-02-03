@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { pure, BrowserStats } from 'meteor/ssrwpo:ssr';
+import omit from 'lodash/omit';
+import once from 'lodash/once';
+import { pure, collectionAdd, logger, BrowserStats } from 'meteor/ssrwpo:ssr';
+// Collections
+import FolksCollection from '/imports/api/Folks';
+import PlacesCollection from '/imports/api/Places';
 // Components
 import TransitionLogger from '/imports/components/TransitionLogger';
 import Privateroute from '/imports/components/Privateroute';
@@ -18,6 +23,28 @@ import AsymetricSsr from '/imports/routes/AsymetricSsr';
 import Topics from '/imports/routes/Topics';
 import About from '/imports/routes/About';
 import NotFound from '/imports/routes/NotFound';
+
+// This function will be called by the server to prepare the store before the
+// server-side rendering. Since we may wish to prepare the same store from several
+// different components, it's good practise to ensure that the function can only be
+// called once
+export const prepareGlobalStores = once((store) => {
+  logger.debug('Preparing Folks and Places store');
+
+  const globalCollections = [
+    { collection: PlacesCollection, name: 'Places' },
+    { collection: FolksCollection, name: 'Folks' }];
+
+  globalCollections.forEach(({ collection, name }) => {
+    collection.find({}, { sort: { order: -1 } }).fetch().forEach((item) => {
+      store.dispatch(collectionAdd(
+        name,
+        item._id, // eslint-disable-line no-underscore-dangle
+        omit(item, '_id'),
+      ));
+    });
+  });
+});
 
 const MainApp = ({ isLoggedIn }) => {
   const styles = {
@@ -64,7 +91,21 @@ const MainApp = ({ isLoggedIn }) => {
     </div>
   );
 };
+
+// SSR requirements for this component
+MainApp.ssr = {
+
+  // If you supply a `prepareStore` function on any component then it will be called
+  // to hydrate the store for server-side-rendering.
+  // This pre-hydrated store will also be send with the initial  HTML payload.
+  //
+  // Here we're adding it to the top-level to hydrate the Folks and Places stores
+  // globally for the entire app.
+  prepareStore: prepareGlobalStores,
+};
+
 MainApp.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
 };
+
 export default connect((state => ({ isLoggedIn: state.auth })))(pure(MainApp));

@@ -1,11 +1,5 @@
-import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-
-import { collectionAdd } from 'meteor/ssrwpo:ssr';
-
 import Folks from '../imports/api/Folks';
-import Places from '../imports/api/Places';
-import PubSub from '../imports/api/PubSub';
 
 const routes = {
   '/folks': {
@@ -38,32 +32,6 @@ const routes = {
       }
       return allowedQueryParams;
     },
-  },
-  middlewares: (params, store) => {
-    Folks.find({}, { sort: { order: -1 } }).fetch().forEach((folk) => {
-      store.dispatch(collectionAdd(
-        'Folks',
-        // eslint-disable-next-line no-underscore-dangle
-        folk._id,
-        omit(folk, '_id'),
-      ));
-    });
-    Places.find({}, { sort: { order: -1 } }).fetch().forEach((place) => {
-      store.dispatch(collectionAdd(
-        'Places',
-        // eslint-disable-next-line no-underscore-dangle
-        place._id,
-        omit(place, '_id'),
-      ));
-    });
-    PubSub.find({}, { sort: { lastMod: -1 } }).fetch().forEach((ps) => {
-      store.dispatch(collectionAdd(
-        'PubSub',
-        // eslint-disable-next-line no-underscore-dangle
-        ps._id,
-        omit(ps, '_id'),
-      ));
-    });
   },
   options: {
     enableCahing: true,
