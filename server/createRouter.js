@@ -181,16 +181,16 @@ const createRouter = (MainApp, {
         initStoreValues(stepResults);
 
         // STEP 9: process per-component SSR Requirements
-        processSSRRequirements(stepResults);
+        processSSRRequirements(stepResults).then(() => {
+          // STEP 10: Create data context
+          createDataContext(stepResults);
 
-        // STEP 10: Create data context
-        createDataContext(stepResults);
+          // STEP 11: Application rendering if required
+          applicationRendering(stepResults);
 
-        // STEP 11: Application rendering if required
-        applicationRendering(stepResults);
-
-        // STEP 12: Cache filling if required
-        cacheFilling(stepResults);
+          // STEP 12: Cache filling if required
+          cacheFilling(stepResults);
+        });
       } else {
         logger.debug('cache fill: avoided');
       }
