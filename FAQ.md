@@ -11,28 +11,38 @@ const MyPureConnectedComponent = connect(
 )(pure(MyComponent));
 ```
 
-## Removing i18n
-1. Delete i18n folder inside [demo/imports](https://github.com/ssr-server/ssr/tree/master/demo/imports)
+## Removing Localization
+1. Delete messages folder inside [demo/imports](https://github.com/ssr-server/ssr/tree/master/demo/imports)
 2. Remove these lines from [demo/client/main.js](https://github.com/ssr-server/ssr/blob/master/demo/client/main.js)
 ```js
 ...
-// i18n
-import i18n from '/imports/i18n/i18nClient';
+import { en, fr, tr } from '/imports/messages';
 ...
+const localization = {
+  languages: ['en', 'tr', 'fr'], // required
+  fallback: 'en', // required
+  // language: 'fr', // force default language optional
+  messages: { en, fr, tr }, // language resources required
+};
 ...
-  // Optional: An i18n config for client side
-  i18n,
+  // Optional: localization
+  localization,
 ...
 ```
 3. Remove these lines from [demo/server/main.js](https://github.com/ssr-server/ssr/blob/master/demo/server/main.js)
 ```js
 ...
-// i18n
-import i18n from '/imports/i18n/i18nServer';
+import { en, fr, tr } from '/imports/messages';
 ...
+const localization = {
+  languages: ['en', 'tr', 'fr'], // required
+  fallback: 'en', // required
+  // language: 'fr', // force default language optional
+  messages: { en, fr, tr }, // language resources required
+};
 ...
-  // Optional: An i18n config for server side
-  i18n,
+  // Optional: localization
+  localization,
 ...
 ```
 4. Delete [demo/imports/routes/Translations.jsx](https://github.com/ssr-server/ssr/tree/master/demo/imports/routes/Translations.jsx).

@@ -9,11 +9,10 @@ import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
 import PubSub from '/imports/api/PubSub';
 import '/imports/api/PubSub/server';
+// localization resources
+import { en, fr, tr } from '/imports/messages';
 // Store subscription
 import storeSubscription from '/imports/store';
-// i18n
-// eslint-disable-next-line no-unused-vars
-import i18n from '/imports/i18n/i18nServer';
 // Sitemaps & Robots
 import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
@@ -28,12 +27,17 @@ const observedCursors = [
   PubSub.find({}, { sort: { lastMod: -1 } }),
 ];
 
+const localization = {
+  languages: ['en', 'tr', 'fr'], // required
+  fallback: 'en', // required
+  // language: 'fr', // force default language optional
+  messages: { en, fr, tr }, // language resources required
+};
+
 logger.info('Starting router');
 
 // Your MainApp as the top component rendered and injected in the HTML payload
 createRouter(MainApp, {
-  // Optional: An i18n config for server side
-  i18n,
   // Optional: An object containing the observed cursors to clear cache on change
   observedCursors,
   // Optional: A function that returns the content of your robots.txt
@@ -44,6 +48,8 @@ createRouter(MainApp, {
   sitemapXml,
   // Optional: An object with keys on route solver
   webhooks,
+  // Optional: initial localization
+  localization,
 }, {
   // Optional: An object containing your application reducers
   appReducers,

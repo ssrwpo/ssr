@@ -3,36 +3,31 @@ import crypto from 'crypto';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
-import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'react-intl-redux';
 import { rewind } from 'react-helmet';
 /* eslint-enable */
 
 // Impure function
 /* eslint-disable no-param-reassign */
 const applicationRendering = (stepResults) => {
+  if (stepResults.isFromCache) {
+    return;
+  }
   let helmetHead = null;
   let bodyMarkup = null;
-
   const {
     MainApp,
     contextMarkup,
     hasUnwantedQueryParameters,
-    i18nOptions,
   } = stepResults;
   const routerContext = {};
-
-  let app = (
+  const app = (
     <Provider store={stepResults.store}>
       <StaticRouter location={stepResults.url} context={routerContext}>
         <MainApp />
       </StaticRouter>
     </Provider>
   );
-
-  if (i18nOptions) {
-    app = <I18nextProvider i18n={i18nOptions.server}>{app}</I18nextProvider>;
-  }
 
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
   if (!hasUnwantedQueryParameters) {

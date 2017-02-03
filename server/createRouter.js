@@ -7,7 +7,6 @@ import {
   ServerRouter as DefaultServerRouter,
   createServerRenderContext as defaultCreateServerRenderContext,
 } from 'react-router';
-import i18nMiddleware from 'i18next-express-middleware';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
@@ -17,7 +16,6 @@ import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
-import learnForeignLanguages from './steps/learnForeignLanguages';
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import routePatternAnalysis from './steps/routePatternAnalysis';
 import queryParamsAnalysis from './steps/queryParamsAnalysis';
@@ -72,7 +70,7 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
 const createRouter = (MainApp, {
   ServerRouter = DefaultServerRouter,
   createServerRenderContext = defaultCreateServerRenderContext,
-  i18n,
+  localization,
   observedCursors = {},
   robotsTxt = null,
   routes = {},
@@ -104,11 +102,6 @@ const createRouter = (MainApp, {
 
   // Secure Express
   app.use(helmet());
-
-  // Express middleware to handle i18n
-  if (i18n) {
-    app.use(i18nMiddleware.handle(i18n));
-  }
   app
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
@@ -132,7 +125,7 @@ const createRouter = (MainApp, {
         hasUnwantedQueryParameters: false,
         hash: null,
         head: null,
-        i18n,
+        localization,
         i18nOptions: null,
         isFromCache: false,
         is404fromCache: false,
@@ -149,22 +142,19 @@ const createRouter = (MainApp, {
         userAgent: 'default',
       };
 
-      // STEP 1: Do we want speak to world?
-      learnForeignLanguages(stepResults);
-
-      // STEP 2: User agent analysis
+      // STEP 1: User agent analysis
       userAgentAnalysis(stepResults);
 
-      // STEP 3: Find current route pattern and set req.params
+      // STEP 2: Find current route pattern and set req.params
       routePatternAnalysis(stepResults, routePatterns);
 
-      // STEP 4: Analyse query params
+      // STEP 3: Analyse query params
       queryParamsAnalysis(stepResults);
 
-      // STEP 5: Create location
+      // STEP 4: Create location
       urlAnalysis(stepResults);
 
-      // STEP 6: Cache analysis
+      // STEP 5: Cache analysis
       cacheAnalysis(stepResults);
 
       // If we have a cached page, return that now
@@ -175,7 +165,7 @@ const createRouter = (MainApp, {
         return;
       }
 
-      // STEP 7: Create store
+      // STEP 6: Create store
       createStore(
         stepResults,
         storeSubscription,
@@ -183,21 +173,21 @@ const createRouter = (MainApp, {
         platformTransformers,
       );
 
-      // STEP 8: Init store values such as platform
+      // STEP 7: Init store values such as platform
       initStoreValues(stepResults);
 
-      // STEP 9: process per-component SSR Requirements
+      // STEP 8: process per-component SSR Requirements
       processSSRRequirements(stepResults).then(() => {
-        // STEP 10: Create data context
+        // STEP 9: Create data context
         createDataContext(stepResults);
 
-        // STEP 11: Application rendering if required
+        // STEP 10: Application rendering if required
         applicationRendering(stepResults);
 
-        // STEP 12: Cache filling if required
+        // STEP 11: Cache filling if required
         cacheFilling(stepResults);
 
-        // STEP 13: Transport
+        // STEP 12: Transport
         transport(stepResults);
 
         // End performance cheking

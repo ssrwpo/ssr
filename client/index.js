@@ -14,6 +14,10 @@ import {
   valueReset,
 } from '../shared/actions/utils';
 import {
+  changeLanguage,
+  setMessages,
+} from '../shared/actions/intl';
+import {
   createHandleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
@@ -37,6 +41,8 @@ export {
   collectionRemove,
   valueSet,
   valueReset,
+  changeLanguage,
+  setMessages,
   // Helpers on selectors,
   createHandleSubscribe,
   createHandleSyncViaMethod,

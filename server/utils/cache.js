@@ -40,15 +40,6 @@ class Cache {
     }
     return this.receptacle.get(url);
   }
-
-  setLanguage(lng) {
-    this.receptacle.set(lng);
-  }
-
-  getLanguage(lng) {
-    return this.receptacle.has(lng);
-  }
-
   reset() {
     logger.debug('cache reset');
     this.receptacle.clear();

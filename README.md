@@ -12,8 +12,7 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 ```
 meteor yarn add react react-dom react-router-dom@4.0.0-beta.3 express helmet \
   react-helmet winston logatim receptacle useragent redux react-redux moment \
-  i18next i18next-node-remote-backend i18next-xhr-backend react-i18next \
-  i18next-express-middleware serialize-javascript lodash actual url-pattern
+  react-intl react-intl-redux lodash actual lodash actual url-pattern
 meteor add ssrwpo:ssr
 ```
 
@@ -42,8 +41,8 @@ createRouter({
   appCursorNames,
   // Optional: Add a redux store that watches for URL changes
   hasUrlStore: false,
-  // Optional: An i18n config for client side
-  i18n,
+  // Optional: Localization
+  localization,
   // Optional: Server uses a platform transformer, client must load optional reducers
   hasPlatformTransformer = true,
 })
@@ -71,22 +70,21 @@ createRouter({
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
-  // Optional: An i18n config for server side
-  i18n,
+  // Optional: Localization
+  localization,
   // Optional: A platform transformer (see hereafter), a default transformer is provided
   platformTransformers,
 });
 logger.info('Router started');
 ```
 
-### Localization and i18n
-We use i18next for server side rendered localization. It gets the user browser language and serves the right language with a default one(in case you don't serve for users one).
+### Localization and react-intl
+We use react-intl for server side rendered localization. It gets the user browser language and serves the right language.
 
 You can find more about :
-* [i18next](http://i18next.com/)  
-* [react-i18next](https://github.com/i18next/react-i18next)
+* [react-intl](https://github.com/yahoo/react-intl)  
 
-Do not need it see [FAQ](https://github.com/ssr-server/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssr-server/ssr/tree/master/demo) app.
+Do not need it. See [FAQ](https://github.com/ssr-server/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssr-server/ssr/tree/master/demo) app.
 
 ### 404 - Not found route
 `react-router` will always render your application. For identifying a `404`, you

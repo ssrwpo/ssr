@@ -1,17 +1,47 @@
 import React, { PropTypes as pt } from 'react';
-import { pure } from 'meteor/ssrwpo:ssr';
+import { pure, changeLanguage } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
-import { translate } from 'react-i18next';
+import { FormattedMessage, FormattedDate } from 'react-intl';
+import pick from 'lodash/pick';
+import { connect } from 'react-redux';
+import { en, fr, tr } from '../messages';
 
-const Translations = ({ t }) => (
+const Translations = ({ languageChanger, languageSetter, intl }) => (
   <div>
+    <button onClick={() => languageChanger('en')}>English</button>
+    <button onClick={() => languageChanger('fr')}>Français</button>
+    <button onClick={() => languageChanger('tr')}>Türkçe</button>
+    <br />
     <Helmet title="Translations" />
-    <h2>{t('common:hello')}</h2>
-    <h2> {t('greetings:world')}</h2>
+    <p>
+      <FormattedMessage
+        id="app.currentLanguage"
+        values={{ language: intl.locale }}
+      />
+    </p>
+    <h2><FormattedMessage id="app.greeting" defaultMessage="你好!" /></h2>
+      <h3>
+        <FormattedDate
+          value={new Date()}
+          year="numeric"
+          month="long"
+          day="numeric"
+          weekday="long"
+        />
+      </h3>
   </div>
 );
 Translations.propTypes = {
-  t: pt.func.isRequired,
+  languageChanger: pt.func.isRequired,
+  intl: pt.object.isRequired,
 };
-
-export default translate(['common', 'greetings'])(pure(Translations));
+const mapStateToProps = state => pick(state, ['intl']);
+const mapDispatchToProps = dispatch => ({
+  languageChanger(language) {
+    dispatch(changeLanguage({ language }));
+  },
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(pure(Translations));

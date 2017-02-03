@@ -5,8 +5,7 @@ import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import MainApp from '/imports/app/MainApp';
 import storeSubscription from '/imports/store';
-// i18n
-import i18n from '/imports/i18n/i18nClient';
+import { en, fr, tr } from '/imports/messages';
 
 const appMiddlewares = [
   thunk,
@@ -18,6 +17,13 @@ const appMiddlewares = [
     },
   }),
 ];
+
+const localization = {
+  languages: ['en', 'tr', 'fr'], // required
+  fallback: 'en', // required
+  // language: 'fr', // force default language optional
+  messages: { en, fr, tr }, // language resources required
+};
 
 const appCursorNames = ['Folks', 'Places', 'PubSub'];
 
@@ -35,8 +41,8 @@ createRouter({
   appCursorNames,
   // Optional: Add a redux store that watches for URL changes
   hasUrlStore: true,
-  // Optional: An i18n config for client side
-  i18n,
+  // Optional: Localization
+  localization,
 })
 .then(() => {
   // For easing debug
