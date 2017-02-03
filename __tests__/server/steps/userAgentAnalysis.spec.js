@@ -1,7 +1,5 @@
 import useragent from 'useragent';
-import { combineReducers, createStore } from 'redux';
 import userAgentAnalysis from '../../../server/steps/userAgentAnalysis';
-import * as packageReducers from '../../../shared/reducers';
 
 const testUserAgents = {
   Chrome: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36',
@@ -22,14 +20,14 @@ const testPlatform = {
   ie: 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; rv:11.0) like Gecko',
   default: testUserAgents.Chrome,
 };
-const store = createStore(combineReducers(packageReducers));
+
 Object.keys(testPlatform).forEach(platform =>
   it(`analyses platform ${platform}`, () => {
     const stepResults = {
       req: { headers: { 'user-agent': testPlatform[platform] } },
-      store,
+      userAgent: 'default',
     };
     userAgentAnalysis(stepResults);
-    expect(store.getState().platform).to.equal(platform);
+    expect(stepResults.userAgent).to.equal(platform);
   }),
 );

@@ -4,6 +4,8 @@ import React, { PropTypes as pt } from 'react';
 import { pure, valueReset } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+// Components
+import TransitionButton from '/imports/components/TransitionButton';
 
 const Home = ({
   auth, logout, platform, buildDate,
@@ -12,6 +14,9 @@ const Home = ({
   <div>
     <Helmet title="Home" />
     <h2>Home</h2>
+    {/* Programmatic transitions */}
+    <TransitionButton href="/topics">Go to topics</TransitionButton>
+    <hr />
     <p>{auth ? 'Logged in' : 'Logged out'}</p>
     { auth && <p><button onClick={logout}>Log out</button></p>}
     <p>Current platform is: <strong>{platform}</strong></p>

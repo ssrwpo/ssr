@@ -1,6 +1,6 @@
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 import MainApp from '/imports/app/MainApp';
-import * as appReducers from '/imports/reducers';
+import appReducers from '/imports/reducers';
 // Fixtures
 import '/imports/api/Folks/server';
 import '/imports/api/Places/server';
@@ -17,15 +17,15 @@ import storeSubscription from '/imports/store';
 import robotsTxt from './robotsTxt';
 import sitemapXml from './sitemapXml';
 // URL query parameters
-import urlQueryParameters from './urlQueryParameters';
+import routes from './routes';
 // Webhooks
 import webhooks from './webhooks';
 
-const appCursors = {
-  Folks: Folks.find({}, { sort: { order: -1 } }),
-  Places: Places.find({}, { sort: { order: -1 } }),
-  PubSub: PubSub.find({}, { sort: { lastMod: -1 } }),
-};
+const observedCursors = [
+  Folks.find({}, { sort: { order: -1 } }),
+  Places.find({}, { sort: { order: -1 } }),
+  PubSub.find({}, { sort: { lastMod: -1 } }),
+];
 
 const localization = {
   languages: ['en', 'tr', 'fr'], // required
@@ -35,24 +35,24 @@ const localization = {
 };
 
 logger.info('Starting router');
-createRouter({
-  // Your MainApp as the top component rendered and injected in the HTML payload
-  MainApp,
-  // Optional: Store subscription
-  storeSubscription,
-  // Optional: An object containing your application reducers
-  appReducers,
-  // Optional: An object containing the cursors required as data context
-  appCursors,
+// Your MainApp as the top component rendered and injected in the HTML payload
+createRouter(MainApp, {
+  // Optional: An object containing the observed cursors to clear cache on change
+  observedCursors,
   // Optional: A function that returns the content of your robots.txt
   robotsTxt,
+  // Optional: An object describe route action and validator for url parameters
+  routes,
   // Optional: A function that returns the content of your sitemaps.xml
   sitemapXml,
-  // Optional: An object with keys on URL with query parameters
-  urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
   // Optional: initial localization
   localization,
+}, {
+  // Optional: An object containing your application reducers
+  appReducers,
+  // Optional: Store subscription
+  storeSubscription,
 });
 logger.info('Router started');

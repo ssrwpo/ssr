@@ -1,5 +1,5 @@
 import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
-import * as appReducers from '/imports/reducers';
+import appReducers from '/imports/reducers';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';

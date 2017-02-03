@@ -11,7 +11,7 @@ const MyPureConnectedComponent = connect(
 )(pure(MyComponent));
 ```
 
-## Removing i18n
+## Removing Localization
 1. Delete messages folder inside [demo/imports](https://github.com/ssr-server/ssr/tree/master/demo/imports)
 2. Remove these lines from [demo/client/main.js](https://github.com/ssr-server/ssr/blob/master/demo/client/main.js)
 ```js

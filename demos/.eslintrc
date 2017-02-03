@@ -20,13 +20,9 @@ settings:
     - meteor/meteor
     - meteor/webapp
     - meteor/ejson
-    - meteor/mongo
-    - meteor/check
-    - meteor/tracker
     - meteor/tmeasday:check-npm-versions
     - meteor/ssrwpo:ssr
-    - meteor/mdg:validated-method
-    - meteor/didericis:callpromise-mixin
+    - meteor/mongo
   import/resolver:
     meteor:
       extensions:

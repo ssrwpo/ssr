@@ -20,6 +20,9 @@
 * [X] Counter measure when Meteor.Reload starts requesting the same URL over & over again
 
 ## v2
+* [ ] React router 4: alpha to beta: API changes
+
+## v3
 * [ ] Configurable browser policy
 * [ ] Application cache API
 * [ ] Service workers
@@ -35,7 +38,7 @@
   * [ ] Most rendered page
   * [ ] Longest rendered page
 
-## v3
+## v4
 * [ ] Styled components
 * [ ] Above the fold
 * [ ] Code splitting

@@ -12,7 +12,7 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 ```
 meteor yarn add react react-dom react-router-dom@4.0.0-beta.3 express helmet \
   react-helmet winston logatim receptacle useragent redux react-redux moment \
-  react-intl react-intl-redux lodash actual
+  react-intl react-intl-redux lodash actual lodash actual url-pattern
 meteor add ssrwpo:ssr
 ```
 
@@ -80,7 +80,7 @@ createRouter({
 logger.info('Router started');
 ```
 
-### Localization and i18n
+### Localization and react-intl
 We use react-intl for server side rendered localization. It gets the user browser language and serves the right language.
 
 You can find more about :

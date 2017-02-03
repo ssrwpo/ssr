@@ -6,8 +6,6 @@ import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-intl-redux';
 import { rewind } from 'react-helmet';
 /* eslint-enable */
-import cache from '../utils/cache';
-import { NOT_FOUND_URL } from '../../shared/constants';
 import { setMessages, changeLanguage } from '../../shared/actions';
 
 // Impure function
@@ -36,7 +34,12 @@ const applicationRendering = (stepResults) => {
   }
   let helmetHead = null;
   let bodyMarkup = null;
-  const { MainApp } = stepResults;
+  const {
+    MainApp,
+    contextMarkup,
+    hasUnwantedQueryParameters,
+    i18nOptions,
+  } = stepResults;
   const routerContext = {};
   const app = (
     <Provider store={stepResults.store}>
@@ -45,39 +48,43 @@ const applicationRendering = (stepResults) => {
       </StaticRouter>
     </Provider>
   );
+
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
-  if (!stepResults.hasUnwantedQueryParameters) {
+  if (!hasUnwantedQueryParameters) {
     // Create and render application main entry point
     bodyMarkup = renderToString(app);
     helmetHead = rewind();
   }
+
   // Redirect case
   if (routerContext.location && routerContext.location.pathname) {
     stepResults.statusCode = 301;
     stepResults.Location = routerContext.location.pathname;
     return;
   }
-  // Not found, check if re-render for <Miss> component
-  if (stepResults.hasUnwantedQueryParameters || routerContext.has404) {
+
+  if (hasUnwantedQueryParameters || routerContext.has404) {
     stepResults.statusCode = 404;
-    // Check if a former not found page has been cached
-    const platform = stepResults.store.getState().platform;
-    if (cache.has(platform, NOT_FOUND_URL)) {
-      stepResults.is404fromCache = true;
-      const cachedPage = cache.get(platform, NOT_FOUND_URL);
-      stepResults.head = cachedPage.head;
-      stepResults.body = cachedPage.body;
-    }
+    // const platform = stepResults.store.getState().platform;
+    // if (cache.has(platform, NOT_FOUND_URL)) {
+    //   stepResults.is404fromCache = true;
+    //   const cachedPage = cache.get(platform, NOT_FOUND_URL);
+    //   stepResults.head = cachedPage.head;
+    //   stepResults.body = cachedPage.body;
+    // }
   }
+
   if (stepResults.body === null) {
     // Create body
-    stepResults.body = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;
+    stepResults.body = `<div id="react">${bodyMarkup}</div>${contextMarkup}`;
   }
+
   if (stepResults.head === null) {
     // Create head
     stepResults.head = ['title', 'meta', 'link', 'script']
       .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
   }
+
   if (stepResults.statusCode === 200 && stepResults.hash === null) {
     stepResults.hash = crypto.createHash('md5')
       .update(stepResults.head + stepResults.body)
