@@ -1,5 +1,4 @@
 import { EJSON } from 'meteor/ejson';
-import serialize from 'serialize-javascript';
 import { valueSet } from '../../shared/actions/utils';
 // Impure function
 /* eslint-disable no-param-reassign */

@@ -3,17 +3,36 @@ import crypto from 'crypto';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
-import { Provider } from 'react-redux';
+import { Provider } from 'react-intl-redux';
 import { rewind } from 'react-helmet';
 /* eslint-enable */
 import cache from '../utils/cache';
 import { NOT_FOUND_URL } from '../../shared/constants';
+import { setMessages, changeLanguage } from '../../shared/actions';
 
 // Impure function
 /* eslint-disable no-param-reassign */
 const applicationRendering = (stepResults) => {
   if (stepResults.isFromCache) {
     return;
+  }
+  if (stepResults.localization) {
+    // init localization resources
+    const usersLanguage = stepResults.req.acceptsLanguages(stepResults.localization.languages);
+    if (stepResults.localization.language) {
+      stepResults.store.dispatch(
+        /* eslint-disable */
+          changeLanguage(usersLanguage ? usersLanguage : stepResults.localization.language),
+        /* eslint-enable */
+      );
+    } else {
+      stepResults.store.dispatch(
+        /* eslint-disable */
+          changeLanguage(usersLanguage ? usersLanguage : stepResults.localization.fallback),
+        /* eslint-enable */
+      );
+    }
+    stepResults.store.dispatch(setMessages(stepResults.localization));
   }
   let helmetHead = null;
   let bodyMarkup = null;

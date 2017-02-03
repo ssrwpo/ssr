@@ -4,16 +4,15 @@ import { EJSON } from 'meteor/ejson';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
+import { Provider } from 'react-intl-redux';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
-import { url } from '../shared/actions';
+import { url, setMessages } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
 import * as optionalReducers from '../shared/reducers/optionals';
 import {
   createCollectionReducers,
 } from '../shared/reducers/utils';
-
 // Global client side store
 let store = null;
 
@@ -27,6 +26,7 @@ const createRouter = ({
   appCursorNames = [],
   hasUrlStore = false,
   hasPlatformTransformer = true,
+  localization,
 }) =>
   new Promise((resolve) => {
     const cursorReducers = createCollectionReducers(appCursorNames);
@@ -50,9 +50,12 @@ const createRouter = ({
       if (storeSubscription) {
         store.subscribe(() => storeSubscription(store));
       }
+      if (localization) {
+        store.dispatch(setMessages(localization));
+      }
       // Get the React root element
       const div = document.getElementById('react');
-      let app = (
+      const app = (
         <Provider store={store}>
           <BrowserRouter>
             <MainApp />

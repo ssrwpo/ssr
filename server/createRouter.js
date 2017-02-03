@@ -43,6 +43,7 @@ const createRouter = ({
   webhooks,
   ServerRouter,
   platformTransformers = defaultPlatformTransformers,
+  localization,
 }) => {
   // Create a redux store
   const store = createAppAndPackageStore(appReducers, appCursors, platformTransformers);
@@ -78,6 +79,7 @@ const createRouter = ({
       Location: null,
       isFromCache: false,
       is404fromCache: false,
+      localization,
       store,
       contextMarkup: null,
       MainApp,

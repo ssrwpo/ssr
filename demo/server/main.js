@@ -9,6 +9,8 @@ import Folks from '/imports/api/Folks';
 import Places from '/imports/api/Places';
 import PubSub from '/imports/api/PubSub';
 import '/imports/api/PubSub/server';
+// localization resources
+import { en, fr, tr } from '/imports/messages';
 // Store subscription
 import storeSubscription from '/imports/store';
 // Sitemaps & Robots
@@ -23,6 +25,13 @@ const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),
   Places: Places.find({}, { sort: { order: -1 } }),
   PubSub: PubSub.find({}, { sort: { lastMod: -1 } }),
+};
+
+const localization = {
+  languages: ['en', 'tr', 'fr'], // required
+  fallback: 'en', // required
+  // language: 'fr', // force default language optional
+  messages: { en, fr, tr }, // language resources required
 };
 
 logger.info('Starting router');
@@ -43,5 +52,7 @@ createRouter({
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
+  // Optional: initial localization
+  localization,
 });
 logger.info('Router started');

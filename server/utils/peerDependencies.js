@@ -9,6 +9,8 @@ checkNpmVersions({
   moment: '2.x',
   'react-dom': '15.x',
   'react-helmet': '4.x',
+  'react-intl': '2.2.3',
+  'react-intl-redux': '0.3.0',
   'react-redux': '5.x',
   'react-router-dom': '4.0.0-beta.3',
   receptacle: '1.x',
