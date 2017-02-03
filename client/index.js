@@ -1,6 +1,7 @@
 import { createRouter, getStore } from './createRouter';
 import logger from './utils/logger';
 import pure from '../shared/hoc/pure';
+import asymetricSsr from '../shared/hoc/asymetricSsr';
 import {
   createCollectionReducers,
   createValueReducer,
@@ -26,6 +27,7 @@ export {
   logger,
   // HOC
   pure,
+  asymetricSsr,
   // Store creation
   createCollectionReducers,
   createValueReducer,

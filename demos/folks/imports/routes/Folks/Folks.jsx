@@ -3,11 +3,11 @@ import querystring from 'querystring';
 import Helmet from 'react-helmet';
 import { pure } from 'meteor/ssrwpo:ssr';
 import { connect } from 'react-redux';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import Folk from './routes/Folk';
 
-const Nav = ({ folks }) => (
-  <nav><ul>
+const Aside = ({ folks }) => (
+  <aside><ul>
     {folks.map(folk => <li key={folk.id}>
       <Link to={`/folks/${folk.id}`}>{`Url parameter: ${folk.name}`}</Link>
       <br />
@@ -15,9 +15,9 @@ const Nav = ({ folks }) => (
         {`Query params: ${folk.name}`}
       </Link>
     </li>)}
-  </ul></nav>
+  </ul></aside>
 );
-Nav.propTypes = {
+Aside.propTypes = {
   folks: pt.array.isRequired,
 };
 
@@ -35,7 +35,7 @@ const Folks = ({ folks, match, location }) => {
         exact path={match.url} render={() => (
           folk
           ? <Folk name={folk.name} />
-          : <Nav folks={folks} />
+          : <Aside folks={folks} />
         )}
       />
     </div>

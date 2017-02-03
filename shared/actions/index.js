@@ -1,7 +1,6 @@
 import * as url from './url';
-import * as redirect from './redirect';
 
 export {
+  // eslint-disable-next-line import/prefer-default-export
   url,
-  redirect,
 };
