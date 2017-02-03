@@ -78,6 +78,80 @@ createRouter({
 logger.info('Router started');
 ```
 
+### Server Side Rendering
+Server-side rendering uses a Redux store to supply the data that each component needs. The store is
+added to the HTML payload and initialised on the client with the same data as that used for the render.
+
+To enable this, the react component tree for any given route is first traversed to allow for each
+component to hydrate the store with the data required for rendering. Once this is complete,
+the application is rendered using the hydrated store, and the resulting route is cached.
+
+Redux actions are provided to allow the stored to be initialised with Meteor cursors if required, and
+synchronisation helpers make it easy to regain Meteor's reactivity by subscribing to publications and pushing changes to the store.
+
+There are 3 ways in which a component can participate in this initialisation process:
+
+#### 1. Using componentWillMount to prepare the store in a synchronised way
+
+Code in `componentWillMount` will be executed on both the client and server.
+It's important to understand that on server on will be executed twice - once to prepare
+the store, and again during the rendering process. Using a flag in the store to mark
+that the initialisation is complete will not only avoid doing the work twice on the
+server, but it will also allow us to avoid requesting the data again on the client
+(since we know that the store data was sent with the payload).
+
+````
+componentWillMount() {
+  const {
+    isPubSubInitialised,
+    markPubSubAsInitialised,
+    PubSubStore,
+    handleSyncViaMethod,
+  } = this.props;
+
+  if (!isPubSubInitialised) {
+    handleSyncViaMethod(0, PubSubStore);
+    markPubSubAsInitialised();
+  }
+}
+````
+
+#### 2. By providing a synchronous `prepareStore` function to the component's `ssr` requirements
+
+Each component can provide SSR requirements which may include a function which hydrates the store:
+
+````
+const prepareGlobalStores = (store) => {
+  const { areGlobalStoresInitialised } = store.getState();
+  if (!areGlobalStoresInitialised) {
+    const globalCollections = [
+      { collection: PlacesCollection, name: 'Places' },
+      { collection: FolksCollection, name: 'Folks' }];
+
+    globalCollections.forEach(({ collection, name }) => {
+      collection.find({}, { sort: { order: -1 } }).fetch().forEach((item) => {
+        store.dispatch(collectionAdd(
+          name,
+          item._id,
+          omit(item, '_id'),
+        ));
+      });
+    });
+
+    store.dispatch(valueSet('areGlobalStoresInitialised', true));
+  }
+};
+
+MainApp.ssr = {
+  prepareStore: prepareGlobalStores,
+};
+````
+
+#### 3. By returning a Promise from the `prepareStore` function
+
+By returning a promise, we ask the server to wait for asynchronous data to become available before
+rendering the page. The promise should fetch the data and hydrate the store.
+
 ### Localization and react-intl
 We use react-intl for server side rendered localization. It gets the user browser language and serves the right language.
 
