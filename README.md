@@ -98,6 +98,13 @@ that the initialisation is complete will not only avoid doing the work twice on 
 server, but it will also allow us to avoid requesting the data again on the client
 (since we know that the store data was sent with the payload).
 
+Note that although this function can to be used prepare the store, the property containing
+the store data (provided using `connect`) won't have been updated to reflect this change.
+Therefore the tree-walking won't be able to continue into any sub-components that will
+be rendered using this data. Most of this time this is perfectly reasonable and it
+saves processing time, but you need to be aware that any SSR requirement set on these
+sub-components won't be taken into account.
+
 ````
 componentWillMount() {
   const {
@@ -116,7 +123,13 @@ componentWillMount() {
 
 #### 2. By providing a synchronous `prepareStore` function to the component's `ssr` requirements
 
-Each component can provide SSR requirements which may include a function which hydrates the store:
+Each component can provide SSR requirements which may include a function which hydrates the store.
+Since this is a static function, it'll be hoisted up by the `connect` function too, so you
+need to have code that avoids the initialisation process being called twice.
+
+The advantage of this method is after `prepareStore` is called the component will be re-created
+with the updated store, and the tree walking will be able to continue into any sub-components
+rendered using this data.
 
 ````
 const prepareGlobalStores = (store) => {
