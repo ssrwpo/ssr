@@ -7,7 +7,7 @@ import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import PubSubCol, { PubSubPublicationName, insertRandomPubSubItem, valuesFromLastMod,
 } from '/imports/api/PubSub';
-import Item from './Item';
+import CachableItem from './CachableItem';
 
 const styles = {
   button: { marginRight: '1em' },
@@ -127,7 +127,7 @@ class PubSub extends PureComponent {
         {
           PubSubStore
           .sort((a, b) => b.lastMod - a.lastMod)
-          .map(item => <Item key={`${item.id}-${item.lastMod}`} {...{ ...item, isPubSubSubscribed }} />)
+          .map(item => <CachableItem key={`${item.id}-${item.lastMod}`} {...{ ...item, isPubSubSubscribed }} />)
         }
       </div>
     );

@@ -7,14 +7,20 @@ const styles = {
   img: { verticalAlign: 'middle' },
 };
 
-class Item extends React.Component {
-
+class CachableItem extends React.Component {
   static propTypes = {
     isPubSubSubscribed: pt.bool.isRequired,
     id: pt.string.isRequired,
     avatar: pt.string.isRequired,
     email: pt.string.isRequired,
     lastMod: pt.number.isRequired,
+  }
+
+  static ssr = {
+    cacheConfig: {
+      strategy: 'simple',
+      enable: true,
+    },
   }
 
   render() {
@@ -43,4 +49,4 @@ class Item extends React.Component {
   }
 }
 
-export default pure(Item);
+export default pure(CachableItem);

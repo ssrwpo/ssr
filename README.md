@@ -163,6 +163,23 @@ MainApp.ssr = {
 By returning a promise, we ask the server to wait for asynchronous data to become available before
 rendering the page. The promise should fetch the data and hydrate the store.
 
+### Component caching
+
+If you're looking to really get the best SSR performance, this package can provide server side component caching using [electrode-react-ssr-caching](https://github.com/electrode-io/electrode-react-ssr-caching).
+Component cache configuration should be defined in the component's `ssr` requirements:
+
+````
+class CachableItem extends React.Component {
+  static ssr = {
+    cacheConfig: {
+      strategy: 'simple',
+      enable: true,
+    },
+  }
+
+  ...
+````
+
 ### Localization and react-intl
 We use react-intl for server side rendered localization. It gets the user browser language and serves the right language.
 

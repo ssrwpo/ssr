@@ -69,7 +69,8 @@ function walkTree(element, context, visitor) {
   }
 }
 
-function processSSRRequirementsAndReturnPromises(store, rootElement, rootContext, fetchRoot) {
+function processSSRRequirementsAndReturnPromises(
+  stepResults, rootElement, rootContext, fetchRoot) {
   const promises = [];
 
   walkTree(rootElement, rootContext, (element, instance, context) => {
@@ -78,11 +79,21 @@ function processSSRRequirementsAndReturnPromises(store, rootElement, rootContext
 
     const ssrRequirements = (instance && instance.ssr) || element.type.ssr;
     if (ssrRequirements && typeof ssrRequirements === 'object') {
-      const { prepareStore } = ssrRequirements;
+      const { cacheConfig, prepareStore } = ssrRequirements;
+
+      // Check for component caching requirements
+      if (typeof cacheConfig === 'object' && element.type.name) {
+        /* eslint-disable no-param-reassign */
+        if (!stepResults.componentCacheConfig) stepResults.componentCacheConfig = {};
+        if (!stepResults.componentCacheConfig[element.type.name]) {
+          stepResults.componentCacheConfig[element.type.name] = cacheConfig;
+        }
+        /* eslint-enable */
+      }
 
       // Prepare the store if required
       if (typeof prepareStore === 'function') {
-        const result = prepareStore(store);
+        const result = prepareStore(stepResults.store);
         const isPromise = result && typeof result.then === 'function';
         if (isPromise) {
           promises.push({ promise: result, element, context });
@@ -102,9 +113,10 @@ function processSSRRequirementsAndReturnPromises(store, rootElement, rootContext
   return promises;
 }
 
-function processSSRRequirementsForElement(store, rootElement, rootContext = {}, fetchRoot = true) {
+function processSSRRequirementsForElement(
+  stepResults, rootElement, rootContext = {}, fetchRoot = true) {
   const promises = processSSRRequirementsAndReturnPromises(
-    store, rootElement, rootContext, fetchRoot,
+    stepResults, rootElement, rootContext, fetchRoot,
   );
 
   // No promises found, nothing to do
@@ -119,7 +131,7 @@ function processSSRRequirementsForElement(store, rootElement, rootContext = {}, 
       logger.debug('Error from promise');
       logger.debug(err);
     })
-    .then(() => processSSRRequirementsForElement(store, element, context, false)));
+    .then(() => processSSRRequirementsForElement(stepResults, element, context, false)));
 
   return Promise.all(mappedPromises);
 }
@@ -139,7 +151,7 @@ const processSSRRequirements = (stepResults) => {
     </Provider>
   );
 
-  return processSSRRequirementsForElement(stepResults.store, app).then(() => {
+  return processSSRRequirementsForElement(stepResults, app).then(() => {
     logger.debug('processSSRRequirements completed');
     return null;
   });
