@@ -37,14 +37,14 @@ createRouter({
   storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
+  // Optional: An array of your redux middleware of choice
+  appMiddlewares,
   // Optional: An array of your collection names
   appCursorNames,
   // Optional: Add a redux store that watches for URL changes
-  hasUrlStore: false,
+  hasUrlStore: true,
   // Optional: Localization
   localization,
-  // Optional: Server uses a platform transformer, client must load optional reducers
-  hasPlatformTransformer = true,
 })
 .then(() => logger.info('Router started'));
 ```
@@ -53,27 +53,25 @@ createRouter({
 ```js
 import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 ...
-createRouter({
-  // Your MainApp as the top component rendered and injected in the HTML payload
-  MainApp,
-  // Optional: Store subscription
-  storeSubscription,
-  // Optional: An object containing your application reducers
-  appReducers,
-  // Optional: An object containing the cursors required as data context
-  appCursors,
+// Your MainApp as the top component rendered and injected in the HTML payload
+createRouter(MainApp, {
+  // Optional: An object containing the observed cursors to clear cache on change
+  observedCursors,
   // Optional: A function that returns the content of your robots.txt
   robotsTxt,
+  // Optional: An object describe route action and validator for url parameters
+  routes,
   // Optional: A function that returns the content of your sitemaps.xml
   sitemapXml,
-  // Optional: An object with keys on URL with query parameters
-  urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
-  // Optional: Localization
+  // Optional: initial localization
   localization,
-  // Optional: A platform transformer (see hereafter), a default transformer is provided
-  platformTransformers,
+}, {
+  // Optional: An object containing your application reducers
+  appReducers,
+  // Optional: Store subscription
+  storeSubscription,
 });
 logger.info('Router started');
 ```
