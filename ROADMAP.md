@@ -20,18 +20,18 @@
 * [X] Counter measure when Meteor.Reload starts requesting the same URL over & over again
 
 ## v2
-* [ ] React router 4: alpha to beta: API changes
+* [X] React router 4: alpha to beta: API changes
 
 ## v3
 * [ ] Configurable browser policy
 * [ ] Application cache API
 * [ ] Service workers
-* [ ] i18n support
+* [X] i18n support
 * [ ] Cache prefilling
 * [ ] API for cache limit control
 * [ ] Server side routing
   * [ ] No SSR routes
-* [ ] Component caching with Electrode
+* [X] Component caching with Electrode
 * [ ] Server stats
   * [ ] From cache vs rendered
   * [ ] System usage: CPU, RAM

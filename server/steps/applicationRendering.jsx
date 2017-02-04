@@ -1,10 +1,12 @@
 import crypto from 'crypto';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import SSRCaching from 'electrode-react-ssr-caching';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-intl-redux';
 import { rewind } from 'react-helmet';
+import logger from '../utils/logger';
 /* eslint-enable */
 
 // Impure function
@@ -29,11 +31,27 @@ const applicationRendering = (stepResults) => {
     </Provider>
   );
 
+  // If componant caching has been configured for any of the componants in the render
+  // tree, then we enable the cache
+  if (stepResults.componentCacheConfig && process.env.NODE_ENV === 'production') {
+    const keys = Object.keys(stepResults.componentCacheConfig).join(', ');
+    logger.debug(`Component caching enabled for: ${keys}`);
+    SSRCaching.enableCaching(true);
+    SSRCaching.setCachingConfig({ components: stepResults.componentCacheConfig });
+  } else {
+    SSRCaching.enableCaching(false);
+  }
+
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
   if (!hasUnwantedQueryParameters) {
     // Create and render application main entry point
     bodyMarkup = renderToString(app);
     helmetHead = rewind();
+  }
+
+  if (stepResults.componentCacheConfig && process.env.NODE_ENV === 'production') {
+    logger.debug('Component caching hit report');
+    logger.debug(SSRCaching.cacheHitReport());
   }
 
   // Redirect case

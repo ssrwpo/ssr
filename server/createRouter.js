@@ -140,6 +140,7 @@ const createRouter = (MainApp, {
         store: null,
         url,
         userAgent: 'default',
+        componentCacheConfig: null,
       };
 
       // STEP 1: User agent analysis
