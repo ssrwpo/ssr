@@ -23,24 +23,13 @@ const prepareStoriesStore = () => {
 class AsyncData extends PureComponent {
   static propTypes = {
     isStoryDataInitialised: pt.bool.isRequired,
+    setStoriesInitialised: pt.func.isRequired,
     stories: pt.array.isRequired,
     setStories: pt.func.isRequired,
   }
 
-  componentWillMount() {
-    // If the data isn't already available (we've come here from another route),
-    // then we need to initialise the store.
-    const { isStoryDataInitialised, setStories } = this.props;
-    if (!isStoryDataInitialised) {
-      prepareStoriesStore().then((stories) => {
-        setStories(stories);
-        valueSet('isStoryDataInitialised', true);
-      });
-    }
-  }
-
   // SSR requirements for this component
-  ssr = {
+  static ssr = {
     // If you supply a `prepareStore` function then it will be called to hydrate the store
     // for server-side-rendering. This pre-hydrated store will also be sent with the initial
     // HTML payload.
@@ -53,19 +42,34 @@ class AsyncData extends PureComponent {
     // if this component has been rendered on the server. If the client visits this route after
     // the app has been loaded then we'll need to fetch the data when the component mounts.
     // We use a store variable to keep track of this initialised state.
-    // eslint-disable-next-line no-unused-vars
-    prepareStore: (store, props, context) => {
+    // It's important to use a store variable to prevent this call from being made twice, since
+    // it'll be hoisted up into the `connect` HOC.
+    prepareStore: (store) => {
       const { isStoryDataInitialised } = store.getState();
       if (!isStoryDataInitialised) {
+        store.dispatch(valueSet('isStoryDataInitialised', true));
         return prepareStoriesStore().then((stories) => {
           store.dispatch(receiveStories(stories));
-          valueSet('isStoryDataInitialised', true);
         });
       }
 
       return null;
     },
-  };
+  }
+
+  componentWillMount() {
+    // If the data isn't already available (we've come here from another route),
+    // then we need to initialise the store.
+    // We mustn't do this on the server because the SSR won't wait for it to complete.
+    // Instead, we use `prepareStore` on the `ssr` configuration above.
+    const { isStoryDataInitialised, setStoriesInitialised, setStories } = this.props;
+    if (Meteor.isClient && !isStoryDataInitialised) {
+      setStoriesInitialised();
+      prepareStoriesStore().then((stories) => {
+        setStories(stories);
+      });
+    }
+  }
 
   render() {
     const { stories } = this.props;
@@ -95,6 +99,7 @@ export default connect(
     stories: state.stories.items,
   }),
   dispatch => ({
+    setStoriesInitialised: () => { dispatch(receiveStories(valueSet('isStoryDataInitialised', true))); },
     setStories: (stories) => { dispatch(receiveStories(stories)); },
   }),
 )(AsyncData);

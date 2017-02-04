@@ -21,6 +21,12 @@ export function intl(state = messages, action) {
         messages: {},
       };
     }
+    case 'RECEIVE_INTL' : {
+      return {
+        locale: action.payload.language || action.payload.fallback,
+        messages: action.payload.messages[action.payload.language],
+      };
+    }
     default: return state;
   }
 }

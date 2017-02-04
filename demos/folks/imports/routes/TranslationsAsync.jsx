@@ -1,8 +1,7 @@
 import React, { PureComponent, PropTypes as pt } from 'react';
-import { logger, valueSet, changeLanguage } from 'meteor/ssrwpo:ssr';
+import { logger, valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { FormattedMessage, FormattedDate } from 'react-intl';
-import pick from 'lodash/pick';
 import { connect } from 'react-redux';
 import { receiveIntl } from '/imports/actions';
 
@@ -10,16 +9,15 @@ import { receiveIntl } from '/imports/actions';
 // This function will be called by the server to prepare the store before the
 // server-side rendering.
 
-const prepareIntlStore = () => {
-  logger.debug('Fetching intl...');
-  return fetch('http://localhost:3000/api/translations')
+const prepareIntlMessages = () => {
+  logger.debug('Fetching intl messages...');
+  return fetch('http://demo2587166.mockable.io/translations')
   .then((response) => {
     if (response.status >= 400) {
       throw new Error('Bad response from server');
     }
-    logger.debug('Hydrating store with received intl...');
+    logger.debug('Hydrating store with received intl messages...');
     const messages = response.json();
-    console.log('messages', messages);
     return messages;
   });
 };
@@ -29,25 +27,13 @@ class TranslationsAsync extends PureComponent {
   static propTypes = {
     isIntlInitialised: pt.bool.isRequired,
     intl: pt.object.isRequired,
+    setIntlInitialised: pt.func.isRequired,
     setIntl: pt.func.isRequired,
     languageChanger: pt.func.isRequired,
   }
 
-  componentWillMount() {
-    // If the data isn't already available (we've come here from another route),
-    // then we need to initialise the store.
-    const { isIntlInitialised, setIntl } = this.props;
-    if (!isIntlInitialised) {
-      prepareIntlStore().then((intl) => {
-        console.log('inite başladı:', intl)
-        setIntl(intl);
-        valueSet('isIntlInitialised', true);
-      });
-    }
-  }
-
   // SSR requirements for this component
-  ssr = {
+  static ssr = {
     // If you supply a `prepareStore` function then it will be called to hydrate the store
     // for server-side-rendering. This pre-hydrated store will also be sent with the initial
     // HTML payload.
@@ -60,13 +46,19 @@ class TranslationsAsync extends PureComponent {
     // if this component has been rendered on the server. If the client visits this route after
     // the app has been loaded then we'll need to fetch the data when the component mounts.
     // We use a store variable to keep track of this initialised state.
-    // eslint-disable-next-line no-unused-vars
-    prepareStore: (store, props, context) => {
+    // It's important to use a store variable to prevent this call from being made twice, since
+    // it'll be hoisted up into the `connect` HOC.
+    prepareStore: (store) => {
       const { isIntlInitialised } = store.getState();
       if (!isIntlInitialised) {
-        return prepareIntlStore().then((intl) => {
-          store.dispatch(receiveIntl(intl));
-          valueSet('isIntlInitialised', true);
+        return prepareIntlMessages().then((messages) => {
+          store.dispatch({
+            type: 'RECEIVE_INTL',
+            payload: {
+              messages,
+              language: 'tr',
+            } });
+          store.dispatch(valueSet('isIntlInitialised', true));
         });
       }
     /* eslint-enable */
@@ -74,50 +66,74 @@ class TranslationsAsync extends PureComponent {
     },
   };
 
+  componentWillMount() {
+    // If the data isn't already available (we've come here from another route),
+    // then we need to initialise the store.
+    // We mustn't do this on the server because the SSR won't wait for it to complete.
+    // Instead, we use `prepareIntlMessages` on the `ssr` configuration above.
+    const { isIntlInitialised, setIntlInitialised, setIntl, intl } = this.props;
+    if (Meteor.isClient && !isIntlInitialised) {
+      prepareIntlMessages().then((messages) => {
+        setIntl({
+          messages,
+          language: intl.locale,
+        });
+        setIntlInitialised();
+      });
+    }
+  }
+
   render() {
-    const { languageChanger, intl } = this.props;
+    const { languageChanger, intl, isIntlInitialised } = this.props;
     return (
       <div>
+        <h2>Translation from Rest API</h2>
         <br />
         <button onClick={() => languageChanger('en')}>English</button>
         <button onClick={() => languageChanger('fr')}>Français</button>
         <button onClick={() => languageChanger('tr')}>Türkçe</button>
         <br />
         <Helmet title="Translations Async" />
-        <p>
-          <FormattedMessage
-            id="app.currentLanguage"
-            values={{ language: intl.locale }}
-          />
-        </p>
-        <h2><FormattedMessage id="app.greeting" defaultMessage="你好!" /></h2>
-        <h3>
-          <FormattedDate
-            value={new Date()}
-            year="numeric"
-            month="long"
-            day="numeric"
-            weekday="long"
-          />
-        </h3>
+        { !isIntlInitialised ?
+          <p>loading...</p> :
+          <div>
+            <p>
+              <FormattedMessage
+                id="app.currentLanguage"
+                values={{ language: intl.locale }}
+              />
+            </p>
+            <h2><FormattedMessage id="app.greetings" defaultMessage="你好!" /></h2>
+            <h3>
+              <FormattedDate
+                value={new Date()}
+                year="numeric"
+                month="long"
+                day="numeric"
+                weekday="long"
+              />
+            </h3>
+          </div>
+        }
       </div>
     );
   }
 }
-TranslationsAsync.propTypes = {
-  languageChanger: pt.func.isRequired,
-  intl: pt.object.isRequired,
-  setIntl: pt.func.isRequired,
-  isIntlInitialised: pt.bool.isRequired,
-};
-const mapStateToProps = state => pick(state, ['intl', 'isIntlInitialised']);
-const mapDispatchToProps = dispatch => ({
-  languageChanger(language) {
-    dispatch(changeLanguage({ language }));
-  },
-  setIntl: (intl) => { dispatch(receiveIntl(intl)); },
-});
+
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  state => ({
+    isIntlInitialised: state.isIntlInitialised,
+    intl: state.intl,
+  }),
+  dispatch => ({
+    languageChanger(language) {
+      dispatch(valueSet('isIntlInitialised', false));
+      return prepareIntlMessages().then((messages) => {
+        dispatch({ type: 'RECEIVE_INTL', payload: { messages, language } });
+        dispatch(valueSet('isIntlInitialised', true));
+      });
+    },
+    setIntlInitialised: () => { dispatch(valueSet('isIntlInitialised', true)); },
+    setIntl: (payload) => { dispatch(receiveIntl(payload)); },
+  }),
 )(TranslationsAsync);

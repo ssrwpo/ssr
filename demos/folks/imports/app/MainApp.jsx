@@ -30,10 +30,9 @@ import NotFound from '/imports/routes/NotFound';
 // different components, it's good practise to ensure that the function can only be
 // called once
 export const prepareGlobalStores = (store) => {
-  logger.debug('Preparing Folks and Places store');
-
   const { areGlobalStoresInitialised } = store.getState();
   if (!areGlobalStoresInitialised) {
+    logger.debug('Preparing Folks and Places store');
     const globalCollections = [
       { collection: PlacesCollection, name: 'Places' },
       { collection: FolksCollection, name: 'Folks' }];

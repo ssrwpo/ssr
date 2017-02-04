@@ -20,17 +20,17 @@ const initStoreValues = (stepResults) => {
   store.dispatch(urlActions.set(url));
   if (localization) {
     // init localization resources
-    const usersLanguage = req.acceptsLanguages(localization.languages);
+    const userLanguage = req.acceptsLanguages(localization.languages);
     if (localization.language) {
       store.dispatch(
         /* eslint-disable */
-          changeLanguage(usersLanguage ? usersLanguage : localization.language),
+          changeLanguage(userLanguage ? userLanguage : localization.language),
         /* eslint-enable */
       );
     } else {
       store.dispatch(
         /* eslint-disable */
-          changeLanguage(usersLanguage ? usersLanguage : localization.fallback),
+          changeLanguage(userLanguage ? userLanguage : localization.fallback),
         /* eslint-enable */
       );
     }

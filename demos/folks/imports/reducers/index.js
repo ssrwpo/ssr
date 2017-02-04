@@ -37,16 +37,14 @@ function stories(state = {
 }
 
 function intl(state = {
-  isFetching: false,
-  intl: {},
+  locale: '',
+  messages: {},
 }, action) {
   switch (action.type) {
     case RECEIVE_INTL:
       return {
-        ...state,
-        isFetching: false,
-        intl: action.intl,
-        lastUpdated: action.receivedAt,
+        locale: action.payload.language,
+        messages: action.payload.messages[action.payload.language],
       };
     default:
       return state;

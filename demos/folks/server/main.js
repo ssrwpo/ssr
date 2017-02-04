@@ -49,7 +49,7 @@ createRouter(MainApp, {
   // Optional: An object with keys on route solver
   webhooks,
   // Optional: initial localization
-  // localization,
+  localization,
 }, {
   // Optional: An object containing your application reducers
   appReducers,

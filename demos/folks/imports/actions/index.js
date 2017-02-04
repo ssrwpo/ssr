@@ -14,10 +14,9 @@ export function fetchStories() {
 
 }
 
-export function receiveIntl(intl) {
+export function receiveIntl(payload) {
   return {
-    type: 'RECEIVE_INTL',
-    intl,
-    receivedAt: Date.now(),
+    type: RECEIVE_INTL,
+    payload,
   };
 }

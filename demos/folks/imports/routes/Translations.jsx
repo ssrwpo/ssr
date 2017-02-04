@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 const Translations = ({ languageChanger, intl }) => (
   <div>
+    <h2>Translation from Messages</h2>
     <br />
     <button onClick={() => languageChanger('en')}>English</button>
     <button onClick={() => languageChanger('fr')}>Français</button>
@@ -19,7 +20,7 @@ const Translations = ({ languageChanger, intl }) => (
         values={{ language: intl.locale }}
       />
     </p>
-    <h2><FormattedMessage id="app.greeting" defaultMessage="你好!" /></h2>
+    <h2><FormattedMessage id="app.greetings" defaultMessage="你好!" /></h2>
     <h3>
       <FormattedDate
         value={new Date()}

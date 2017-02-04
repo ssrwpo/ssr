@@ -82,13 +82,15 @@ function processSSRRequirementsAndReturnPromises(store, rootElement, rootContext
 
       // Prepare the store if required
       if (typeof prepareStore === 'function') {
-        const result = prepareStore(store, element.props, context);
+        const result = prepareStore(store);
         const isPromise = result && typeof result.then === 'function';
         if (isPromise) {
           promises.push({ promise: result, element, context });
-
-          // Tell walkTree to not recurse inside this component;  we will
-          // wait for the promise to execute before attempting it.
+          return false;
+        } else if (result) {
+          // A promise wasn't returned, but the store has been updated.
+          // We simulate a promise so that the treewalk exits and re-enters with the updated store.
+          promises.push({ promise: Promise.resolve(result), element, context });
           return false;
         }
       }
@@ -107,8 +109,9 @@ function processSSRRequirementsForElement(store, rootElement, rootContext = {}, 
 
   // No promises found, nothing to do
   if (!promises.length) return Promise.resolve();
-  logger.debug('processSSRRequirementsForElement waiting for Promises');
+
   // Wait on each promise that we found, re-rendering the subtree when it's done
+
   const mappedPromises = promises.map(({ promise, element, context }) =>
     // We've just grabbed the promise for element, so don't try and get it again
     promise
@@ -116,9 +119,7 @@ function processSSRRequirementsForElement(store, rootElement, rootContext = {}, 
       logger.debug('Error from promise');
       logger.debug(err);
     })
-    .then(() => {
-      processSSRRequirementsForElement(store, element, context, false);
-    }));
+    .then(() => processSSRRequirementsForElement(store, element, context, false)));
 
   return Promise.all(mappedPromises);
 }

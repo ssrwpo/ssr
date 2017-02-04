@@ -1,56 +1,17 @@
 import React, { PureComponent, PropTypes as pt } from 'react';
-import once from 'lodash/once';
+import omit from 'lodash/omit';
 import {
-  logger, pure,
-  // Helpers for collectionStore synchronization
-  valueSet, createHandleSubscribe, createHandleSyncViaMethod,
+  logger, valueSet, createHandleSubscribe, createHandleSyncViaMethod, collectionAdd,
 } from 'meteor/ssrwpo:ssr';
-import moment from 'moment';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import PubSubCol, {
-  PubSubPublicationName,
-  insertRandomPubSubItem, updatePubSubItem, removePubSubItem,
-  valuesFromLastMod,
+import PubSubCol, { PubSubPublicationName, insertRandomPubSubItem, valuesFromLastMod,
 } from '/imports/api/PubSub';
+import Item from './Item';
 
 const styles = {
   button: { marginRight: '1em' },
-  img: { verticalAlign: 'middle' },
 };
-
-let Item = ({ isPubSubSubscribed, id, avatar, email, lastMod }) => {
-  const Actions = isPubSubSubscribed
-    ? () => (
-      <span>
-        &nbsp;-&nbsp;
-        <button onClick={() => updatePubSubItem.callPromise({ id })}>Update</button>&nbsp;-&nbsp;
-        <button onClick={() => removePubSubItem.callPromise({ id })}>Remove</button>
-      </span>
-    )
-    : () => null;
-  return (
-    <p>
-      <img
-        src={avatar} alt={email} width={30} height={30} style={styles.img}
-      />&nbsp;
-      <strong>{email}</strong>&nbsp;
-      <small>({id})</small>&nbsp;-&nbsp;
-      <small>{moment(lastMod).format('DD/MM/YY - HH:mm:ss')}</small>
-      <Actions />
-    </p>
-  );
-};
-
-Item.propTypes = {
-  isPubSubSubscribed: pt.bool.isRequired,
-  id: pt.string.isRequired,
-  avatar: pt.string.isRequired,
-  email: pt.string.isRequired,
-  lastMod: pt.number.isRequired,
-};
-
-Item = pure(Item);
 
 class PubSub extends PureComponent {
   static propTypes = {
@@ -60,8 +21,28 @@ class PubSub extends PureComponent {
     isPubSubInitialised: pt.bool.isRequired,
     markPubSubAsInitialised: pt.func.isRequired,
     handleSubscribe: pt.func.isRequired,
-    handleInserRandom: pt.func.isRequired,
+    handleInsertRandom: pt.func.isRequired,
     handleSyncViaMethod: pt.func.isRequired,
+  }
+
+  static ssr = {
+    prepareStore: (store) => {
+      const { isPubSubInitialised } = store.getState();
+      if (!isPubSubInitialised) {
+        logger.debug('Initialising PubSub Store');
+        PubSubCol.find({}, { sort: { lastMod: -1 } }).fetch().forEach((ps) => {
+          store.dispatch(collectionAdd(
+            'PubSub',
+            ps._id, // eslint-disable-line no-underscore-dangle
+            omit(ps, '_id'),
+          ));
+        });
+        store.dispatch(valueSet('isPubSubInitialised', true));
+        return true;
+      }
+
+      return false;
+    },
   }
 
   componentWillMount() {
@@ -85,6 +66,14 @@ class PubSub extends PureComponent {
     // If the app is already loaded and we're coming from another route then we won't
     // have any data yet, so we need to fetch it. We use a store parameter to flag
     // whether or not the store data has been initialised.
+    //
+    // We don't do this on the server since we the store data be passed through
+    // to our props. That will allow the SSR treewalking to continue into the
+    // children (which themselves have SSR requirements).
+    //
+    // Instead we use the `prepareStore` function on the static `ssr` object. This will
+    // be hoisted up by our connect, so the store data will be ready by the time
+    // this component is traversed.
 
     const {
       isPubSubInitialised,
@@ -93,7 +82,7 @@ class PubSub extends PureComponent {
       handleSyncViaMethod,
     } = this.props;
 
-    if (!isPubSubInitialised) {
+    if (Meteor.isClient && !isPubSubInitialised) {
       handleSyncViaMethod(0, PubSubStore);
       markPubSubAsInitialised();
     }
@@ -109,7 +98,7 @@ class PubSub extends PureComponent {
   render() {
     const {
       PubSubStore, isPubSubSubscribed, buildDate,
-      handleSubscribe, handleInserRandom, handleSyncViaMethod,
+      handleSubscribe, handleInsertRandom, handleSyncViaMethod,
     } = this.props;
     return (
       <div>
@@ -131,7 +120,7 @@ class PubSub extends PureComponent {
               Synchronize via method
             </button>
         }
-        <button style={styles.button} onClick={handleInserRandom}>
+        <button style={styles.button} onClick={handleInsertRandom}>
           Insert a random item
         </button>
         <hr />
@@ -164,7 +153,7 @@ export default connect(
     markPubSubAsInitialised() {
       dispatch(valueSet('isPubSubInitialised', true));
     },
-    handleInserRandom() {
+    handleInsertRandom() {
       insertRandomPubSubItem.callPromise()
       .then(() => logger.info('Item inserted'))
       .catch(err => logger.warn('Insertion failed', err.toString()));
