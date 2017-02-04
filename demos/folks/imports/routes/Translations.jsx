@@ -4,10 +4,10 @@ import Helmet from 'react-helmet';
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import pick from 'lodash/pick';
 import { connect } from 'react-redux';
-import { en, fr, tr } from '../messages';
 
-const Translations = ({ languageChanger, languageSetter, intl }) => (
+const Translations = ({ languageChanger, intl }) => (
   <div>
+    <br />
     <button onClick={() => languageChanger('en')}>English</button>
     <button onClick={() => languageChanger('fr')}>Français</button>
     <button onClick={() => languageChanger('tr')}>Türkçe</button>
@@ -20,15 +20,15 @@ const Translations = ({ languageChanger, languageSetter, intl }) => (
       />
     </p>
     <h2><FormattedMessage id="app.greeting" defaultMessage="你好!" /></h2>
-      <h3>
-        <FormattedDate
-          value={new Date()}
-          year="numeric"
-          month="long"
-          day="numeric"
-          weekday="long"
-        />
-      </h3>
+    <h3>
+      <FormattedDate
+        value={new Date()}
+        year="numeric"
+        month="long"
+        day="numeric"
+        weekday="long"
+      />
+    </h3>
   </div>
 );
 Translations.propTypes = {

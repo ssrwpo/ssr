@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import React, { Children } from 'react';
 import { StaticRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider } from 'react-intl-redux';
 import logger from '../utils/logger';
 /* eslint-enable */
 

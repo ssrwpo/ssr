@@ -53,6 +53,7 @@ class AsyncData extends PureComponent {
     // if this component has been rendered on the server. If the client visits this route after
     // the app has been loaded then we'll need to fetch the data when the component mounts.
     // We use a store variable to keep track of this initialised state.
+    // eslint-disable-next-line no-unused-vars
     prepareStore: (store, props, context) => {
       const { isStoryDataInitialised } = store.getState();
       if (!isStoryDataInitialised) {

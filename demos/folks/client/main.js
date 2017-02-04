@@ -42,7 +42,7 @@ createRouter({
   // Optional: Add a redux store that watches for URL changes
   hasUrlStore: true,
   // Optional: Localization
-  localization,
+  // localization,
 })
 .then(() => {
   // For easing debug

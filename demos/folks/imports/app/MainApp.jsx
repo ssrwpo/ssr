@@ -16,6 +16,7 @@ import Login from '/imports/routes/Login';
 import Folks from '/imports/routes/Folks';
 import Places from '/imports/routes/Places';
 import Translations from '/imports/routes/Translations';
+import TranslationsAsync from '/imports/routes/TranslationsAsync';
 import Performance from '/imports/routes/Performance';
 import PubSub from '/imports/routes/PubSub';
 import AsyncData from '/imports/routes/AsyncData';
@@ -68,6 +69,7 @@ const MainApp = ({ isLoggedIn }) => {
           <li style={styles.li}><Link to="/folks">Folks</Link></li>
           <li style={styles.li}><Link to="/places">Places</Link></li>
           <li style={styles.li}><Link to="/translations">Translations</Link></li>
+          <li style={styles.li}><Link to="/translations-async">Async Translations</Link></li>
           <li style={styles.li}><Link to="/performance">Performance</Link></li>
           <li style={styles.li}><Link to="/pubsub">Reactive cases</Link></li>
           <li style={styles.li}><Link to="/async">Asynchronous data</Link></li>
@@ -85,6 +87,7 @@ const MainApp = ({ isLoggedIn }) => {
           <Route path="/folks/:folkId" component={Folks} />
           <Route exact path="/folks" component={Folks} />
           <Route exact path="/places" component={Places} />
+          <Route exact path="/translations-async" component={TranslationsAsync} />
           <Route exact path="/translations" component={Translations} />
           <Route exact path="/performance" component={Performance} />
           <Route exact path="/pubsub" component={PubSub} />

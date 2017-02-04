@@ -3,7 +3,7 @@ import {
   createValueReducer,
 } from 'meteor/ssrwpo:ssr';
 
-import { RECEIVE_STORIES } from '../actions';
+import { RECEIVE_STORIES, RECEIVE_INTL } from '../actions';
 
 const auth = createValueReducer('auth', false);
 const collectionReducers = createCollectionReducers([
@@ -17,6 +17,7 @@ const areGlobalStoresInitialised = createValueReducer('areGlobalStoresInitialise
 const isPubSubInitialised = createValueReducer('isPubSubInitialised', false);
 const isPubSubSubscribed = createValueReducer('isPubSubSubscribed', false);
 const isStoryDataInitialised = createValueReducer('isStoryDataInitialised', false);
+const isIntlInitialised = createValueReducer('isIntlInitialised', false);
 
 function stories(state = {
   isFetching: false,
@@ -35,6 +36,23 @@ function stories(state = {
   }
 }
 
+function intl(state = {
+  isFetching: false,
+  intl: {},
+}, action) {
+  switch (action.type) {
+    case RECEIVE_INTL:
+      return {
+        ...state,
+        isFetching: false,
+        intl: action.intl,
+        lastUpdated: action.receivedAt,
+      };
+    default:
+      return state;
+  }
+}
+
 export default {
   auth,
   ...collectionReducers,
@@ -44,4 +62,6 @@ export default {
   isPubSubInitialised,
   isStoryDataInitialised,
   stories,
+  isIntlInitialised,
+  intl,
 };

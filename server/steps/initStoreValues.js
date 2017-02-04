@@ -1,4 +1,4 @@
-import { url as urlActions, setMessages, changeLanguage } from '../../shared/actions';
+import { url as urlActions, setMessages, changeLanguage, setEmptyLocalization } from '../../shared/actions';
 import { valueSet } from '../../shared/actions/utils';
 
 const initStoreValues = (stepResults) => {
@@ -34,7 +34,10 @@ const initStoreValues = (stepResults) => {
         /* eslint-enable */
       );
     }
-    stepResults.store.dispatch(setMessages(stepResults.localization));
+    store.dispatch(setMessages(localization));
+  } else {
+    // init empty localization resources
+    // store.dispatch(setEmptyLocalization());
   }
 };
 

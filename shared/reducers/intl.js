@@ -15,6 +15,12 @@ export function intl(state = messages, action) {
         messages: messages[action.payload.language || action.payload.fallback],
       };
     }
+    case 'SET_EMPTY_LOCALIZATION' : {
+      return {
+        locale: '',
+        messages: {},
+      };
+    }
     default: return state;
   }
 }
