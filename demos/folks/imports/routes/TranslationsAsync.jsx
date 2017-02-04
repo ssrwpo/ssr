@@ -49,15 +49,13 @@ class TranslationsAsync extends PureComponent {
     // It's important to use a store variable to prevent this call from being made twice, since
     // it'll be hoisted up into the `connect` HOC.
     prepareStore: (store) => {
-      const { isIntlInitialised } = store.getState();
+      const { isIntlInitialised, intl } = store.getState();
       if (!isIntlInitialised) {
         return prepareIntlMessages().then((messages) => {
-          store.dispatch({
-            type: 'RECEIVE_INTL',
-            payload: {
-              messages,
-              language: 'tr',
-            } });
+          store.dispatch(receiveIntl({
+            messages,
+            language: intl ? intl.locale : 'en',
+          }));
           store.dispatch(valueSet('isIntlInitialised', true));
         });
       }
@@ -76,7 +74,7 @@ class TranslationsAsync extends PureComponent {
       prepareIntlMessages().then((messages) => {
         setIntl({
           messages,
-          language: intl.locale,
+          language: intl ? intl.locale : 'en',
         });
         setIntlInitialised();
       });
@@ -129,7 +127,7 @@ export default connect(
     languageChanger(language) {
       dispatch(valueSet('isIntlInitialised', false));
       return prepareIntlMessages().then((messages) => {
-        dispatch({ type: 'RECEIVE_INTL', payload: { messages, language } });
+        dispatch(receiveIntl({ messages, language }));
         dispatch(valueSet('isIntlInitialised', true));
       });
     },
