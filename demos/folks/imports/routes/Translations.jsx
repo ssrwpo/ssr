@@ -11,7 +11,7 @@ const Translations = ({ languageChanger, intl }) => (
     <h2>Translation from Messages</h2>
     {Meteor.settings.public.localization.async ?
       <p>You should set &quot;localization.async: false&quot;
-        in settings.json to try synchronously translations </p>
+        in settings.json to try synchronous translations </p>
     :
       <div>
         <br />

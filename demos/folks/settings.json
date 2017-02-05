@@ -4,7 +4,7 @@
       "loglevel": "debug"
     },
     "localization": {
-      "async": true
+      "async": false
     }
   }
 }

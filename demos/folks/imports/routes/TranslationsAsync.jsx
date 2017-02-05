@@ -89,7 +89,7 @@ class TranslationsAsync extends PureComponent {
         <h2>Translation from Rest API</h2>
         {!Meteor.settings.public.localization.async ?
           <p>You should set &quot;localization.async: false&quot;
-            in settings.json to try asynchronously translations </p>
+            in settings.json to try asynchronous translations </p>
         :
           <div>
             <br />
