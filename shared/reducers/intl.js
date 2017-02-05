@@ -22,9 +22,10 @@ export function intl(state = messages, action) {
       };
     }
     case 'RECEIVE_INTL' : {
+      const lng = action.payload.language || global.userLanguage || action.payload.fallback;
       return {
-        locale: action.payload.language || action.payload.fallback,
-        messages: action.payload.messages[action.payload.language],
+        locale: lng,
+        messages: action.payload.messages[lng],
       };
     }
     default: return state;

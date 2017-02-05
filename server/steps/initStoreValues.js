@@ -21,6 +21,8 @@ const initStoreValues = (stepResults) => {
   if (localization) {
     // init localization resources
     const userLanguage = req.acceptsLanguages(localization.languages);
+    // set global user language for async translations
+    global.userLanguage = userLanguage;
     if (localization.language) {
       store.dispatch(
         /* eslint-disable */
@@ -34,10 +36,12 @@ const initStoreValues = (stepResults) => {
         /* eslint-enable */
       );
     }
-    store.dispatch(setMessages(localization));
+    if (!localization.async) {
+      store.dispatch(setMessages(localization));
+    }
   } else {
     // init empty localization resources
-    // store.dispatch(setEmptyLocalization());
+    store.dispatch(setEmptyLocalization());
   }
 };
 
