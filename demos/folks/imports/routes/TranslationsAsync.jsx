@@ -88,7 +88,7 @@ class TranslationsAsync extends PureComponent {
         <Helmet title="Translations Async" />
         <h2>Translation from Rest API</h2>
         {!Meteor.settings.public.localization.async ?
-          <p>You should set &quot;localization.async: false&quot;
+          <p>You should set &quot;localization.async: true&quot;
             in settings.json to try asynchronous translations </p>
         :
           <div>
