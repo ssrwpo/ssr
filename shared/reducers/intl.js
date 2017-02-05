@@ -1,10 +1,10 @@
 let messages = {};
 // eslint-disable-next-line import/prefer-default-export
-export function intl(state = messages, action) {
+export function intl(state = { locale: '', messages }, action) {
   switch (action.type) {
     case 'CHANGE_LANGUAGE' : {
       return {
-        locale: action.payload.language,
+        locale: action.payload.language || action.payload.fallback,
         messages: messages[action.payload.language],
       };
     }
