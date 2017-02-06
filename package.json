@@ -45,6 +45,7 @@
     "eslint-plugin-meteor": "^4.0.1",
     "eslint-plugin-react": "^6.9.0",
     "immutable": "^3.8.1",
+    "intl": "^1.2.5",
     "jest": "^18.1.0",
     "microtime": "^2.1.2",
     "moment": "^2.17.1",
