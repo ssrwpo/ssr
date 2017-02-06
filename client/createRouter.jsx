@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-intl-redux';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
-import { url, setMessages, setEmptyLocalization } from '../shared/actions';
+import { url, setMessages, setEmptyLocalization, changeLanguage } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
 import * as optionalReducers from '../shared/reducers/optionals';
@@ -51,6 +51,8 @@ const createRouter = ({
         store.subscribe(() => storeSubscription(store));
       }
       if (localization) {
+        // eslint-disable-next-line no-param-reassign
+        localization.language = navigator.language || navigator.browserLanguage;
         if (!localization.async) {
           store.dispatch(setMessages(localization));
         }
