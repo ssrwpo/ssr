@@ -23,9 +23,6 @@ export const createCollectionReducers = cursorNames =>
               ...state.slice(idx + 1),
             ];
           }
-          case `${cursorName}.RESET`: {
-            return action.value;
-          }
           default: return state;
         }
       },
