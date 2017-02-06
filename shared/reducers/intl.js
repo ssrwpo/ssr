@@ -6,42 +6,49 @@ export function intl(state = { locale: '', messages }, action) {
   switch (action.type) {
     case 'CHANGE_LANGUAGE' : {
       return {
-        locale: action.payload.language || action.payload.fallback,
-        messages: messages[action.payload.language],
+        locale: action.payload.locale || action.payload.fallback,
+        messages: messages[action.payload.locale],
       };
     }
     case 'SET_MESSAGES' : {
       messages = action.payload.messages;
-      let userLanguage = null;
+      let userLocale = null;
+      // detect users locale is fully supported by us
       const fullySupportedLng =
-        action.payload.languages.includes(action.payload.language);
+        action.payload.languages.includes(action.payload.locale);
+        // detect users locale is partially supported by us
       const partiallySupportedLng =
-        action.payload.languages.includes(action.payload.language.substring(0, 2));
+        action.payload.languages.includes(action.payload.locale.substring(0, 2));
       if (fullySupportedLng) {
-        userLanguage = action.payload.language;
+        userLocale = action.payload.locale;
       }
-      if (!userLanguage && partiallySupportedLng) {
-        userLanguage = action.payload.language.substring(0, 2);
+      if (!userLocale && partiallySupportedLng) {
+        userLocale = action.payload.locale.substring(0, 2);
       }
       return {
-        locale: userLanguage || action.payload.language || action.payload.fallback,
+        locale: userLocale || action.payload.fallback,
         messages: messages[
-          userLanguage ||
-          action.payload.language ||
+          userLocale ||
           action.payload.fallback],
       };
     }
-    case 'SET_EMPTY_LOCALIZATION' : {
-      return {
-        locale: '',
-        messages: {},
-      };
-    }
     case 'RECEIVE_INTL' : {
-      const lng = action.payload.language || global.userLanguage || action.payload.fallback;
+      let userLocale = null;
+      // detect users locale is fully supported by us
+      const fullySupportedLng =
+        action.payload.languages.includes(action.payload.locale);
+        // detect users locale is partially supported by us
+      const partiallySupportedLng =
+        action.payload.languages.includes(action.payload.locale.substring(0, 2));
+      if (fullySupportedLng) {
+        userLocale = action.payload.locale;
+      }
+      if (!userLocale && partiallySupportedLng) {
+        userLocale = action.payload.locale.substring(0, 2);
+      }
       return {
-        locale: lng,
-        messages: action.payload.messages[lng],
+        locale: userLocale,
+        messages: action.payload.messages[userLocale],
       };
     }
     default: return state;

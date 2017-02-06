@@ -15,6 +15,7 @@ import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
+import speakForeignLanguages from './steps/speakForeignLanguages';
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import routePatternAnalysis from './steps/routePatternAnalysis';
 import queryParamsAnalysis from './steps/queryParamsAnalysis';
@@ -114,7 +115,6 @@ const createRouter = (MainApp, {
         hash: null,
         head: null,
         localization,
-        i18nOptions: null,
         isFromCache: false,
         is404fromCache: false,
         Location: null,
@@ -128,22 +128,26 @@ const createRouter = (MainApp, {
         store: null,
         url,
         userAgent: 'default',
+        userLocale: '',
         componentCacheConfig: null,
       };
 
       // STEP 1: User agent analysis
+      speakForeignLanguages(stepResults);
+
+      // STEP 2: User agent analysis
       userAgentAnalysis(stepResults);
 
-      // STEP 2: Find current route pattern and set req.params
+      // STEP 3: Find current route pattern and set req.params
       routePatternAnalysis(stepResults, routePatterns);
 
-      // STEP 3: Analyse query params
+      // STEP 4: Analyse query params
       queryParamsAnalysis(stepResults);
 
-      // STEP 4: Create location
+      // STEP 5: Create location
       urlAnalysis(stepResults);
 
-      // STEP 5: Cache analysis
+      // STEP 6: Cache analysis
       cacheAnalysis(stepResults);
 
       // If we have a cached page, return that now
@@ -154,7 +158,7 @@ const createRouter = (MainApp, {
         return;
       }
 
-      // STEP 6: Create store
+      // STEP 7: Create store
       createStore(
         stepResults,
         storeSubscription,
@@ -162,21 +166,21 @@ const createRouter = (MainApp, {
         platformTransformers,
       );
 
-      // STEP 7: Init store values such as platform
+      // STEP 8: Init store values such as platform
       initStoreValues(stepResults);
 
-      // STEP 8: process per-component SSR Requirements
+      // STEP 9: process per-component SSR Requirements
       processSSRRequirements(stepResults).then(() => {
-        // STEP 9: Create data context
+        // STEP 10: Create data context
         createDataContext(stepResults);
 
-        // STEP 10: Application rendering if required
+        // STEP 11: Application rendering if required
         applicationRendering(stepResults);
 
-        // STEP 11: Cache filling if required
+        // STEP 12: Cache filling if required
         cacheFilling(stepResults);
 
-        // STEP 12: Transport
+        // STEP 13: Transport
         transport(stepResults);
 
         // End performance cheking
