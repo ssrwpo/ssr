@@ -4,6 +4,7 @@ checkNpmVersions({
   actual: '0.x',
   express: '4.x',
   helmet: '3.x',
+  intl: '1.2.5',
   lodash: '4.x',
   logatim: '0.x',
   moment: '2.x',
