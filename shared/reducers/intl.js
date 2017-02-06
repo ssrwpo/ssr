@@ -1,3 +1,5 @@
+global.Intl = require('intl');
+
 let messages = {};
 // eslint-disable-next-line import/prefer-default-export
 export function intl(state = { locale: '', messages }, action) {
@@ -10,9 +12,23 @@ export function intl(state = { locale: '', messages }, action) {
     }
     case 'SET_MESSAGES' : {
       messages = action.payload.messages;
+      let userLanguage = null;
+      const fullySupportedLng =
+        action.payload.languages.includes(action.payload.language);
+      const partiallySupportedLng =
+        action.payload.languages.includes(action.payload.language.substring(0, 2));
+      if (fullySupportedLng) {
+        userLanguage = action.payload.language;
+      }
+      if (!userLanguage && partiallySupportedLng) {
+        userLanguage = action.payload.language.substring(0, 2);
+      }
       return {
-        locale: action.payload.language || action.payload.fallback,
-        messages: messages[action.payload.language || action.payload.fallback],
+        locale: userLanguage || action.payload.language || action.payload.fallback,
+        messages: messages[
+          userLanguage ||
+          action.payload.language ||
+          action.payload.fallback],
       };
     }
     case 'SET_EMPTY_LOCALIZATION' : {
