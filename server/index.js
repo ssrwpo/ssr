@@ -1,5 +1,6 @@
 import { createRouter, debugLastRequest, debugLastResponse } from './createRouter';
 import logger from './utils/logger';
+import { resetSSRCache } from './utils/cache';
 import sitemapFromArray from './utils/sitemaps';
 import pure from '../shared/hoc/pure';
 import asymetricSsr from '../shared/hoc/asymetricSsr';
@@ -24,6 +25,7 @@ import { BrowserStats } from '../shared/components';
 export {
   // Main API
   createRouter,
+  resetSSRCache,
   // Isomorphic logger
   logger,
   // Sitemap helper, server side only

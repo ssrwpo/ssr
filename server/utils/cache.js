@@ -53,4 +53,5 @@ Cache.MAX_ITEMS = Math.pow(2, 10);
 // TTL set to 1day
 Cache.DEFAULT_TTL = { ttl: 1000 * 60 * 60 * 24 };
 const cache = new Cache();
+export function resetSSRCache() { cache.reset(); }
 export default cache;

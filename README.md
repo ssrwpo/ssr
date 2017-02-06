@@ -55,8 +55,6 @@ import { createRouter, logger } from 'meteor/ssrwpo:ssr';
 ...
 // Your MainApp as the top component rendered and injected in the HTML payload
 createRouter(MainApp, {
-  // Optional: An object containing the observed cursors to clear cache on change
-  observedCursors,
   // Optional: A function that returns the content of your robots.txt
   robotsTxt,
   // Optional: An object describe route action and validator for url parameters

@@ -3,6 +3,7 @@ import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 checkNpmVersions({
   actual: '0.x',
   express: '4.x',
+  'electrode-react-ssr-caching': '0.1.5',
   helmet: '3.x',
   intl: '1.2.5',
   lodash: '4.x',

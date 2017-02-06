@@ -11,7 +11,6 @@ import {
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import './utils/peerDependencies';
-import cache from './utils/cache';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
@@ -50,7 +49,6 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
  * @param {Object=} routerConfig
  * @param {Object=} routerConfig.ServerRouter
  * @param {Function=} routerConfig.createServerRenderContext
- * @param {Object=} routerConfig.observedCursors - Observe change on cursors to clear cache
  * @param {Function=} routerConfig.robotsTxt - dynamically generate robots.txt
  * @param {Object=} routerConfig.routes
  * @param {Object=} routerConfig.routes.<string> - Route path
@@ -72,7 +70,6 @@ const createRouter = (MainApp, {
   ServerRouter = DefaultServerRouter,
   createServerRenderContext = defaultCreateServerRenderContext,
   localization,
-  observedCursors = {},
   robotsTxt = null,
   routes = {},
   sitemapXml = null,
@@ -91,15 +88,6 @@ const createRouter = (MainApp, {
   // Define app route patterns
   const routePatterns = Object.keys(routes);
   pull(routePatterns, 'middlewares', 'urlQueryParameters');
-
-  // Observe cursors change
-  observedCursors.forEach((cursor) => {
-    cursor.observeChanges({
-      added: () => cache.reset(),
-      changed: () => cache.reset(),
-      removed: () => cache.reset(),
-    });
-  });
 
   // Secure Express
   app.use(helmet());
