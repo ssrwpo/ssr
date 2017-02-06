@@ -10,6 +10,7 @@ tracker
 es5-shim
 ecmascript
 shell-server
+webapp
 static-html
 hot-code-push
 ddp
