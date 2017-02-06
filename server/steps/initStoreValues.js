@@ -23,20 +23,11 @@ const initStoreValues = (stepResults) => {
     const userLanguage = req.acceptsLanguages(localization.languages);
     // set global user language for async translations
     global.userLanguage = userLanguage;
-    if (localization.language) {
-      store.dispatch(
-        /* eslint-disable */
-          changeLanguage(userLanguage ? userLanguage : localization.language),
-        /* eslint-enable */
-      );
-    } else {
-      store.dispatch(
-        /* eslint-disable */
-          changeLanguage(userLanguage ? userLanguage : localization.fallback),
-        /* eslint-enable */
-      );
-    }
+    store.dispatch(changeLanguage(userLanguage));
     if (!localization.async) {
+      if (localization.language !== userLanguage) {
+        localization.language = userLanguage;
+      }
       store.dispatch(setMessages(localization));
     }
   } else {
