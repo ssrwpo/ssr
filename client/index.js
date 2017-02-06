@@ -18,7 +18,7 @@ import {
   setMessages,
 } from '../shared/actions/intl';
 import {
-  createHandleSubscribe,
+  createToggleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
 import { BrowserStats } from '../shared/components';
@@ -44,7 +44,7 @@ export {
   changeLanguage,
   setMessages,
   // Helpers on selectors,
-  createHandleSubscribe,
+  createToggleSubscribe,
   createHandleSyncViaMethod,
   // Ready made components
   BrowserStats,

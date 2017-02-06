@@ -16,7 +16,7 @@ import {
   valueReset,
 } from '../shared/actions/utils';
 import {
-  createHandleSubscribe,
+  createToggleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
 import { BrowserStats } from '../shared/components';
@@ -43,7 +43,7 @@ export {
   valueSet,
   valueReset,
   // Helpers on selectors,
-  createHandleSubscribe,
+  createToggleSubscribe,
   createHandleSyncViaMethod,
   // Ready made components
   BrowserStats,

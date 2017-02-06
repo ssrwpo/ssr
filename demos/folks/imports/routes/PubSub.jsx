@@ -1,11 +1,11 @@
 import React, { PureComponent, PropTypes as pt } from 'react';
 import omit from 'lodash/omit';
 import {
-  logger, valueSet, createHandleSubscribe, createHandleSyncViaMethod, collectionAdd,
+  logger, valueSet, createToggleSubscribe, createHandleSyncViaMethod, collectionAdd,
 } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import PubSubCol, { PubSubPublicationName, insertRandomPubSubItem, valuesFromLastMod,
+import PubSubCol, { PubSubPublicationName, insertRandomPubSubItem, getPubSubValues,
 } from '/imports/api/PubSub';
 import CachableItem from './CachableItem';
 
@@ -15,12 +15,11 @@ const styles = {
 
 class PubSub extends PureComponent {
   static propTypes = {
-    buildDate: pt.number.isRequired,
     PubSubStore: pt.array.isRequired,
     isPubSubSubscribed: pt.bool.isRequired,
     isPubSubInitialised: pt.bool.isRequired,
     markPubSubAsInitialised: pt.func.isRequired,
-    handleSubscribe: pt.func.isRequired,
+    toggleSubscribe: pt.func.isRequired,
     handleInsertRandom: pt.func.isRequired,
     handleSyncViaMethod: pt.func.isRequired,
   }
@@ -28,30 +27,37 @@ class PubSub extends PureComponent {
   static ssr = {
     prepareStore: (store) => {
       const { isPubSubInitialised } = store.getState();
+
+      // We need to ensure that we haven't already synced because this function
+      // will also be hoisted to `connect` HOC, so it will be called twice during
+      // the tree walk.
       if (!isPubSubInitialised) {
         logger.debug('Initialising PubSub Store');
-        PubSubCol.find({}, { sort: { lastMod: -1 } }).fetch().forEach((ps) => {
+
+        // We mark the data as initialised that we know not to fetch the data on the
+        // client unnecessarily. This also prevents this function being called twice
+        // during to the hoisting of the statics by the `connect` HOC.
+        store.dispatch(valueSet('isPubSubInitialised', true));
+
+        // Add data from the PubSub collection to the store
+        PubSubCol.find().fetch().forEach((ps) => {
           store.dispatch(collectionAdd(
             'PubSub',
             ps._id, // eslint-disable-line no-underscore-dangle
             omit(ps, '_id'),
           ));
         });
-        store.dispatch(valueSet('isPubSubInitialised', true));
+
+        // Returning true indicates that we've updated the store.
         return true;
       }
 
+      // We haven't updated the store...
       return false;
     },
   }
 
   componentWillMount() {
-    // A traditional meteor application would need to subscribe in some way to the
-    // collection. With ssrwpo:ssr things are different. We use Redux to store the
-    // contents of server-side rendered collections. Changes to the collection may
-    // be observed using `createHandleSubscribe`, which will update the Redux store
-    // and cause any dependant components to re-render.
-    //
     // For this example we don't wish to reactively subscribe unless the user
     // specifically presses the button to do that, but we do wish to display the initial
     // data set.
@@ -64,17 +70,11 @@ class PubSub extends PureComponent {
     // This means that if we access this route directly, we don't need to re-fetch the data.
     //
     // If the app is already loaded and we're coming from another route then we won't
-    // have any data yet, so we need to fetch it. We use a store parameter to flag
-    // whether or not the store data has been initialised.
+    // have any data yet, so we need to fetch it. In that case `isPubSubInitialised` will
+    // be false.
     //
-    // We don't do this on the server since we the store data be passed through
-    // to our props. That will allow the SSR treewalking to continue into the
-    // children (which themselves have SSR requirements).
-    //
-    // Instead we use the `prepareStore` function on the static `ssr` object. This will
-    // be hoisted up by our connect, so the store data will be ready by the time
-    // this component is traversed.
-
+    // On the server we use `prepareStore` to initialise the data, so we must only run
+    // this code on the client.
     const {
       isPubSubInitialised,
       markPubSubAsInitialised,
@@ -83,22 +83,22 @@ class PubSub extends PureComponent {
     } = this.props;
 
     if (Meteor.isClient && !isPubSubInitialised) {
-      handleSyncViaMethod(0, PubSubStore);
+      handleSyncViaMethod(PubSubStore);
       markPubSubAsInitialised();
     }
   }
 
   componentWillUnmount() {
-    const { isPubSubSubscribed, handleSubscribe, buildDate } = this.props;
+    const { isPubSubSubscribed, toggleSubscribe, PubSubStore } = this.props;
     if (isPubSubSubscribed) {
-      handleSubscribe(this, isPubSubSubscribed, buildDate);
+      toggleSubscribe(this, isPubSubSubscribed, PubSubStore);
     }
   }
 
   render() {
     const {
-      PubSubStore, isPubSubSubscribed, buildDate,
-      handleSubscribe, handleInsertRandom, handleSyncViaMethod,
+      PubSubStore, isPubSubSubscribed,
+      toggleSubscribe, handleInsertRandom, handleSyncViaMethod,
     } = this.props;
     return (
       <div>
@@ -107,7 +107,7 @@ class PubSub extends PureComponent {
         <hr />
         <button
           style={styles.button}
-          onClick={() => handleSubscribe(this, isPubSubSubscribed, buildDate, PubSubStore)}
+          onClick={() => toggleSubscribe(this, isPubSubSubscribed, PubSubStore)}
         >
           {isPubSubSubscribed ? 'Stop subscription' : 'Synchronize via subscribe'}
         </button>
@@ -115,7 +115,7 @@ class PubSub extends PureComponent {
           isPubSubSubscribed ||
             <button
               style={styles.button}
-              onClick={() => handleSyncViaMethod(buildDate, PubSubStore)}
+              onClick={() => handleSyncViaMethod(PubSubStore)}
             >
               Synchronize via method
             </button>
@@ -127,7 +127,7 @@ class PubSub extends PureComponent {
         {
           PubSubStore
           .sort((a, b) => b.lastMod - a.lastMod)
-          .map(item => <CachableItem key={`${item.id}-${item.lastMod}`} {...{ ...item, isPubSubSubscribed }} />)
+          .map(item => <CachableItem key={`${item.id}`} {...{ ...item, isPubSubSubscribed }} />)
         }
       </div>
     );
@@ -136,14 +136,13 @@ class PubSub extends PureComponent {
 
 export default connect(
   state => ({
-    buildDate: state.buildDate,
     PubSubStore: state.PubSub,
     isPubSubSubscribed: state.isPubSubSubscribed,
     isPubSubInitialised: state.isPubSubInitialised,
   }),
 
   dispatch => ({
-    handleSubscribe: createHandleSubscribe(
+    toggleSubscribe: createToggleSubscribe(
       dispatch,
       PubSubPublicationName,
       PubSubCol.find(),
@@ -160,7 +159,7 @@ export default connect(
     },
     handleSyncViaMethod: createHandleSyncViaMethod(
       dispatch,
-      valuesFromLastMod,
+      getPubSubValues,
       'PubSub',
     ),
   }),
