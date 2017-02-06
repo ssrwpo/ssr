@@ -54,7 +54,7 @@ class TranslationsAsync extends PureComponent {
         return prepareIntlMessages().then((messages) => {
           store.dispatch(receiveIntl({
             messages,
-            language: intl ? intl.locale : 'en',
+            language: intl.locale || 'en',
           }));
           store.dispatch(valueSet('isIntlInitialised', true));
         });
@@ -74,7 +74,7 @@ class TranslationsAsync extends PureComponent {
       prepareIntlMessages().then((messages) => {
         setIntl({
           messages,
-          language: intl ? intl.locale : 'en',
+          language: intl.locale || 'en',
         });
         setIntlInitialised();
       });
@@ -85,32 +85,39 @@ class TranslationsAsync extends PureComponent {
     const { languageChanger, intl, isIntlInitialised } = this.props;
     return (
       <div>
-        <h2>Translation from Rest API</h2>
-        <br />
-        <button onClick={() => languageChanger('en')}>English</button>
-        <button onClick={() => languageChanger('fr')}>Français</button>
-        <button onClick={() => languageChanger('tr')}>Türkçe</button>
-        <br />
         <Helmet title="Translations Async" />
-        { !isIntlInitialised ?
-          <p>loading...</p> :
+        <h2>Translation from Rest API</h2>
+        {!Meteor.settings.public.localization.async ?
+          <p>You should set &quot;localization.async: true&quot;
+            in settings.json to try asynchronous translations </p>
+        :
           <div>
-            <p>
-              <FormattedMessage
-                id="app.currentLanguage"
-                values={{ language: intl.locale }}
-              />
-            </p>
-            <h2><FormattedMessage id="app.greetings" defaultMessage="你好!" /></h2>
-            <h3>
-              <FormattedDate
-                value={new Date()}
-                year="numeric"
-                month="long"
-                day="numeric"
-                weekday="long"
-              />
-            </h3>
+            <br />
+            <button onClick={() => languageChanger('en')}>English</button>
+            <button onClick={() => languageChanger('fr')}>Français</button>
+            <button onClick={() => languageChanger('tr')}>Türkçe</button>
+            <br />
+            { !isIntlInitialised ?
+              <p>loading...</p> :
+              <div>
+                <p>
+                  <FormattedMessage
+                    id="app.currentLanguage"
+                    values={{ language: intl.locale }}
+                  />
+                </p>
+                <h2><FormattedMessage id="app.greetings" defaultMessage="你好!" /></h2>
+                <h3>
+                  <FormattedDate
+                    value={new Date()}
+                    year="numeric"
+                    month="long"
+                    day="numeric"
+                    weekday="long"
+                  />
+                </h3>
+              </div>
+            }
           </div>
         }
       </div>

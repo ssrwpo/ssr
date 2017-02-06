@@ -51,10 +51,12 @@ const createRouter = ({
         store.subscribe(() => storeSubscription(store));
       }
       if (localization) {
-        store.dispatch(setMessages(localization));
+        if (!localization.async) {
+          store.dispatch(setMessages(localization));
+        }
       } else {
         // init empty localization resources
-        // store.dispatch(setEmptyLocalization());
+        store.dispatch(setEmptyLocalization());
       }
       // Get the React root element
       const div = document.getElementById('react');

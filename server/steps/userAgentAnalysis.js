@@ -18,6 +18,8 @@ const userAgentAnalysis = (stepResults) => {
     stepResults.userAgent = 'safari';
   } else if (ua.family === 'IE') {
     stepResults.userAgent = 'ie';
+  } else if (ua.family === 'Firefox') {
+    stepResults.userAgent = 'firefox';
   }
 };
 export default userAgentAnalysis;
