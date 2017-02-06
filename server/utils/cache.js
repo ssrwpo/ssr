@@ -8,10 +8,12 @@ class Cache {
     this.receptacle = new Receptacle({ max: Cache.MAX_ITEMS });
   }
 
-  getKey(platform, url) { return `${platform}-${url}`; }
+  getKey(platform, url, userLocale) {
+    return `${platform}-${userLocale}-${url}`;
+  }
 
-  setPage(platform, url, head, body, hash, type = 200) {
-    const key = this.getKey(platform, url);
+  setPage(platform, userLocale, url, head, body, hash, type = 200) {
+    const key = this.getKey(platform, url, userLocale);
     logger.debug('cache page:', key);
     this.receptacle.set(key, { type, head, body, hash }, Cache.DEFAULT_TTL);
   }
@@ -26,15 +28,15 @@ class Cache {
     this.receptacle.set(url, { type: 404 }, Cache.DEFAULT_TTL);
   }
 
-  has(platform, url) {
-    if (this.receptacle.has(this.getKey(platform, url))) {
+  has(platform, url, userLocale) {
+    if (this.receptacle.has(this.getKey(platform, url, userLocale))) {
       return true;
     }
     return this.receptacle.has(url);
   }
 
-  get(platform, url) {
-    const res = this.receptacle.get(this.getKey(platform, url));
+  get(platform, url, userLocale) {
+    const res = this.receptacle.get(this.getKey(platform, url, userLocale));
     if (res) {
       return res;
     }

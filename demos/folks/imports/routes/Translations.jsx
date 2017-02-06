@@ -1,5 +1,5 @@
 import React, { PropTypes as pt } from 'react';
-import { pure, changeLanguage } from 'meteor/ssrwpo:ssr';
+import { pure, changeLanguage, valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import pick from 'lodash/pick';
@@ -45,8 +45,9 @@ Translations.propTypes = {
 };
 const mapStateToProps = state => pick(state, ['intl']);
 const mapDispatchToProps = dispatch => ({
-  languageChanger(language) {
-    dispatch(changeLanguage({ language }));
+  languageChanger(locale) {
+    dispatch(valueSet('userLocale', locale));
+    dispatch(changeLanguage({ locale }));
   },
 });
 export default connect(

@@ -27,6 +27,7 @@ class TranslationsAsync extends PureComponent {
   static propTypes = {
     isIntlInitialised: pt.bool.isRequired,
     intl: pt.object.isRequired,
+    userLocale: pt.string.isRequired,
     setIntlInitialised: pt.func.isRequired,
     setIntl: pt.func.isRequired,
     languageChanger: pt.func.isRequired,
@@ -49,12 +50,14 @@ class TranslationsAsync extends PureComponent {
     // It's important to use a store variable to prevent this call from being made twice, since
     // it'll be hoisted up into the `connect` HOC.
     prepareStore: (store) => {
-      const { isIntlInitialised, intl } = store.getState();
+      const { isIntlInitialised, userLocale } = store.getState();
       if (!isIntlInitialised) {
         return prepareIntlMessages().then((messages) => {
           store.dispatch(receiveIntl({
             messages,
-            language: intl.locale || 'en',
+            locale: userLocale,
+            languages: ['en', 'fr', 'tr'],
+            fallback: 'en',
           }));
           store.dispatch(valueSet('isIntlInitialised', true));
         });
@@ -69,12 +72,14 @@ class TranslationsAsync extends PureComponent {
     // then we need to initialise the store.
     // We mustn't do this on the server because the SSR won't wait for it to complete.
     // Instead, we use `prepareIntlMessages` on the `ssr` configuration above.
-    const { isIntlInitialised, setIntlInitialised, setIntl, intl } = this.props;
+    const { isIntlInitialised, setIntlInitialised, setIntl, userLocale } = this.props;
     if (Meteor.isClient && !isIntlInitialised) {
       prepareIntlMessages().then((messages) => {
         setIntl({
           messages,
-          language: intl.locale || 'en',
+          locale: userLocale,
+          languages: ['en', 'fr', 'tr'],
+          fallback: 'en',
         });
         setIntlInitialised();
       });
@@ -129,12 +134,18 @@ export default connect(
   state => ({
     isIntlInitialised: state.isIntlInitialised,
     intl: state.intl,
+    userLocale: state.userLocale,
   }),
   dispatch => ({
-    languageChanger(language) {
+    languageChanger(locale) {
       dispatch(valueSet('isIntlInitialised', false));
+      dispatch(valueSet('userLocale', locale));
       return prepareIntlMessages().then((messages) => {
-        dispatch(receiveIntl({ messages, language }));
+        dispatch(receiveIntl({
+          messages,
+          locale,
+          languages: ['en', 'fr', 'tr'],
+          fallback: 'en' }));
         dispatch(valueSet('isIntlInitialised', true));
       });
     },

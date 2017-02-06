@@ -37,6 +37,7 @@ const cacheFilling = ({
   statusCode,
   url,
   userAgent,
+  userLocale,
 }) => {
   nextTick(() => {
     // const platform = stepResults.userAgent;
@@ -63,6 +64,7 @@ const cacheFilling = ({
       logger.debug(
         'cache fill:',
         userAgent,
+        userLocale,
         statusCode,
         url,
         hasUnwantedQueryParameters,
@@ -70,7 +72,7 @@ const cacheFilling = ({
       if (statusCode === 301) {
         cache.setRedirect(url, Location);
       } else {
-        cache.setPage(userAgent, url, head, body, hash, statusCode);
+        cache.setPage(userAgent, userLocale, url, head, body, hash, statusCode);
       }
     }
   });

@@ -16,6 +16,7 @@ import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
+import speakForeignLanguages from './steps/speakForeignLanguages';
 import userAgentAnalysis from './steps/userAgentAnalysis';
 import routePatternAnalysis from './steps/routePatternAnalysis';
 import queryParamsAnalysis from './steps/queryParamsAnalysis';
@@ -126,7 +127,6 @@ const createRouter = (MainApp, {
         hash: null,
         head: null,
         localization,
-        i18nOptions: null,
         isFromCache: false,
         is404fromCache: false,
         Location: null,
@@ -140,8 +140,12 @@ const createRouter = (MainApp, {
         store: null,
         url,
         userAgent: 'default',
+        userLocale: '',
         componentCacheConfig: null,
       };
+
+      // STEP 0: User agent analysis
+      speakForeignLanguages(stepResults);
 
       // STEP 1: User agent analysis
       userAgentAnalysis(stepResults);

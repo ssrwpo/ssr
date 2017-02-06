@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import TransitionButton from '/imports/components/TransitionButton';
 
 const Home = ({
-  auth, logout, platform, buildDate,
+  auth, logout, platform, buildDate, userLocale,
   retina, mobile, viewportWidth, viewportHeight,
 }) => (
   <div>
@@ -20,6 +20,7 @@ const Home = ({
     <p>{auth ? 'Logged in' : 'Logged out'}</p>
     { auth && <p><button onClick={logout}>Log out</button></p>}
     <p>Current platform is: <strong>{platform}</strong></p>
+    <p>Current user language is: <strong>{userLocale}</strong></p>
     <p><em>Build date: {moment(buildDate).format('DD/MM/YYYY HH:mm')}</em></p>
     <p>Define as {retina ? 'Retina display' : 'Normal display'}</p>
     <p>Devive is considered as mobile? <strong>{mobile ? 'Yes' : 'No'}</strong></p>
@@ -31,13 +32,14 @@ Home.propTypes = {
   logout: pt.func.isRequired,
   platform: pt.string.isRequired,
   buildDate: pt.number.isRequired,
+  userLocale: pt.string.isRequired,
   retina: pt.bool.isRequired,
   mobile: pt.bool.isRequired,
   viewportWidth: pt.number.isRequired,
   viewportHeight: pt.number.isRequired,
 };
 const mapStateToProps = state => pick(state, [
-  'auth', 'platform', 'buildDate',
+  'auth', 'platform', 'buildDate', 'userLocale',
   'retina', 'mobile', 'viewportWidth', 'viewportHeight',
 ]);
 const mapDispatchToProps = dispatch => ({

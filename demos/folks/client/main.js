@@ -21,7 +21,6 @@ const appMiddlewares = [
 const localization = {
   languages: ['en', 'tr', 'fr'], // required
   fallback: 'en', // required
-  // language: 'fr', // force default language optional
   async: Meteor.settings.public.localization.async, // for async translations
   messages: { en, fr, tr }, // language resources required if not async
 };
