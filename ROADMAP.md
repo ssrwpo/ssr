@@ -37,6 +37,9 @@
   * [ ] System usage: CPU, RAM
   * [ ] Most rendered page
   * [ ] Longest rendered page
+* [ ] Streaming HTML payload
+  * [ ] Reconstruct HTML payload with async links via WebApp.clientPrograms['web.browser']
+  * [ ] Add streaming capability to Express with [express-stream](https://github.com/jpodwys/express-stream)
 
 ## v4
 * [ ] Styled components
