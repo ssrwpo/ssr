@@ -93,7 +93,7 @@ function processSSRRequirementsAndReturnPromises(
 
       // Prepare the store if required
       if (typeof prepareStore === 'function') {
-        const result = prepareStore(stepResults.store);
+        const result = prepareStore(stepResults.store, element.props, context);
         const isPromise = result && typeof result.then === 'function';
         if (isPromise) {
           promises.push({ promise: result, element, context });
