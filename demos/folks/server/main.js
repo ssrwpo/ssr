@@ -1,4 +1,4 @@
-import { createRouter, logger } from 'meteor/ssrwpo:ssr';
+import { createRouter, resetSSRCache, logger } from 'meteor/ssrwpo:ssr';
 import MainApp from '/imports/app/MainApp';
 import appReducers from '/imports/reducers';
 // Fixtures
@@ -21,12 +21,6 @@ import routes from './routes';
 // Webhooks
 import webhooks from './webhooks';
 
-const observedCursors = [
-  Folks.find({}, { sort: { order: -1 } }),
-  Places.find({}, { sort: { order: -1 } }),
-  PubSub.find({}, { sort: { lastMod: -1 } }),
-];
-
 const localization = {
   languages: ['en', 'tr', 'fr'], // required
   fallback: 'en', // required
@@ -39,8 +33,6 @@ logger.info('Starting router');
 
 // Your MainApp as the top component rendered and injected in the HTML payload
 createRouter(MainApp, {
-  // Optional: An object containing the observed cursors to clear cache on change
-  observedCursors,
   // Optional: A function that returns the content of your robots.txt
   robotsTxt,
   // Optional: An object describe route action and validator for url parameters
@@ -56,6 +48,21 @@ createRouter(MainApp, {
   appReducers,
   // Optional: Store subscription
   storeSubscription,
+});
+
+// The application needs to instigate it's own SSR cache refreshing policy. This allows
+// you to choose your own frequency for cache resets, and to handl your own policy
+// for rendering external data souces.
+//
+// In this example we simply reset the entire cache if any of the collections change.
+
+const globalCollections = [Folks, Places, PubSub];
+globalCollections.forEach((collection) => {
+  collection.find().observeChanges({
+    added: () => resetSSRCache(),
+    changed: () => resetSSRCache(),
+    removed: () => resetSSRCache(),
+  });
 });
 
 logger.info('Router started');
