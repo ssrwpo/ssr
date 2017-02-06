@@ -5,6 +5,8 @@ const collectionChange = (collectionName, id, fields) =>
   ({ type: `${collectionName}.CHANGE`, value: { id, fields } });
 const collectionRemove = (collectionName, id) =>
   ({ type: `${collectionName}.REMOVE`, value: { id } });
+const collectionReset = (collectionName, documents) =>
+  ({ type: `${collectionName}.RESET`, value: documents });
 
 // Actions on value stores
 const valueSet = (storeName, value) => ({ type: `${storeName}.SET`, value });
@@ -14,6 +16,7 @@ export {
   collectionAdd,
   collectionChange,
   collectionRemove,
+  collectionReset,
   valueSet,
   valueReset,
 };

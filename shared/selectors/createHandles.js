@@ -4,30 +4,8 @@ import isEqual from 'lodash/isEqual';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import {
-  valueSet, collectionAdd, collectionChange, collectionRemove,
+  valueSet, collectionAdd, collectionChange, collectionRemove, collectionReset,
 } from '../actions/utils';
-
-const syncActionsFromStore = (collectionStoreName, collectionStore, remoteData) => {
-  const dispatchActions = [];
-  collectionStore.forEach((storeItem) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const colItemIdx = remoteData.findIndex(item => item._id === storeItem.id);
-    // Item in collection is present in the store, check if its content has changed
-    if (colItemIdx !== -1) {
-      // Check for updated items
-      const colFields = omit(remoteData[colItemIdx], '_id');
-      const storeFields = omit(storeItem, 'id');
-      if (!isEqual(colFields, storeFields)) {
-        dispatchActions.push(collectionChange(collectionStoreName, storeItem.id, colFields));
-      }
-    // Item in the store is no longer present in the collection, remove it
-    } else {
-      // Item is not anymore in the collection and must be removed from store
-      dispatchActions.push(collectionRemove(collectionStoreName, storeItem.id));
-    }
-  });
-  return dispatchActions;
-};
 
 /**
  * `createToggleSubscribe`
@@ -62,14 +40,11 @@ const createToggleSubscribe = (
         // * Reconciliate data in store with the collection
         // * Setup an observer on the collection to synschronise the store
         () => {
-          // Reconciliate store with the collection
+          // First replace the store with the new contents
           const remoteData = cursor.fetch();
-          const dispatchActions = syncActionsFromStore(
-            collectionStoreName,
-            collectionStore,
-            remoteData,
-          );
-          dispatchActions.forEach(action => dispatch(action));
+          // eslint-disable-next-line no-underscore-dangle
+          const newData = remoteData.map(doc => ({ id: doc._id, ...omit(doc, '_id') }));
+          dispatch(collectionReset(collectionStoreName, newData));
 
           // Setup the observer on the collection
           // eslint-disable-next-line no-param-reassign
@@ -81,7 +56,6 @@ const createToggleSubscribe = (
               }
             },
             changed(id, fields) {
-              console.log('here');
               dispatch(collectionChange(collectionStoreName, id, fields));
             },
             removed(id) {
@@ -115,26 +89,10 @@ const createHandleSyncViaMethod = (
 ) => (collectionStore, ...methodParams) => validatedMethod.call(...methodParams,
     (err, remoteData) => {
       if (!err) {
-         // Reconciliate deletion and update with results from method
-        const dispatchActions = syncActionsFromStore(
-          collectionStoreName,
-          collectionStore,
-          remoteData,
-        );
-
-        // Add new items get from method
-        remoteData.forEach((methodItem) => {
-          // eslint-disable-next-line no-underscore-dangle
-          const colItemIdx = collectionStore.findIndex(item => item.id === methodItem._id);
-          if (colItemIdx === -1) {
-            dispatchActions.push(collectionAdd(
-              collectionStoreName,
-              methodItem._id, // eslint-disable-line no-underscore-dangle
-              omit(methodItem, '_id'),
-            ));
-          }
-        });
-        dispatchActions.forEach(action => dispatch(action));
+        // We just need to replace the store with the new contents
+        // eslint-disable-next-line no-underscore-dangle
+        const newData = remoteData.map(doc => ({ id: doc._id, ...omit(doc, '_id') }));
+        dispatch(collectionReset(collectionStoreName, newData));
       }
     });
 
