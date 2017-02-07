@@ -6,6 +6,7 @@ const platform = createValueReducer('platform', 'default');
 const buildDate = createValueReducer('buildDate', 0);
 const userLocale = createValueReducer('userLocale', 'en');
 const isIntlInitialised = createValueReducer('isIntlInitialised', false);
+const user = createValueReducer('user', null);
 
 export {
   platform,
@@ -14,4 +15,5 @@ export {
   intl,
   userLocale,
   isIntlInitialised,
+  user,
 };
