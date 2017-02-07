@@ -16,6 +16,7 @@ import {
 import {
   changeLanguage,
   setMessages,
+  receiveIntl,
 } from '../shared/actions/intl';
 import {
   createHandleSubscribe,
@@ -43,6 +44,7 @@ export {
   valueReset,
   changeLanguage,
   setMessages,
+  receiveIntl,
   // Helpers on selectors,
   createHandleSubscribe,
   createHandleSyncViaMethod,

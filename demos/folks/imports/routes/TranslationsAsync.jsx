@@ -1,9 +1,8 @@
 import React, { PureComponent, PropTypes as pt } from 'react';
-import { logger, valueSet } from 'meteor/ssrwpo:ssr';
+import { logger, valueSet, receiveIntl } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import { connect } from 'react-redux';
-import { receiveIntl } from '/imports/actions';
 
 
 // This function will be called by the server to prepare the store before the
