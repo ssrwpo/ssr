@@ -14,7 +14,7 @@ checkNpmVersions({
   'react-intl': '2.2.x',
   'react-intl-redux': '0.3.x',
   'react-redux': '5.x',
-  'react-router-dom': '4.0.0-beta.3',
+  'react-router-dom': '4.0.0-beta.5',
   receptacle: '1.x',
   redux: '3.x',
   useragent: '2.1.x',
