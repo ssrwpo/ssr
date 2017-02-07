@@ -4,86 +4,55 @@ import isEqual from 'lodash/isEqual';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import {
-  valueSet, collectionAdd, collectionChange, collectionRemove,
+  valueSet, collectionAdd, collectionChange, collectionRemove, collectionReset,
 } from '../actions/utils';
 
-const lastModFromStore = (buildDate, collectionStore) =>
-  collectionStore.reduce((acc, item) => Math.min(acc, item.lastMod), buildDate);
-
-const syncActionsFromStore = (collectionStoreName, collectionStore, fromRemote) => {
-  const dispatchActions = [];
-  collectionStore.forEach((storeItem) => {
-    // eslint-disable-next-line no-underscore-dangle
-    const colItemIdx = fromRemote.findIndex(item => item._id === storeItem.id);
-    // Item in collection is present in the store, check if its content has changed
-    if (colItemIdx !== -1) {
-      // Check for updated items
-      const colFields = omit(fromRemote[colItemIdx], '_id');
-      const storeFields = omit(storeItem, 'id');
-      if (!isEqual(colFields, storeFields)) {
-        dispatchActions.push(collectionAdd(collectionStoreName, storeItem.id, colFields));
-      }
-    // Item in the store is no longer present in the collection, remove it
-    } else {
-      // Item is not anymore in the collection and must be removed from store
-      dispatchActions.push(collectionRemove(collectionStoreName, storeItem.id));
-    }
-  });
-  return dispatchActions;
-};
-
 /**
- * `createHandleSubscribe`
+ * `createToggleSubscribe`
  * Create an `handleSubscribe` function for your `mapDispatchToProps`.
  * @param dispatch Store's dispatch.
- * @param publicationName Your publication name which must accept an UNIX date value as `lastMod`.
- * @param cursor A cursor on Mongo collection with a `lastMod` set on each item.
- * @param valueStoreNameForSubscription Name of the value store identifying subscription state.
+ * @param publicationName Your publication name
+ * @param cursor A cursor for the Mongo collection to synchronise
+ * @param valueStoreNameForSubscription Name of the value store with subscription state
+          (true => subscribed, false => not subscribed).
  * @param collectionStoreName Name of the collection store holding replica of collection.
- * @return A function allowing to subscribe and unsubscribe.
+ * @return A function toggle the current subscription state.
  */
-const createHandleSubscribe = (
+const createToggleSubscribe = (
   dispatch,
   publicationName,
   cursor,
   valueStoreNameForSubscription,
   collectionStoreName,
 ) =>
-  (context, isSubscribed, buildDate, collectionStore) => {
-    // Set the store either as subscribe or not
+  (context, isSubscribed, collectionStore, ...publicationParams) => {
+    // Toggle the current subscription state
     const newState = !isSubscribed;
     dispatch(valueSet(valueStoreNameForSubscription, !isSubscribed));
+
     if (newState) {
-      // Find the first appropriate date
-      const lastMod = lastModFromStore(buildDate, collectionStore);
-      // eslint-disable-next-line no-param-reassign
-      context.query = null;
       // Subscribe to collection
-      // eslint-disable-next-line no-param-reassign
-      context.sub = Meteor.subscribe(
+      context.query = null; // eslint-disable-line no-param-reassign
+      context.sub = Meteor.subscribe( // eslint-disable-line no-param-reassign
         publicationName,
-        { lastMod },
+        ...publicationParams,
         // Once subscription is ready:
         // * Reconciliate data in store with the collection
         // * Setup an observer on the collection to synschronise the store
         () => {
-          // Reconciliate store with the collection
-          const fromCollection = cursor.fetch();
-          const dispatchActions = syncActionsFromStore(
-            collectionStoreName,
-            collectionStore,
-            fromCollection,
-          );
-          dispatchActions.forEach(action => dispatch(action));
+          // First replace the store with the new contents
+          const remoteData = cursor.fetch();
+          // eslint-disable-next-line no-underscore-dangle
+          const newData = remoteData.map(doc => ({ id: doc._id, ...omit(doc, '_id') }));
+          dispatch(collectionReset(collectionStoreName, newData));
+
           // Setup the observer on the collection
           // eslint-disable-next-line no-param-reassign
           context.query = cursor.observeChanges({
             added(id, fields) {
-              if (fields.lastMod > buildDate) {
-                const colItemIdx = collectionStore.findIndex(item => item.id === id);
-                if (colItemIdx === -1) {
-                  dispatch(collectionAdd(collectionStoreName, id, fields));
-                }
+              const colItemIdx = collectionStore.findIndex(item => item.id === id);
+              if (colItemIdx === -1) {
+                dispatch(collectionAdd(collectionStoreName, id, fields));
               }
             },
             changed(id, fields) {
@@ -108,45 +77,26 @@ const createHandleSubscribe = (
  * `createHandleSyncViaMethod`
  * Create an `handleSyncViaMethod` function for your `mapDispatchToProps`.
  * @param dispatch Store's dispatch.
- * @param validatedMethod A validated method, promised based
- *  (see didericis:callpromise-mixin) that accepts { lastMod } as its params.
+ * @param validatedMethod A validated method which returns the entire collection to be synced.
  * @param collectionStoreName Name of the collection store holding replica of collection.
- * @return A function allowing to subscribe and unsubscribe.
+ * @return A function which takes the store and the parameters to send to the validated method,
+           and which synchronizes the store with the collection return by the method.
  */
 const createHandleSyncViaMethod = (
   dispatch,
   validatedMethod,
   collectionStoreName,
-) => (buildDate, collectionStore) => {
-  const lastMod = lastModFromStore(buildDate, collectionStore);
-  return validatedMethod.callPromise({ lastMod })
-  .then((fromMethod) => {
-    // Reconciliate deletion and update with results from method
-    const dispatchActions = syncActionsFromStore(
-      collectionStoreName,
-      collectionStore,
-      fromMethod,
-    );
-    // Add new items get from method
-    fromMethod.forEach((methodItem) => {
-      if (methodItem.lastMod > buildDate) {
+) => (collectionStore, ...methodParams) => validatedMethod.call(...methodParams,
+    (err, remoteData) => {
+      if (!err) {
+        // We just need to replace the store with the new contents
         // eslint-disable-next-line no-underscore-dangle
-        const colItemIdx = collectionStore.findIndex(item => item.id === methodItem._id);
-        if (colItemIdx === -1) {
-          dispatchActions.push(collectionAdd(
-            collectionStoreName,
-            // eslint-disable-next-line no-underscore-dangle
-            methodItem._id,
-            omit(methodItem, '_id'),
-          ));
-        }
+        const newData = remoteData.map(doc => ({ id: doc._id, ...omit(doc, '_id') }));
+        dispatch(collectionReset(collectionStoreName, newData));
       }
     });
-    dispatchActions.forEach(action => dispatch(action));
-  });
-};
 
 export {
-  createHandleSubscribe,
+  createToggleSubscribe,
   createHandleSyncViaMethod,
 };

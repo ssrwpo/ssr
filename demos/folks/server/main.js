@@ -57,11 +57,14 @@ createRouter(MainApp, {
 
 const globalCollections = [Folks, Places, PubSub];
 globalCollections.forEach((collection) => {
+  let initializing = true;
   collection.find().observeChanges({
-    added: () => resetSSRCache(),
+    added: () => { if (!initializing) resetSSRCache(); },
     changed: () => resetSSRCache(),
     removed: () => resetSSRCache(),
   });
+  initializing = false;
 });
+resetSSRCache();
 
 logger.info('Router started');

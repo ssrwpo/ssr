@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { logger } from 'meteor/ssrwpo:ssr';
 import faker from 'faker';
 import PubSub from '..';
@@ -28,10 +27,10 @@ function removePubSubItem({ id }) {
   logger.info('PubSub item removed', id, res);
 }
 
-function valuesFromLastMod({ lastMod }) {
-  const res = PubSub.find({ lastMod: { $gte: lastMod } }).fetch();
+function getPubSubValues() {
+  const res = PubSub.find().fetch();
   logger.info(
-    'PubSub get values from lastMod', moment(lastMod).format('DD/MM/YY - HH:mm:ss'),
+    'getPubSubValues',
     res.length, 'items',
   );
   return res;
@@ -41,5 +40,5 @@ export {
   insertRandomPubSubItem,
   updatePubSubItem,
   removePubSubItem,
-  valuesFromLastMod,
+  getPubSubValues,
 };

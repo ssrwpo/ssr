@@ -19,7 +19,7 @@ import {
   receiveIntl,
 } from '../shared/actions/intl';
 import {
-  createHandleSubscribe,
+  createToggleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
 import { BrowserStats } from '../shared/components';
@@ -46,7 +46,7 @@ export {
   setMessages,
   receiveIntl,
   // Helpers on selectors,
-  createHandleSubscribe,
+  createToggleSubscribe,
   createHandleSyncViaMethod,
   // Ready made components
   BrowserStats,
