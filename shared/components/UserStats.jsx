@@ -8,13 +8,11 @@ import { valueSet } from '../actions/utils';
 class UserStats extends React.PureComponent {
 
   componentWillMount() {
-    const { login, logout } = this.props;
+    const { login } = this.props;
     if (Meteor.isClient) {
       Tracker.autorun(() => {
         if (Meteor.user()) {
           login(Meteor.user());
-        } else {
-          logout();
         }
       });
     }
@@ -29,7 +27,6 @@ class UserStats extends React.PureComponent {
 
 UserStats.propTypes = {
   login: pt.func.isRequired,
-  logout: pt.func.isRequired,
 };
 
 UserStats.defaultProps = {
@@ -41,9 +38,6 @@ export default connect(
   dispatch => ({
     login(user) {
       dispatch(valueSet('user', user));
-    },
-    logout() {
-      dispatch(valueSet('user', false));
     },
   }),
 )(UserStats);
