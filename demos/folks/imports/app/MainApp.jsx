@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes as pt } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import omit from 'lodash/omit';
-import { pure, collectionAdd, logger, BrowserStats, valueSet } from 'meteor/ssrwpo:ssr';
+import { pure, collectionAdd, logger, BrowserStats, UserStats, valueSet } from 'meteor/ssrwpo:ssr';
 // Collections
 import FolksCollection from '/imports/api/Folks';
 import PlacesCollection from '/imports/api/Places';
@@ -51,7 +51,7 @@ export const prepareGlobalStores = (store) => {
   }
 };
 
-const MainApp = ({ isLoggedIn }) => {
+const MainApp = ({ user }) => {
   const styles = {
     ul: { listStyleType: 'none', padding: 0, textAlign: 'center' },
     li: { display: 'inline', margin: 5 },
@@ -60,10 +60,11 @@ const MainApp = ({ isLoggedIn }) => {
     <div>
       <TransitionLogger />
       <BrowserStats />
+      <UserStats />
       <nav>
         <ul style={styles.ul}>
           <li style={styles.li}><Link to="/">Home</Link></li>
-          {isLoggedIn || <li style={styles.li} ><Link to="/login">Login</Link></li>}
+          {!user && <li style={styles.li} ><Link to="/login">Login</Link></li>}
           <li style={styles.li}><Link to="/protected">Protected</Link></li>
           <li style={styles.li}><Link to="/folks">Folks</Link></li>
           <li style={styles.li}><Link to="/places">Places</Link></li>
@@ -114,7 +115,10 @@ MainApp.ssr = {
 };
 
 MainApp.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
+  user: pt.oneOfType([
+    pt.object,
+    pt.bool,
+  ]).isRequired,
 };
 
-export default connect((state => ({ isLoggedIn: state.auth })))(pure(MainApp));
+export default connect((state => ({ user: state.user })))(pure(MainApp));

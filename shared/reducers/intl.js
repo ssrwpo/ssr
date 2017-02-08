@@ -2,7 +2,7 @@ global.Intl = require('intl');
 
 let messages = {};
 // eslint-disable-next-line import/prefer-default-export
-export function intl(state = { locale: '', messages }, action) {
+export function intl(state = { locale: 'en', messages }, action) {
   switch (action.type) {
     case 'CHANGE_LANGUAGE' : {
       return {

@@ -20,3 +20,4 @@ ssrwpo:uglifyjs2
 ssrwpo:ssr
 mdg:validated-method
 didericis:callpromise-mixin
+accounts-password

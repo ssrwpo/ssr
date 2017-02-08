@@ -22,7 +22,7 @@ import {
   createToggleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
-import { BrowserStats } from '../shared/components';
+import { BrowserStats, UserStats } from '../shared/components';
 
 // Client side exports
 export {
@@ -50,6 +50,7 @@ export {
   createHandleSyncViaMethod,
   // Ready made components
   BrowserStats,
+  UserStats,
   // Store access, mainly for debug
   getStore,
 };

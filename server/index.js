@@ -23,7 +23,7 @@ import {
   createToggleSubscribe,
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
-import { BrowserStats } from '../shared/components';
+import { BrowserStats, UserStats } from '../shared/components';
 
 // Server side exports
 export {
@@ -53,6 +53,7 @@ export {
   createHandleSyncViaMethod,
   // Ready made components
   BrowserStats,
+  UserStats,
   // Acces to last request, mainly for debug in `meteor shell`
   debugLastRequest,
   debugLastResponse,
