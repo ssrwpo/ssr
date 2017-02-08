@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-intl-redux';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
-import { url, setMessages, setEmptyLocalization } from '../shared/actions';
+import { url, setMessages } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
 import * as optionalReducers from '../shared/reducers/optionals';
@@ -59,9 +59,6 @@ const createRouter = ({
             fallback: localization.fallback,
           }));
         }
-      } else {
-        // init empty localization resources
-        store.dispatch(setEmptyLocalization());
       }
       // Get the React root element
       const div = document.getElementById('react');
