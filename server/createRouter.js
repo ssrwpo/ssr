@@ -5,7 +5,6 @@ import i18nMiddleware from 'i18next-express-middleware';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import './utils/peerDependencies';
 import logger from './utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import createAppAndPackageStore from './utils/createAppAndPackageStore';

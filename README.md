@@ -290,10 +290,9 @@ For optimal results, set your `.babelrc` with the following content:
   "presets": ["meteor"],
   "plugins": [
     "transform-class-properties",
-    "transform-react-remove-prop-types",
     "transform-react-constant-elements",
     "transform-react-inline-elements",
-    "transform-dead-code-elimination"
+    "transform-react-remove-prop-types"
   ]
 }
 ```
