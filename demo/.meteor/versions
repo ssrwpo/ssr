@@ -51,7 +51,7 @@ shell-server@0.2.2
 spacebars@1.0.13
 spacebars-compiler@1.1.0
 ssrwpo:ssr@2.1.2
-ssrwpo:uglifyjs2@0.3.0
+ssrwpo:uglifyjs2@0.4.0
 stylus@2.513.9
 tmeasday:check-npm-versions@0.3.1
 tracker@1.1.2
