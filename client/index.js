@@ -1,3 +1,4 @@
+import '../shared/utils/peerDependencies';
 import { createRouter, getStore } from './createRouter';
 import logger from './utils/logger';
 import pure from '../shared/hoc/pure';

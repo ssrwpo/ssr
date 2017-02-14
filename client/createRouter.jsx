@@ -7,7 +7,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
-import { url } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
 import * as optionalReducers from '../shared/reducers/optionals';
@@ -26,7 +25,6 @@ const createRouter = ({
   appReducers = {},
   appMiddlewares = [],
   appCursorNames = [],
-  hasUrlStore = false,
   i18n,
   hasPlatformTransformer = true,
 }) =>

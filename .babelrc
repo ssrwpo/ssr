@@ -4,7 +4,13 @@
     "transform-class-properties",
     "transform-react-constant-elements",
     "transform-react-inline-elements",
-    "transform-inline-environment-variables",
-    "transform-dead-code-elimination"
+    "transform-react-remove-prop-types",
+    ["module-resolver", {
+      "alias": {
+        "react-router-dom": "react-router-dom/umd/react-router-dom.min.js",
+        "redux": "redux/dist/redux.min.js",
+        "react-redux": "react-redux/dist/react-redux.min.js"
+      }
+    }]
   ]
 }
