@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-intl-redux';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
-import { url, setMessages } from '../shared/actions';
+import { setMessages } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
 import * as optionalReducers from '../shared/reducers/optionals';
@@ -24,7 +24,6 @@ const createRouter = ({
   appReducers = {},
   appMiddlewares = [],
   appCursorNames = [],
-  hasUrlStore = false,
   hasPlatformTransformer = true,
   localization,
 }) =>

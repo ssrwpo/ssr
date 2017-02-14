@@ -8,7 +8,7 @@ let pure = Component =>
   // eslint-disable-next-line react/prefer-stateless-function
   class extends PureComponent {
     render() {
-      return (<Component {...this.props} />);
+      return <Component {...this.props} />;
     }
   };
 

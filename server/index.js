@@ -1,3 +1,4 @@
+import '../shared/utils/peerDependencies';
 import { createRouter, debugLastRequest, debugLastResponse } from './createRouter';
 import logger from './utils/logger';
 import { resetSSRCache } from './utils/cache';

@@ -1,10 +1,1 @@
-{
-  "presets": ["es2015", "meteor"],
-  "plugins": [
-    "transform-class-properties",
-    "transform-react-constant-elements",
-    "transform-react-inline-elements",
-    "transform-inline-environment-variables",
-    "transform-dead-code-elimination"
-  ]
-}
+../../.babelrc
