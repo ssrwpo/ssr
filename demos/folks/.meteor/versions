@@ -41,7 +41,7 @@ mdg:validated-method@1.1.0
 meteor@1.6.1
 meteor-base@1.0.4
 minifier-css@1.2.16
-minifier-js@1.2.17
+minifier-js@1.2.18
 minimongo@1.0.20
 modules@0.7.9
 modules-runtime@0.7.9

@@ -3347,16 +3347,13 @@ react-helmet@^4.0.0:
     object-assign "^4.0.1"
     react-side-effect "^1.1.0"
 
-react-intl-redux@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/react-intl-redux/-/react-intl-redux-0.3.0.tgz#f42041c0b2edbf88ad693def6fbd00adef673d63"
+react-intl-redux@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/react-intl-redux/-/react-intl-redux-0.4.1.tgz#27fcc1967a7cae3ec467394745bb3b479c5c9c71"
   dependencies:
-    react-intl "^2.2.2"
-    react-redux "^5.0.1"
-    redux "^3.6.0"
     warning "^3.0.0"
 
-react-intl@^2.2.2, react-intl@^2.2.3:
+react-intl@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.2.3.tgz#8eebb03cddc38b337ed22fab78037ab53a594270"
   dependencies:
@@ -3365,9 +3362,9 @@ react-intl@^2.2.2, react-intl@^2.2.3:
     intl-relativeformat "^1.3.0"
     invariant "^2.1.1"
 
-react-redux@^5.0.1, react-redux@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.2.tgz#3d9878f5f71c6fafcd45de1fbb162ea31f389814"
+react-redux@^5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.3.tgz#86c3b68d56e74294a42e2a740ab66117ef6c019f"
   dependencies:
     hoist-non-react-statics "^1.0.3"
     invariant "^2.0.0"
