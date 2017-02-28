@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 
 const sharedPkjs = {
+  'is-retina': '1.x',
   lodash: '4.x',
   moment: '2.x',
   react: '15.x',

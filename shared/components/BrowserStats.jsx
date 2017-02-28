@@ -3,6 +3,7 @@ import React, { PropTypes as pt } from 'react';
 import { connect } from 'react-redux';
 import actual from 'actual';
 import debounce from 'lodash/debounce';
+import isRetina from 'is-retina';
 /* eslint-enable */
 import { valueSet } from '../actions/utils';
 
@@ -13,8 +14,10 @@ class BrowserStats extends React.PureComponent {
     this.handleResizeEvent = this.handleResizeEvent.bind(this);
   }
   componentDidMount() {
-    const { fixInitialValue, retinaMinDpi, mobileBreakpoint, debounceTimer } = this.props;
-    fixInitialValue(retinaMinDpi, mobileBreakpoint);
+    const {
+      platform, fixInitialValue, retinaMinDpi, mobileBreakpoint, debounceTimer,
+    } = this.props;
+    fixInitialValue(platform, retinaMinDpi, mobileBreakpoint);
     this.debounce = debounce(this.handleResizeEvent, debounceTimer);
     window.addEventListener('resize', this.handleResizeEvent);
   }
@@ -31,6 +34,7 @@ class BrowserStats extends React.PureComponent {
   }
 }
 BrowserStats.propTypes = {
+  platform: pt.string.isRequired,
   fixInitialValue: pt.func.isRequired,
   handleResizeEvent: pt.func.isRequired,
   retinaMinDpi: pt.number,
@@ -54,12 +58,14 @@ const sharedAnalysis = (mobileBreakpoint) => {
 };
 
 export default connect(
-  null,
+  state => ({ platform: state.platform }),
   dispatch => ({
-    fixInitialValue(retinaMinDpi, mobileBreakpoint) {
+    fixInitialValue(platform, retinaMinDpi, mobileBreakpoint) {
       const conf = {
         ...sharedAnalysis(mobileBreakpoint),
-        retina: actual('resolution', 'dpi') >= retinaMinDpi,
+        retina: platform === 'iphone' || platform === 'ipad' || platform === 'safari'
+          ? isRetina()
+          : actual('resolution', 'dpi') >= retinaMinDpi,
       };
       Object.keys(conf).forEach(key => dispatch(valueSet(key, conf[key])));
     },
