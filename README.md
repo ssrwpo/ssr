@@ -13,7 +13,7 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 meteor yarn add react react-dom react-router-dom@4.0.0-beta.3 express helmet \
   react-helmet winston logatim receptacle useragent redux react-redux moment \
   i18next i18next-node-remote-backend i18next-xhr-backend react-i18next \
-  i18next-express-middleware serialize-javascript lodash actual
+  i18next-express-middleware serialize-javascript lodash actual is-retina
 meteor add ssrwpo:ssr
 ```
 
