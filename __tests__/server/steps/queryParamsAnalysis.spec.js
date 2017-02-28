@@ -1,7 +1,7 @@
 import url from 'url';
 // eslint-disable-next-line
 import pick from 'lodash/pick';
-import queryParamsAnalysis from '../../../server/steps/queryParamsAnalysis';
+import queryParamsAnalysis from '../../../src/server/steps/queryParamsAnalysis';
 
 it('doesn\'t modify query when no analyser is provided', () => {
   const testUrl = 'untouched';
