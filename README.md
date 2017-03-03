@@ -297,6 +297,18 @@ For optimal results, set your `.babelrc` with the following content:
 }
 ```
 
+> :warning: On Windows OS, these transforms could mess with your build process.
+  A reduced set should be used with carefully chosen transforms. One contributors
+  succeed to make the demo working on Windows using the following `.babelrc`:
+  ```json
+  {
+    "presets": ["meteor"],
+    "plugins": [
+      "transform-class-properties"
+    ]
+  }
+  ```
+
 ## Package development
 ### Benchmarks
 For profiling the most appropriate libraries or function call a benchmark suite
