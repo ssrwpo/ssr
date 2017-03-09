@@ -3,7 +3,7 @@
 const name = 'ssrwpo:ssr';
 Package.describe({
   name,
-  version: '2.1.5',
+  version: '2.1.6',
   summary: 'SSR - Router with SSR for Node & Meteor',
   git: 'https://github.com/ssr-server/ssr',
   documentation: 'README.md',
@@ -18,7 +18,7 @@ const sharedPkgs = [
 ];
 
 Package.onUse((api) => {
-  api.versionsFrom('1.4.2.6');
+  api.versionsFrom('1.4.3.1');
   api.use(sharedPkgs);
   api.mainModule('shared/utils/peerDependencies.js', ['client', 'server']);
   api.mainModule('client/index.js', 'client');
