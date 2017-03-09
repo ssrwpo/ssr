@@ -32,7 +32,7 @@ logging@1.1.17
 mdg:validated-method@1.1.0
 meteor@1.6.1
 minifier-css@1.2.16
-minifier-js@1.2.17
+minifier-js@1.2.18
 minimongo@1.0.20
 modules@0.7.9
 modules-runtime@0.7.9
@@ -47,10 +47,10 @@ reactive-var@1.0.11
 reload@1.1.11
 retry@1.0.9
 routepolicy@1.0.12
-shell-server@0.2.2
+shell-server@0.2.3
 spacebars@1.0.13
 spacebars-compiler@1.1.0
-ssrwpo:ssr@2.1.5
+ssrwpo:ssr@2.1.6
 ssrwpo:uglifyjs2@0.5.0
 stylus@2.513.9
 tmeasday:check-npm-versions@0.3.1
