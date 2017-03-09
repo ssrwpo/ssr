@@ -221,9 +221,7 @@ const createRouter = (MainApp, {
 
   // Server side routes
   if (webhooks) {
-    Object.keys(webhooks).forEach(webhookRoute =>
-      app.all(webhookRoute, webhooks[webhookRoute]),
-    );
+    webhooks(app);
   }
 };
 

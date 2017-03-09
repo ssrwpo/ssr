@@ -22,7 +22,7 @@ meteor add ssrwpo:ssr
 ### To run the demo based on this repository
 
 ```
-git clone https://github.com/ssr-server/ssr.git && cd ssr
+git clone https://github.com/ssrwpo/ssr.git && cd ssr
 meteor yarn install
 cd demo
 meteor yarn install
