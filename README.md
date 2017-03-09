@@ -20,7 +20,7 @@ meteor add ssrwpo:ssr
 ### To run the demo based on this repository
 
 ```
-git clone https://github.com/ssr-server/ssr.git && cd ssr
+git clone https://github.com/ssrwpo/ssr.git && cd ssr
 meteor yarn install
 cd demo
 meteor yarn install
@@ -88,7 +88,7 @@ You can find more about :
 * [i18next](http://i18next.com/)  
 * [react-i18next](https://github.com/i18next/react-i18next)
 
-Do not need it see [FAQ](https://github.com/ssr-server/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssr-server/ssr/tree/master/demo) app.
+Do not need it see [FAQ](https://github.com/ssrwpo/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssrwpo/ssr/tree/master/demo) app.
 
 ### 404 - Not found route
 `react-router` will always render your application. For identifying a `404`, you
@@ -97,7 +97,7 @@ component is due to a `404`. This is achieved via the `react-router`'s `staticCo
 and by setting into it a `has404` boolean used by the server to identify the route
 as `404` Not found route.
 
-Example: [NotFound](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/NotFound.jsx)
+Example: [NotFound](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/NotFound.jsx)
 
 ## Sever side routes
 ### Pre-made: Robots.txt and Sitemap.xml
@@ -111,8 +111,8 @@ programmatically build your sitemap.xml or robots.txt based on the store content
 
 For example, you can populate your sitemap.xml of dynamic routes generated based
 on the store data. You can see examples of building these functions here:  
-* [Robots.txt](https://github.com/ssr-server/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
-* [Sitemap.xml](https://github.com/ssr-server/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
+* [Robots.txt](https://github.com/ssrwpo/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
+* [Sitemap.xml](https://github.com/ssrwpo/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
 
 For easing the sitemap creation, a convenient tool `sitemapFromArray` accepts an array of object with the following keys:
 
@@ -136,9 +136,9 @@ const sitemapContent = sitemapFromArray([
 ```
 
 ### Your own webhooks or REST API
-By passing a webhooks object, you can build your own server side routes powered
+By passing a webhooks function, you can build your own server side routes powered
 by Express. A small example is setup in the demo:
-[webhooks](https://github.com/ssr-server/ssr/blob/master/demo/server/webhooks.js).
+[webhooks](https://github.com/ssrwpo/ssr/blob/master/demo/server/webhooks.js).
 
 ## Reducers
 ### Platform detection, built-in reducer
@@ -169,8 +169,8 @@ where :
 If you want to build your own `platformTransformers` and `<BrowserStats />`, please
 refer to the following sources for inspiration:
 
-* [`platformTransformers`](https://github.com/ssr-server/ssr/blob/master/server/utils/platformTransformers.js).
-* [`<BrowserStats />`](https://github.com/ssr-server/ssr/blob/master/shared/components/BrowserStats.jsx)
+* [`platformTransformers`](https://github.com/ssrwpo/ssr/blob/master/src/server/utils/platformTransformers.js).
+* [`<BrowserStats />`](https://github.com/ssrwpo/ssr/blob/master/src/shared/components/BrowserStats.jsx)
 
 
 ### Build date, built-in reducer
@@ -179,7 +179,7 @@ to check if a reload is required. The reducer is named `buildDate` and it
 contains a UNIX date.
 
 ### Reducer helpers
-Store creation (see [Reducer](https://github.com/ssr-server/ssr/blob/master/shared/reducers/utils)):
+Store creation (see [Reducer](https://github.com/ssrwpo/ssr/tree/master/src/shared/reducers)):
 
 * Collections store: `createCollectionReducers`
 * Value store: `createValueReducer`
@@ -201,7 +201,7 @@ As this is a common use case for Meteor, we provide an easy way to create
 `mapDispatchToProps` methods for subscribing/subscribing or calling a validated
 method that will synchronize your collection store.
 
-Example: [PubSub](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
+Example: [PubSub](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
 
 #### Via subscribe: `createHandleSubscribe`
 The subscribe / unsubscribe based synchronization helper has the following API:
@@ -247,7 +247,7 @@ const MyComponent = (props) => ( ... );
 export default pure(MyComponent);
 ```
 
-Example: [Performance](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/Performance.jsx)
+Example: [Performance](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/Performance.jsx)
 
 #### `asymetricSsr`
 Same as `pure` apart that it takes one or two component:
@@ -270,7 +270,7 @@ const LoadingStateWithout = asymetricSsr(Loaded);
 ...
 ```
 
-Example: [Asymetric SSR](https://github.com/ssr-server/ssr/blob/master/demo/imports/routes/asymetricSsr.jsx)
+Example: [Asymetric SSR](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/asymetricSsr.jsx)
 
 ## Configuration
 ### Universal logger
