@@ -34,7 +34,6 @@
     "express": "^4.14.2",
     "faker": "^4.1.0",
     "helmet": "^3.5.0",
-    "history": "^4.6.0",
     "i18next": "^7.1.2",
     "i18next-express-middleware": "^1.0.2",
     "i18next-node-remote-backend": "0.0.4",
