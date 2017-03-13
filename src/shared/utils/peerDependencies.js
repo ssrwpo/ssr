@@ -10,7 +10,7 @@ const sharedPkjs = {
   'react-helmet': '4.x',
   'react-i18next': '2.x',
   'react-redux': '5.x',
-  'react-router-dom': '4.0.0-beta.6',
+  'react-router-dom': '4.x',
   redux: '3.x',
 };
 
