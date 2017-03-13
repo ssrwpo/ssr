@@ -13,7 +13,7 @@ To install yarn : https://yarnpkg.com/en/docs/install
 To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
-meteor yarn add react react-dom react-router-dom@4.0.0-beta.3 express helmet \
+meteor yarn add react react-dom react-router-dom express helmet \
   react-helmet winston logatim receptacle useragent redux react-redux moment \
   intl react-intl react-intl-redux lodash actual url-pattern is-retina
 meteor add ssrwpo:ssr

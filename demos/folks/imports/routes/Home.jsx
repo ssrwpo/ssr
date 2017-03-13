@@ -1,5 +1,5 @@
 import moment from 'moment';
-import pick from 'lodash/pick';
+import _ from 'lodash';
 import React, { PropTypes as pt } from 'react';
 import { pure, valueSet } from 'meteor/ssrwpo:ssr';
 import { Accounts } from 'meteor/accounts-base';
@@ -24,7 +24,7 @@ const Home = ({
     <p>Current user language is: <strong>{userLocale}</strong></p>
     <p><em>Build date: {moment(buildDate).format('DD/MM/YYYY HH:mm')}</em></p>
     <p>Define as {retina ? 'Retina display' : 'Normal display'}</p>
-    <p>Devive is considered as mobile? <strong>{mobile ? 'Yes' : 'No'}</strong></p>
+    <p>Device is considered as mobile? <strong>{mobile ? 'Yes' : 'No'}</strong></p>
     <p>Viewport: <code>{viewportWidth}x{viewportHeight}</code></p>
   </div>
 );
@@ -41,7 +41,7 @@ Home.propTypes = {
   viewportWidth: pt.number.isRequired,
   viewportHeight: pt.number.isRequired,
 };
-const mapStateToProps = state => pick(state, [
+const mapStateToProps = state => _.pick(state, [
   'user', 'platform', 'buildDate', 'userLocale',
   'retina', 'mobile', 'viewportWidth', 'viewportHeight',
 ]);
@@ -55,8 +55,4 @@ const mapDispatchToProps = dispatch => ({
     });
   },
 });
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(pure(Home));
+export default connect(mapStateToProps, mapDispatchToProps)(pure(Home));
