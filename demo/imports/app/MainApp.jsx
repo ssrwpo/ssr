@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { pure, BrowserStats } from 'meteor/ssrwpo:ssr';
 // Components
@@ -57,7 +57,7 @@ const MainApp = ({ isLoggedIn }) => {
         <Route exact path="/pubsub" component={PubSub} />
         <Route exact path="/asymetric-ssr" component={AsymetricSsr} />
         <Route path="/topics" component={Topics} />
-        <Route exact path="/about" component={About} />
+        <Route path="/about" component={About} />
         <Route component={NotFound} />
       </Switch>
     </div>
@@ -66,4 +66,4 @@ const MainApp = ({ isLoggedIn }) => {
 MainApp.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
 };
-export default connect((state => ({ isLoggedIn: state.auth })))(pure(MainApp));
+export default withRouter(connect((state => ({ isLoggedIn: state.auth })))(pure(MainApp)));
