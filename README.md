@@ -344,6 +344,10 @@ yarn lint
 
 :warning: All code must be linted before sending any PR. See the [Contributing guide](./CONTRIBUTING.md).
 
+## Artwork
+
+Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
+
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
 - [Egghead's React router 4 - videos tutorials](https://egghead.io/lessons/react-run-the-react-router-v4-examples-with-create-react-app)
