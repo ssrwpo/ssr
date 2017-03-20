@@ -346,6 +346,7 @@ yarn lint
 
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
+- [Egghead's React router 4 - videos tutorials](https://egghead.io/lessons/react-run-the-react-router-v4-examples-with-create-react-app)
 - [Client side logging: logatim](https://github.com/sospedra/logatim)
 - [Server side logging: winston](https://github.com/winstonjs/winston)
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
