@@ -1,5 +1,6 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import moment from 'moment';
+import { Meteor } from 'meteor/meteor';
 /* eslint-enable */
 
 const sitemapDateFormat = 'YYYY-MM-DD';

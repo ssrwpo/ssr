@@ -332,7 +332,7 @@ This project uses [Jest](https://facebook.github.io/jest/) and [chai](http://cha
 # In one-shot mode:
 yarn test
 # In watch mode:
-yarn test -- --watchAll --notify
+yarn test.watch
 ```
 
 ### Linting
