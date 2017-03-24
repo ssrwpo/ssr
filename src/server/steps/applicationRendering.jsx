@@ -5,7 +5,7 @@ import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import { rewind } from 'react-helmet';
+import Helmet from 'react-helmet';
 /* eslint-enable */
 import cache from '../utils/cache';
 import { NOT_FOUND_URL } from '../../shared/constants';
@@ -34,7 +34,7 @@ const applicationRendering = (stepResults) => {
   if (!stepResults.hasUnwantedQueryParameters) {
     // Create and render application main entry point
     bodyMarkup = renderToString(app);
-    helmetHead = rewind();
+    helmetHead = Helmet.renderStatic();
   }
   // Redirect case
   if (routerContext.location && routerContext.location.pathname) {
