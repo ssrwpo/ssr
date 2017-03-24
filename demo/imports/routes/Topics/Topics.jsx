@@ -7,7 +7,7 @@ import Topic from './routes/Topic';
 
 const Topics = ({ match }) => (
   <div>
-    <Helmet title="Topics" />
+    <Helmet><title>Topics</title></Helmet>
     <h2>Topics</h2>
     <ul>
       <li><Link to={`${match.url}/rendering`}>Rendering with React</Link></li>

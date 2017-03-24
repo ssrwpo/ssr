@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 
 const Translations = ({ t }) => (
   <div>
-    <Helmet title="Translations" />
+    <Helmet><title>Translations</title></Helmet>
     <h2>{t('common:hello')}</h2>
     <h2> {t('greetings:world')}</h2>
   </div>

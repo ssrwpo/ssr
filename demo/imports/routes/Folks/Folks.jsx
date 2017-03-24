@@ -3,7 +3,7 @@ import querystring from 'querystring';
 import Helmet from 'react-helmet';
 import { pure } from 'meteor/ssrwpo:ssr';
 import { connect } from 'react-redux';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import Folk from './routes/Folk';
 
 const Nav = ({ folks }) => (
@@ -26,7 +26,7 @@ const Folks = ({ folks, match, location }) => {
     : null;
   return (
     <div>
-      <Helmet title="Folks" />
+      <Helmet><title>Folks</title></Helmet>
       <h2>Folks</h2>
       <Route
         exact path={match.url} render={() => (
