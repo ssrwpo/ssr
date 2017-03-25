@@ -120,9 +120,7 @@ const createRouter = ({
   if (robotsTxt) {
     app.get('/robots.txt', (req, res) => {
       perfStart();
-      const result = robotsTxt(store);
-      if (result) res.end(result);
-      else res.status(500).end();
+      res.end(robotsTxt(store));
       perfStop('/robots.txt');
     });
   }
@@ -131,9 +129,7 @@ const createRouter = ({
   if (sitemapXml) {
     app.get('/sitemap.xml', (req, res) => {
       perfStart();
-      const result = sitemapXml(store);
-      if (result) res.set('Content-Type', 'text/xml').end(result);
-      else res.status(500).end();
+      res.set('Content-Type', 'text/xml').end(sitemapXml(store));
       perfStop('/sitemap.xml');
     });
   }
@@ -142,9 +138,7 @@ const createRouter = ({
   if (humansTxt) {
     app.get('/humans.txt', (req, res) => {
       perfStart();
-      const result = humansTxt(store);
-      if (result) res.end(result);
-      else res.status(500).end();
+      res.end(humansTxt(store));
       perfStop('/humans.txt');
     });
   }
