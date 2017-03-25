@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import Receptacle from 'receptacle';
 /* eslint-enable */
-import logger from './logger';
+import { logger } from '..';
 
 class Cache {
   constructor() {

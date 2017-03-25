@@ -1,5 +1,7 @@
 import { EJSON } from 'meteor/ejson';
+/* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import serialize from 'serialize-javascript';
+/* eslint-enable */
 import { valueSet } from '../../shared/actions/utils';
 // Impure function
 /* eslint-disable no-param-reassign */

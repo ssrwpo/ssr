@@ -1,4 +1,4 @@
-import logger from '../utils/logger';
+import logger from '../../shared/utils/logger';
 import cache from '../utils/cache';
 import nextTick from '../utils/nextTick';
 import { NOT_FOUND_URL } from '../../shared/constants';

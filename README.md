@@ -11,7 +11,7 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 
 ```
 meteor yarn add react react-dom react-router-dom express helmet \
-  react-helmet winston logatim receptacle useragent redux react-redux moment \
+  react-helmet pino receptacle useragent redux react-redux moment \
   i18next i18next-node-remote-backend i18next-xhr-backend react-i18next \
   i18next-express-middleware serialize-javascript lodash actual is-retina
 meteor add ssrwpo:ssr
@@ -257,16 +257,6 @@ const LoadingStateWithout = asymetricSsr(Loaded);
 Example: [Asymetric SSR](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/asymetricSsr.jsx)
 
 ## Configuration
-### Universal logger
-#### Loglevel
-In your Meteor's settings under the `ssr` object, use the `loglevel` key for
-settings the expected log level. Available values:
-
-* **`debug`** Debugging and performance.
-* **`info`** (default) Informations.
-* **`warning`** Warnings and deprecation messages.
-* **`error`** Errors.
-
 ### Recommended Babel configuration
 For optimal results, set your `.babelrc` with the following content:
 ```json
@@ -335,8 +325,7 @@ Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
 - [Egghead's React router 4 - videos tutorials](https://egghead.io/lessons/react-run-the-react-router-v4-examples-with-create-react-app)
-- [Client side logging: logatim](https://github.com/sospedra/logatim)
-- [Server side logging: winston](https://github.com/winstonjs/winston)
+- [Universal logging: pino](https://github.com/pinojs/pino)
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
 - [Protocol: Sitemaps](https://www.sitemaps.org/)
 - [Protocol: Humans.txt](http://humanstxt.org/)

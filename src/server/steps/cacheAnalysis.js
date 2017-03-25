@@ -1,6 +1,6 @@
 import cache from '../utils/cache';
 import { NOT_FOUND_URL } from '../../shared/constants';
-import logger from '../utils/logger';
+import logger from '../../shared/utils/logger';
 
 // Impure function
 /* eslint-disable no-param-reassign */
@@ -34,7 +34,7 @@ const cacheAnalysis = (stepResults) => {
       stepResults.statusCode = 301;
       stepResults.Location = cached.location;
       break;
-    case 404: {
+    case 404:
       // URL is a 404 but we need to check if a NotFound page has been
       //  rendered for this platform
       if (cache.has(platform, NOT_FOUND_URL)) {
@@ -47,7 +47,7 @@ const cacheAnalysis = (stepResults) => {
         //  get rendered and cache
         stepResults.isFromCache = false;
       }
-    } break;
+      break;
     default:
   }
 };

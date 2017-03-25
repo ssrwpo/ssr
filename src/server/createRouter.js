@@ -5,7 +5,7 @@ import i18nMiddleware from 'i18next-express-middleware';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import logger from './utils/logger';
+import logger from '../shared/utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import createAppAndPackageStore from './utils/createAppAndPackageStore';
 import defaultPlatformTransformers from './utils/platformTransformers';
@@ -111,11 +111,9 @@ const createRouter = ({
     transport(stepResults);
     // STEP9 Cache filling if required
     cacheFilling(stepResults);
-
     // End performance cheking
     perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
   });
-
   // Routes for robots.txt payload
   if (robotsTxt) {
     app.get('/robots.txt', (req, res) => {
@@ -124,7 +122,6 @@ const createRouter = ({
       perfStop('/robots.txt');
     });
   }
-
   // Routes for sitemap.xml payload
   if (sitemapXml) {
     app.get('/sitemap.xml', (req, res) => {
@@ -133,7 +130,6 @@ const createRouter = ({
       perfStop('/sitemap.xml');
     });
   }
-
   // Routes for humans.txt payload
   if (humansTxt) {
     app.get('/humans.txt', (req, res) => {
@@ -142,10 +138,8 @@ const createRouter = ({
       perfStop('/humans.txt');
     });
   }
-
   // Server side routes
   if (webhooks) webhooks(app);
-
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
 };

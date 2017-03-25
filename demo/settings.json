@@ -1,7 +1,0 @@
-{
-  "public": {
-    "ssr": {
-      "loglevel": "debug"
-    }
-  }
-}
