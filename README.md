@@ -67,16 +67,16 @@ createRouter({
   appCursors,
   // Optional: A function that returns the content of your robots.txt
   robotsTxt,
-  // Optional: A function that returns the content of your sitemaps.xml
+  // Optional: A function that returns the content of your sitemap.xml
   sitemapXml,
+  // Optional: A function that return the content of you humans.txt
+  humansTxt,
   // Optional: An object with keys on URL with query parameters
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
   // Optional: An i18n config for server side
   i18n,
-  // Optional: A platform transformer (see hereafter), a default transformer is provided
-  platformTransformers,
 });
 logger.info('Router started');
 ```
@@ -100,40 +100,24 @@ as `404` Not found route.
 Example: [NotFound](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/NotFound.jsx)
 
 ## Sever side routes
-### Pre-made: Robots.txt and Sitemap.xml
+### Pre-made: Robots.txt, Humans.txt & Sitemap.xml
 
-To set up your robots.txt, you need to have a key "robotsTxt" inside the object
+To set up your `robots.txt`, you need to have a key `robotsTxt` inside the object
 that you pass to the server-side createRouter function. This key should contain
-a function that returns a string with the desired content of your robots.txt.
-The same principle applies to sitemap.xml, with the key "sitemapXml". The function
-that you pass will receive store as it's first parameter. This allows you to
-programmatically build your sitemap.xml or robots.txt based on the store contents.  
+a function that returns a string with the desired content of your `robots.txt`.
+The function receives the store as its first arguments. This allows you to
+programmatically build your `robots.txt` based on the store contents.  
+
+The same principle applies to `humans.txt` and `sitemap.xml`,
+with the key `humansTxt` and `sitemapXml` respectively.
 
 For example, you can populate your sitemap.xml of dynamic routes generated based
 on the store data. You can see examples of building these functions here:  
-* [Robots.txt](https://github.com/ssrwpo/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
-* [Sitemap.xml](https://github.com/ssrwpo/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
+* [`robots.txt`](https://github.com/ssrwpo/ssr/blob/master/demo/server/robotsTxt.js)  
+* [`sitemap.xml`](https://github.com/ssrwpo/ssr/blob/master/demo/server/sitemapXml.js)
+* [`humans.txt`](https://github.com/ssrwpo/ssr/blob/master/demo/server/humansTxt.js)
 
-For easing the sitemap creation, a convenient tool `sitemapFromArray` accepts an array of object with the following keys:
-
-* `slug`: A mandatory relative URL to a page
-* `lastmod`: An optional `Date`
-* `changefreq`: An optional frequency of robot's revisiting with the following allowed values: `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly`, `never`.
-* `priority`: An optional priority when search engine are displaying your map. When none provided, robots are using 0.5. This value range from 0 to 1.
-
-For using it:
-```js
-// Server side only
-import { sitemapFromArray } from 'meteor/ssrwpo:ssr';
-...
-const sitemapContent = sitemapFromArray([
-  // The home
-  { slug: '', lastmod: new Date(), priority: 1 },
-  // A frequently changed news page
-  { slug: 'news', changefreq: 'hourly' },
-  // ...
-]);
-```
+> **NOTE** For `sitemap.xml` we strongly recommend [sitemap.js](https://github.com/ekalinin/sitemap.js).
 
 ### Your own webhooks or REST API
 By passing a webhooks function, you can build your own server side routes powered
@@ -355,6 +339,7 @@ Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
 - [Server side logging: winston](https://github.com/winstonjs/winston)
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
 - [Protocol: Sitemaps](https://www.sitemaps.org/)
+- [Protocol: Humans.txt](http://humanstxt.org/)
 - [Server side security: helmet](https://github.com/helmetjs/helmet)
 - [Server side performance profiling: benchmark](https://benchmarkjs.com/)
 - [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)

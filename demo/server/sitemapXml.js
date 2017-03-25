@@ -1,27 +1,33 @@
-import { sitemapFromArray } from 'meteor/ssrwpo:ssr';
+import { Meteor } from 'meteor/meteor';
+import sm from 'sitemap';
 
-const staticRouteContents = [
-  { slug: '', lastmod: new Date(), priority: 1 },
-  { slug: 'folks', lastmod: new Date(), priority: 1 },
-  { slug: 'places' },
-  { slug: 'topics', changefreq: 'daily' },
-  { slug: 'topics/rendering', changefreq: 'weekly' },
-  { slug: 'topics/components', changefreq: 'weekly' },
-  { slug: 'topics/props-v-state', changefreq: 'weekly' },
-  { slug: 'about', priority: 0.2 },
-];
+const sitemap = sm.createSitemap({
+  hostname: Meteor.absoluteUrl(),
+  cacheTime: 1000 * 60 * 60 * 24, // 24 hours
+  urls: [
+    { url: '', lastmod: new Date(), priority: 1 },
+    { url: 'folks', lastmod: new Date(), priority: 1 },
+    { url: 'places' },
+    { url: 'topics', changefreq: 'daily' },
+    { url: 'topics/rendering', changefreq: 'weekly' },
+    { url: 'topics/components', changefreq: 'weekly' },
+    { url: 'topics/props-v-state', changefreq: 'weekly' },
+    { url: 'about', priority: 0.2 },
+  ],
+});
 
-const dynamicRouteContents = store =>
-  store.getState().Folks.map(folk => ({
-    slug: `folks?folkId=${folk.id}`,
-    lastmod: folk.lastMod,
-    priority: 0.7,
+let dynamicRoutes = null;
+
+const sitemapXml = (store) => {
+  // Remove former dynamic routes
+  if (dynamicRoutes) dynamicRoutes.forEach(r => sitemap.del(r.url));
+  // Determine dynamic routes based on current store value
+  dynamicRoutes = store.getState().Folks.map(folk => ({
+    url: `folks?folkId=${folk.id}`, lastmod: new Date(folk.lastMod), priority: 0.7,
   }));
-
-const sitemapXml = store =>
-  sitemapFromArray([
-    ...staticRouteContents,
-    ...dynamicRouteContents(store),
-  ]);
+  // Add dynamic routes
+  dynamicRoutes.forEach(r => sitemap.add(r));
+  return sitemap.toString();
+};
 
 export default sitemapXml;

@@ -1,7 +1,6 @@
 import '../shared/utils/peerDependencies';
 import { createRouter, debugLastRequest, debugLastResponse } from './createRouter';
 import logger from './utils/logger';
-import sitemapFromArray from './utils/sitemaps';
 import pure from '../shared/hoc/pure';
 import asymetricSsr from '../shared/hoc/asymetricSsr';
 import {
@@ -27,8 +26,6 @@ export {
   createRouter,
   // Isomorphic logger
   logger,
-  // Sitemap helper, server side only
-  sitemapFromArray,
   // HOC
   pure,
   asymetricSsr,

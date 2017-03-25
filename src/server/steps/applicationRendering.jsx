@@ -42,7 +42,7 @@ const applicationRendering = (stepResults) => {
     stepResults.Location = routerContext.location.pathname;
     return;
   }
-  // Not found, check if re-render for <Miss> component
+  // Not found
   if (stepResults.hasUnwantedQueryParameters || routerContext.has404) {
     stepResults.statusCode = 404;
     // Check if a former not found page has been cached
@@ -62,6 +62,9 @@ const applicationRendering = (stepResults) => {
     // Create head
     stepResults.head = ['title', 'meta', 'link', 'script']
       .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
+    if (stepResults.humansTxt) {
+      stepResults.head += '<link rel="author" href="humans.txt" />';
+    }
   }
   if (stepResults.statusCode === 200 && stepResults.hash === null) {
     stepResults.hash = crypto.createHash('md5')

@@ -40,6 +40,7 @@ const createRouter = ({
   appCursors = {},
   robotsTxt,
   sitemapXml,
+  humansTxt,
   urlQueryParameters,
   webhooks,
   ServerRouter,
@@ -49,17 +50,13 @@ const createRouter = ({
   // Create a redux store
   const store = createAppAndPackageStore(appReducers, appCursors, platformTransformers);
   // Set store subscription
-  if (storeSubscription) {
-    store.subscribe(() => storeSubscription(store));
-  }
+  if (storeSubscription) store.subscribe(() => storeSubscription(store));
   // Create an Express server
   const app = express();
   // Secure Express
   app.use(helmet());
   // express middleware to handle i18n
-  if (i18n) {
-    app.use(i18nMiddleware.handle(i18n));
-  }
+  if (i18n) app.use(i18nMiddleware.handle(i18n));
   app
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
@@ -87,10 +84,11 @@ const createRouter = ({
       store,
       contextMarkup: null,
       MainApp,
-      // used for localization
+      // Used for localization
       i18n,
       i18nOptions: null,
       platformTransformers,
+      humansTxt,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,
     };
@@ -120,11 +118,11 @@ const createRouter = ({
 
   // Routes for robots.txt payload
   if (robotsTxt) {
-    app
-    .route('/robots.txt')
-    .get((req, res) => {
+    app.get('/robots.txt', (req, res) => {
       perfStart();
-      res.end(robotsTxt());
+      const result = robotsTxt(store);
+      if (result) res.end(result);
+      else res.status(500).end();
       perfStop('/robots.txt');
     });
   }
@@ -133,16 +131,26 @@ const createRouter = ({
   if (sitemapXml) {
     app.get('/sitemap.xml', (req, res) => {
       perfStart();
-      res.set('Content-Type', 'text/xml');
-      res.end(sitemapXml(store));
+      const result = sitemapXml(store);
+      if (result) res.set('Content-Type', 'text/xml').end(result);
+      else res.status(500).end();
       perfStop('/sitemap.xml');
     });
   }
 
-  // Server side routes
-  if (webhooks) {
-    webhooks(app);
+  // Routes for humans.txt payload
+  if (humansTxt) {
+    app.get('/humans.txt', (req, res) => {
+      perfStart();
+      const result = humansTxt(store);
+      if (result) res.end(result);
+      else res.status(500).end();
+      perfStop('/humans.txt');
+    });
   }
+
+  // Server side routes
+  if (webhooks) webhooks(app);
 
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
