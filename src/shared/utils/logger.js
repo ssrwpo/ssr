@@ -2,6 +2,6 @@
 import pino from 'pino';
 /* eslint-enable */
 
-const logger = pino();
+const logger = pino({ level: 'debug', prettyPrint: true });
 
 export default logger;
