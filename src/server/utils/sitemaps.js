@@ -17,15 +17,25 @@ const urlsetStart = (hasImages, hasVideos, hasNews) => (
 const urlsetStop = '</urlset>';
 /* eslint-enable */
 
+/* eslint-disable prefer-template, camelcase */
+const imageLoc = ({ loc, caption, geo_location, title, license }) =>
+  '<image:image>' +
+    `<image:loc>${loc}</image:loc>` +
+    (caption ? `<image:caption>${caption}</image:caption>` : '') +
+    (geo_location ? `<image:geo_location>${geo_location}</image:geo_location>` : '') +
+    (title ? `<image:title>${title}</image:title>` : '') +
+    (license ? `<image:license>${license}</image:license>` : '') +
+  '</image:image>';
+
 // changefreq can be: always, hourly, daily, weekly, monthly, yearly, never
 // priority: 0.5 when none, ranging from 0 to 1
-/* eslint-disable prefer-template */
-const urlLoc = ({ slug, lastmod, changefreq, priority }) =>
+const urlLoc = ({ slug, lastmod, changefreq, priority, images }) =>
   '<url>' +
     `<loc>${Meteor.absoluteUrl()}${slug}</loc>` +
     (lastmod ? `<lastmod>${moment(lastmod).format(sitemapDateFormat)}</lastmod>` : '') +
     (changefreq ? `<changefreq>${changefreq}</changefreq>` : '') +
     (priority ? `<priority>${priority}</priority>` : '') +
+    (images ? images.map(i => imageLoc(i)).join('') : '') +
   '</url>';
 /* eslint-enable */
 
