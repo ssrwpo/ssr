@@ -83,6 +83,11 @@ createRouter({
 logger.info('Router started');
 ```
 
+### Universal logging
+By default this package logs for this package a muted. You can add asymetric
+logging using an universal logger like [pino](https://github.com/pinojs/pino)
+using the `setLogger` function.
+
 ### Localization and i18n
 We use i18next for server side rendered localization. It gets the user browser language and serves the right language with a default one(in case you don't serve for users one).
 

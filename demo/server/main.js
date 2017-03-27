@@ -1,4 +1,5 @@
-import { createRouter, logger } from 'meteor/ssrwpo:ssr';
+import pino from 'pino';
+import { createRouter, logger, setLogger } from 'meteor/ssrwpo:ssr';
 import MainApp from '/imports/app/MainApp';
 import * as appReducers from '/imports/reducers';
 // Fixtures
@@ -22,6 +23,9 @@ import humansTxt from './humansTxt';
 import urlQueryParameters from './urlQueryParameters';
 // Webhooks
 import webhooks from './webhooks';
+
+// Set logger
+setLogger(pino({ level: 'debug', pretty: true }));
 
 const appCursors = {
   Folks: Folks.find({}, { sort: { order: -1 } }),

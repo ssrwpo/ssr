@@ -1,6 +1,6 @@
 import '../shared/utils/peerDependencies';
 import { createRouter, debugLastRequest, debugLastResponse } from './createRouter';
-import logger from '../shared/utils/logger';
+import logger, { setLogger } from '../shared/utils/logger';
 import pure from '../shared/hoc/pure';
 import asymetricSsr from '../shared/hoc/asymetricSsr';
 import {
@@ -26,6 +26,7 @@ export {
   createRouter,
   // Isomorphic logger
   logger,
+  setLogger,
   // HOC
   pure,
   asymetricSsr,

@@ -1,7 +1,9 @@
-/* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
-import pino from 'pino';
-/* eslint-enable */
+// eslint-disable-next-line import/no-mutable-exports
+let logger = { debug() {}, info() {}, warn() {}, error() {} };
 
-const logger = pino({ level: 'debug', extreme: true });
+const setLogger = customLogger => (logger = customLogger);
 
 export default logger;
+export {
+  setLogger,
+};

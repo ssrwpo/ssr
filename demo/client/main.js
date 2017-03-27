@@ -1,4 +1,5 @@
-import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
+import pino from 'pino';
+import { createRouter, logger, setLogger, getStore } from 'meteor/ssrwpo:ssr';
 import * as appReducers from '/imports/reducers';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -7,6 +8,9 @@ import MainApp from '/imports/app/MainApp';
 import storeSubscription from '/imports/store';
 // i18n
 import i18n from '/imports/i18n/i18nClient';
+
+// Set logger
+setLogger(pino({ level: 'debug' }));
 
 // Middlewares
 const appMiddlewares = [thunk, promise];
