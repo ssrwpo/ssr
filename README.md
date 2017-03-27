@@ -328,7 +328,7 @@ yarn lint
 
 ## Artwork
 
-Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
+Logo created by [Alexandre Tabbuso](https://www.facebook.com/TabbusoAlexandre/).
 
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
