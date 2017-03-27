@@ -65,6 +65,10 @@ const applicationRendering = (stepResults) => {
       removeStyleLinkTypeAttributes: true,
       collapseWhitespace: true,
     });
+    // Load Meteor's bundle asyncrhoneously only in production
+    if (process.env.NODE_ENV === 'production') {
+      stepResults.html = stepResults.html.replace(/<script src/g, '<script async src');
+    }
   }
 };
 export default applicationRendering;

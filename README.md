@@ -356,3 +356,7 @@ Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
 - [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers)
 - [Progressive Web Apps With React](https://addyosmani.com/blog/progressive-web-apps-with-react/)
 - [Discussion on main thread at client side initial rendering](https://github.com/developit/preact/issues/407)
+
+## Sites using this engine in production
+
+- [Panoply City](https://www.panoplycity.com/)

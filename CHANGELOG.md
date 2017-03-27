@@ -6,4 +6,5 @@
 * Replace logatim & winston with pino for universal logging,
   remove any logger dependency: `yarn remove logatim winston; yarn add pino`.
 * Fasten hash calculations using only content from store & WebApp.clientHash.
-* HTML minification: `yarn add html-minifier`
+* HTML minification: `yarn add html-minifier`.
+* In production, set `<script>` as `async` for all external scripts.
