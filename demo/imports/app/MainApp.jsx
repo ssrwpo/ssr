@@ -30,12 +30,12 @@ const MainApp = ({ isLoggedIn }) => {
     <div>
       <Helmet>
         <title>SSR</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=5A5Ga2LR2P" />
-        <link rel="icon" type="image/png" href="/favicon-32x32.png?v=5A5Ga2LR2P" sizes="32x32" />
-        <link rel="icon" type="image/png" href="/favicon-16x16.png?v=5A5Ga2LR2P" sizes="16x16" />
-        <link rel="manifest" href="/manifest.json?v=5A5Ga2LR2P" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=5A5Ga2LR2P" color="#00a2d4" />
-        <link rel="shortcut icon" href="/favicon.ico?v=5A5Ga2LR2P" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
+        <link rel="icon" type="image/png" href="/favicon-32x32.png?v=2" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/favicon-16x16.png?v=2" sizes="16x16" />
+        <link rel="manifest" href="/_manifest.json?v=2" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#00a2d4" />
+        <link rel="shortcut icon" href="/favicon.ico?v=2" />
         <meta name="apple-mobile-web-app-title" content="SSR" />
         <meta name="application-name" content="SSR" />
         <meta name="theme-color" content="#ffffff" />
