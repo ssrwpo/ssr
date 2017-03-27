@@ -20,9 +20,7 @@ let asymetricSsr = (Component, ServerComponent = NoDisplay) =>
     }
     render() {
       const { mounted } = this.state;
-      if (mounted) {
-        return <Component {...this.props} />;
-      }
+      if (mounted) return <Component {...this.props} />;
       return <ServerComponent {...this.props} />;
     }
   };

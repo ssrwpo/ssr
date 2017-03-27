@@ -22,16 +22,12 @@ class Cache {
     this.receptacle.set(url, { type: 404 }, Cache.DEFAULT_TTL);
   }
   has(platform, url) {
-    if (this.receptacle.has(this.getKey(platform, url))) {
-      return true;
-    }
+    if (this.receptacle.has(this.getKey(platform, url))) return true;
     return this.receptacle.has(url);
   }
   get(platform, url) {
     const res = this.receptacle.get(this.getKey(platform, url));
-    if (res) {
-      return res;
-    }
+    if (res) return res;
     return this.receptacle.get(url);
   }
   setLanguage(lng) {

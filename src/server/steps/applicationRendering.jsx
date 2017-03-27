@@ -13,9 +13,7 @@ import { NOT_FOUND_URL } from '../../shared/constants';
 // Impure function
 /* eslint-disable no-param-reassign */
 const applicationRendering = (stepResults) => {
-  if (stepResults.isFromCache) {
-    return;
-  }
+  if (stepResults.isFromCache) return;
   let helmetHead = null;
   let bodyMarkup = null;
   const { MainApp, i18nOptions } = stepResults;
