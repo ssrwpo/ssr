@@ -86,7 +86,7 @@ logger.info('Router started');
 ### Universal logging
 By default this package logs for this package a muted. You can add asymetric
 logging using an universal logger like [pino](https://github.com/pinojs/pino)
-using the `setLogger` function. The logger requires the following methods:
+using the `logger.set` method. The logger requires the following methods:
 `debug`, `info`, `warn` & `error` which are used within this package.
 
 ### Localization and i18n

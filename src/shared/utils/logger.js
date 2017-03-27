@@ -1,9 +1,6 @@
-// eslint-disable-next-line import/no-mutable-exports
-let logger = { debug() {}, info() {}, warn() {}, error() {} };
-
-const setLogger = customLogger => (logger = customLogger);
+const logger = { debug() {}, info() {}, warn() {}, error() {} };
+const loggerFct = Object.keys(logger);
+logger.set = customLogger =>
+  loggerFct.forEach(key => (logger[key] = customLogger[key].bind(customLogger)));
 
 export default logger;
-export {
-  setLogger,
-};

@@ -1,5 +1,5 @@
 import pino from 'pino';
-import { createRouter, logger, setLogger, getStore } from 'meteor/ssrwpo:ssr';
+import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
 import * as appReducers from '/imports/reducers';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -10,7 +10,11 @@ import storeSubscription from '/imports/store';
 import i18n from '/imports/i18n/i18nClient';
 
 // Set logger
-setLogger(pino({ level: 'debug' }));
+let LOG_LEVEL = 'error';
+if (process.env.NODE_ENV !== 'production') {
+  LOG_LEVEL = 'debug';
+}
+logger.set(pino({ level: LOG_LEVEL }));
 
 // Middlewares
 const appMiddlewares = [thunk, promise];
