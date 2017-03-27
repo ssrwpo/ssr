@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Helmet from 'react-helmet';
 import { Route, Switch, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { pure, BrowserStats } from 'meteor/ssrwpo:ssr';
@@ -27,6 +28,18 @@ const MainApp = ({ isLoggedIn }) => {
   };
   return (
     <div>
+      <Helmet>
+        <title>SSR</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=5A5Ga2LR2P" />
+        <link rel="icon" type="image/png" href="/favicon-32x32.png?v=5A5Ga2LR2P" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/favicon-16x16.png?v=5A5Ga2LR2P" sizes="16x16" />
+        <link rel="manifest" href="/manifest.json?v=5A5Ga2LR2P" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=5A5Ga2LR2P" color="#00a2d4" />
+        <link rel="shortcut icon" href="/favicon.ico?v=5A5Ga2LR2P" />
+        <meta name="apple-mobile-web-app-title" content="SSR" />
+        <meta name="application-name" content="SSR" />
+        <meta name="theme-color" content="#ffffff" />
+      </Helmet>
       <TransitionLogger />
       <BrowserStats />
       <ul style={styles.ul}>

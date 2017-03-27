@@ -8,16 +8,14 @@ import storeSubscription from '/imports/store';
 // i18n
 import i18n from '/imports/i18n/i18nClient';
 
-const appMiddlewares = [
-  thunk,
-  promise,
-  // Middleware for logs
-  createLogger({
-    actionTransformer(action) {
-      return { ...action, type: String(action.type) };
-    },
-  }),
-];
+// Middlewares
+const appMiddlewares = [thunk, promise];
+if (process.env.NODE_ENV !== 'production') {
+  // Logs in development
+  appMiddlewares.push(createLogger({
+    actionTransformer(action) { return { ...action, type: String(action.type) }; },
+  }));
+}
 
 const appCursorNames = ['Folks', 'Places', 'PubSub'];
 
