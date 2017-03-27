@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import Receptacle from 'receptacle';
 /* eslint-enable */
-import logger from './logger';
+import { logger } from '..';
 
 class Cache {
   constructor() {
@@ -12,10 +12,10 @@ class Cache {
     return `${platform}-${userLocale}-${url}`;
   }
 
-  setPage(platform, userLocale, url, head, body, hash, type = 200) {
+  setPage(platform, userLocale, url, html, hash, type = 200) {
     const key = this.getKey(platform, url, userLocale);
     logger.debug('cache page:', key);
-    this.receptacle.set(key, { type, head, body, hash }, Cache.DEFAULT_TTL);
+    this.receptacle.set(key, { type, html, hash }, Cache.DEFAULT_TTL);
   }
 
   setRedirect(url, location) {

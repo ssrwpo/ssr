@@ -4,7 +4,7 @@ import { pure } from 'meteor/ssrwpo:ssr';
 
 const Topic = ({ match }) => (
   <div>
-    <Helmet title={`Topics - ${match.params.topicId}`} />
+    <Helmet><title>{`Topics - ${match.params.topicId}`}</title></Helmet>
     <h3>{match.params.topicId}</h3>
   </div>
 );

@@ -1,6 +1,6 @@
 import '../shared/utils/peerDependencies';
 import { createRouter, debugLastRequest, debugLastResponse } from './createRouter';
-import logger from './utils/logger';
+import logger from '../shared/utils/logger';
 import { resetSSRCache } from './utils/cache';
 import sitemapFromArray from './utils/sitemaps';
 import pure from '../shared/hoc/pure';
@@ -33,8 +33,6 @@ export {
   resetSSRCache,
   // Isomorphic logger
   logger,
-  // Sitemap helper, server side only
-  sitemapFromArray,
   // HOC
   pure,
   asymetricSsr,

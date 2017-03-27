@@ -10,7 +10,7 @@ const NotFound = ({ location }, { router }) => {
   }
   return (
     <div>
-      <Helmet title="Not found" />
+      <Helmet><title>Not found</title></Helmet>
       <h2>Whoops</h2>
       <p>Sorry but {location.pathname} didn’t match any pages</p>
     </div>

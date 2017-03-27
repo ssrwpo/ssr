@@ -10,7 +10,7 @@ import {
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import logger from './utils/logger';
+import logger from '../shared/utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
@@ -69,6 +69,7 @@ const createRouter = (MainApp, {
   ServerRouter = DefaultServerRouter,
   createServerRenderContext = defaultCreateServerRenderContext,
   localization,
+  humansTxt = null,
   robotsTxt = null,
   routes = {},
   sitemapXml = null,
@@ -107,12 +108,11 @@ const createRouter = (MainApp, {
         MainApp,
         // Used for circumventing issues on checkNpmDependencies
         ServerRouter,
-        body: null,
         contextMarkup: null,
         createServerRenderContext,
         hasUnwantedQueryParameters: false,
         hash: null,
-        head: null,
+        html: null,
         localization,
         isFromCache: false,
         is404fromCache: false,
@@ -193,18 +193,14 @@ const createRouter = (MainApp, {
       new Fiber(() => callback.call()).run();
     }
   });
-
   // Routes for robots.txt payload
   if (robotsTxt) {
-    app
-    .route('/robots.txt')
-    .get((req, res) => {
+    app.get('/robots.txt', (req, res) => {
       perfStart();
-      res.end(robotsTxt());
+      res.end(robotsTxt(store));
       perfStop('/robots.txt');
     });
   }
-
   // Routes for sitemap.xml payload
   if (sitemapXml) {
     app.get('/sitemap.xml', (req, res) => {
@@ -218,10 +214,13 @@ const createRouter = (MainApp, {
       perfStop('/sitemap.xml');
     });
   }
-
-  // Server side routes
-  if (webhooks) {
-    webhooks(app);
+  // Routes for humans.txt payload
+  if (humansTxt) {
+    app.get('/humans.txt', (req, res) => {
+      perfStart();
+      res.end(humansTxt(stepResults.store));
+      perfStop('/humans.txt');
+    });
   }
 };
 

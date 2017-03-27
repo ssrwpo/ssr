@@ -4,7 +4,7 @@ import { pure } from 'meteor/ssrwpo:ssr';
 
 const Protected = () => (
   <div>
-    <Helmet title="Protected" />
+    <Helmet><title>Protected</title></Helmet>
     <h2>Protected</h2>
   </div>
 );

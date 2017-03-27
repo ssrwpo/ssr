@@ -13,7 +13,7 @@ const Home = ({
   retina, mobile, viewportWidth, viewportHeight,
 }) => (
   <div>
-    <Helmet title="Home" />
+    <Helmet><title>Home</title></Helmet>
     <h2>Home</h2>
     {/* Programmatic transitions */}
     <TransitionButton href="/topics">Go to topics</TransitionButton>

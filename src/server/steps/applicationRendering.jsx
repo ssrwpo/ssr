@@ -1,20 +1,19 @@
-import crypto from 'crypto';
+import { WebApp, WebAppInternals } from 'meteor/webapp';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import SSRCaching from 'electrode-react-ssr-caching';
+import htmlMinifier from 'html-minifier';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-intl-redux';
-import { rewind } from 'react-helmet';
+import Helmet from 'react-helmet';
 import logger from '../utils/logger';
 /* eslint-enable */
 
 // Impure function
 /* eslint-disable no-param-reassign */
 const applicationRendering = (stepResults) => {
-  if (stepResults.isFromCache) {
-    return;
-  }
+  if (stepResults.isFromCache) return;
   let helmetHead = null;
   let bodyMarkup = null;
   const {
@@ -46,7 +45,7 @@ const applicationRendering = (stepResults) => {
   if (!hasUnwantedQueryParameters) {
     // Create and render application main entry point
     bodyMarkup = renderToString(app);
-    helmetHead = rewind();
+    helmetHead = Helmet.renderStatic();
   }
 
   if (stepResults.componentCacheConfig && process.env.NODE_ENV === 'production') {
@@ -72,15 +71,25 @@ const applicationRendering = (stepResults) => {
     // }
   }
 
-  if (stepResults.body === null) {
+  if (stepResults.html === null) {
     // Create body
-    stepResults.body = `<div id="react">${bodyMarkup}</div>${contextMarkup}`;
-  }
-
-  if (stepResults.head === null) {
+    stepResults.req.dynamicBody = `<div id="react">${bodyMarkup}</div>${contextMarkup}`;
     // Create head
-    stepResults.head = ['title', 'meta', 'link', 'script']
+    stepResults.req.dynamicHead = ['title', 'meta', 'link', 'script']
       .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
+    // Add humans.txt link, if required
+    if (stepResults.humansTxt) stepResults.req.dynamicHead += '<link rel="author" href="humans.txt" />';
+    // Create minified HTML payload
+    const meteorHtml = WebAppInternals.getBoilerplate(stepResults.req, WebApp.defaultArch);
+    stepResults.html = htmlMinifier.minify(meteorHtml, {
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      collapseWhitespace: true,
+    });
+    // Load Meteor's bundle asyncrhoneously only in production
+    if (process.env.NODE_ENV === 'production') {
+      stepResults.html = stepResults.html.replace(/<script src/g, '<script async src');
+    }
   }
 
   if (stepResults.statusCode === 200 && stepResults.hash === null) {

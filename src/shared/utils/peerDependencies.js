@@ -7,7 +7,7 @@ const sharedPkjs = {
   moment: '2.x',
   react: '15.x',
   'react-dom': '15.x',
-  'react-helmet': '4.x',
+  'react-helmet': '5.x',
   'react-intl': '2.x',
   'react-intl-redux': '0.x',
   'react-redux': '5.x',
@@ -16,9 +16,7 @@ const sharedPkjs = {
 };
 
 if (Meteor.isClient) {
-  checkNpmVersions(Object.assign({}, sharedPkjs, {
-    logatim: '0.x',
-  }), 'ssrwpo:ssr');
+  checkNpmVersions(sharedPkjs, 'ssrwpo:ssr');
 }
 if (Meteor.isServer) {
   checkNpmVersions(Object.assign({}, sharedPkjs, {
@@ -29,7 +27,6 @@ if (Meteor.isServer) {
     receptacle: '1.x',
     'serialize-javascript': '1.x',
     'url-pattern': '1.x',
-    useragent: '2.1.x',
-    winston: '2.x',
+    useragent: '2.x',
   }), 'ssrwpo:ssr');
 }

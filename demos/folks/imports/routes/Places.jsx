@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 const Places = ({ places }) => (
   <div>
-    <Helmet title="Places" />
+    <Helmet><title>Places</title></Helmet>
     <h2>Places</h2>
     {
       places.map(place => <p key={place.id}>{place.address}</p>)

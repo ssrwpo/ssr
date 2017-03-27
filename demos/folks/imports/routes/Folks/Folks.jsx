@@ -29,7 +29,7 @@ const Folks = ({ folks, match, location }) => {
   const folk = folkId && folks.find(item => item.id === folkId);
   return (
     <div>
-      <Helmet title="Folks" />
+      <Helmet><title>Folks</title></Helmet>
       <h2>Folks</h2>
       <Route
         exact path={match.url} render={() => (

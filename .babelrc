@@ -4,6 +4,11 @@
     "transform-class-properties",
     "transform-react-constant-elements",
     "transform-react-inline-elements",
-    "transform-react-remove-prop-types"
+    "transform-react-remove-prop-types",
+    ["module-resolver", {
+      "alias": {
+        "meteor": "./jest"
+      }
+    }]
   ]
 }

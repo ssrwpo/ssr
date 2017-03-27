@@ -1,5 +1,7 @@
 # SSR - Router with SSR for Node & Meteor
 
+![logo](https://github.com/ssrwpo/ssr/tree/master/doc/logo_small.png)
+
 Server side rendering with Express, react-router-4 & redux for Meteor.
 
 ## Project documentation
@@ -13,7 +15,7 @@ To install yarn : https://yarnpkg.com/en/docs/install
 To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
-meteor yarn add react react-dom react-router-dom express helmet \
+meteor yarn add react react-dom react-router-dom express helmet html-minifier \ \
   react-helmet winston logatim receptacle useragent redux react-redux moment \
   intl react-intl react-intl-redux lodash actual url-pattern is-retina
 meteor add ssrwpo:ssr
@@ -53,7 +55,7 @@ This project uses [Jest](https://facebook.github.io/jest/) and [chai](http://cha
 # In one-shot mode:
 yarn test
 # In watch mode:
-yarn test -- --watchAll --notify
+yarn test.watch
 ```
 
 ### Linting
@@ -65,12 +67,17 @@ yarn lint
 
 :warning: All code must be linted before sending any PR. See the [Contributing guide](./CONTRIBUTING.md).
 
+## Artwork
+
+Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
+
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
-- [Client side logging: logatim](https://github.com/sospedra/logatim)
-- [Server side logging: winston](https://github.com/winstonjs/winston)
+- [Egghead's React router 4 - videos tutorials](https://egghead.io/lessons/react-run-the-react-router-v4-examples-with-create-react-app)
+- [Universal logging: pino](https://github.com/pinojs/pino)
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
 - [Protocol: Sitemaps](https://www.sitemaps.org/)
+- [Protocol: Humans.txt](http://humanstxt.org/)
 - [Server side security: helmet](https://github.com/helmetjs/helmet)
 - [Server side performance profiling: benchmark](https://benchmarkjs.com/)
 - [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)
@@ -90,3 +97,7 @@ yarn lint
 - [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers)
 - [Progressive Web Apps With React](https://addyosmani.com/blog/progressive-web-apps-with-react/)
 - [Discussion on main thread at client side initial rendering](https://github.com/developit/preact/issues/407)
+
+## Sites using this engine in production
+
+- [Panoply City](https://www.panoplycity.com/)
