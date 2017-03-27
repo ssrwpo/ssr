@@ -1,17 +1,17 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import Receptacle from 'receptacle';
 /* eslint-enable */
-import logger from './logger';
+import { logger } from '..';
 
 class Cache {
   constructor() {
     this.receptacle = new Receptacle({ max: Cache.MAX_ITEMS });
   }
   getKey(platform, url) { return `${platform}-${url}`; }
-  setPage(platform, url, head, body, hash) {
+  setPage(platform, url, html, hash) {
     const key = this.getKey(platform, url);
     logger.debug('cache page:', key);
-    this.receptacle.set(key, { type: 200, head, body, hash }, Cache.DEFAULT_TTL);
+    this.receptacle.set(key, { type: 200, html, hash }, Cache.DEFAULT_TTL);
   }
   setRedirect(url, location) {
     logger.debug('cache redirect:', url);
@@ -22,16 +22,12 @@ class Cache {
     this.receptacle.set(url, { type: 404 }, Cache.DEFAULT_TTL);
   }
   has(platform, url) {
-    if (this.receptacle.has(this.getKey(platform, url))) {
-      return true;
-    }
+    if (this.receptacle.has(this.getKey(platform, url))) return true;
     return this.receptacle.has(url);
   }
   get(platform, url) {
     const res = this.receptacle.get(this.getKey(platform, url));
-    if (res) {
-      return res;
-    }
+    if (res) return res;
     return this.receptacle.get(url);
   }
   setLanguage(lng) {

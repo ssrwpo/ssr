@@ -72,7 +72,7 @@ class PubSub extends PureComponent {
     } = this.props;
     return (
       <div>
-        <Helmet title="Reactive cases" />
+        <Helmet><title>Reactive cases</title></Helmet>
         <h2>Reactive cases</h2>
         <hr />
         <button

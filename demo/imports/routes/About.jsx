@@ -5,7 +5,7 @@ import { pure } from 'meteor/ssrwpo:ssr';
 
 const About = ({ platform }) => (
   <div>
-    <Helmet title="About" />
+    <Helmet><title>About</title></Helmet>
     <h2>About</h2>
     <p>Running on <strong>{platform}</strong> platform</p>
   </div>

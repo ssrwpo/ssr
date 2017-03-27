@@ -12,7 +12,7 @@ Item = pure(Item);
 
 const Performance = ({ perfItems, toggle }) => (
   <div>
-    <Helmet title="Performance" />
+    <Helmet><title>Performance</title></Helmet>
     <h2>Performance</h2>
     <p>Nb items: {perfItems} <button onClick={() => toggle(perfItems)}>Toggle</button></p>
     <ul>

@@ -1,5 +1,7 @@
 # SSR - Router with SSR for Node & Meteor
 
+![logo](https://github.com/ssrwpo/ssr/tree/master/doc/logo_small.png)
+
 Server side rendering with Express, react-router-4 & redux for Meteor.
 
 ## Usage
@@ -10,8 +12,8 @@ To install yarn : https://yarnpkg.com/en/docs/install
 To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
-meteor yarn add react react-dom react-router-dom express helmet \
-  react-helmet winston logatim receptacle useragent redux react-redux moment \
+meteor yarn add react react-dom react-router-dom express helmet html-minifier \
+  react-helmet pino receptacle useragent redux react-redux moment \
   i18next i18next-node-remote-backend i18next-xhr-backend react-i18next \
   i18next-express-middleware serialize-javascript lodash actual is-retina
 meteor add ssrwpo:ssr
@@ -67,19 +69,25 @@ createRouter({
   appCursors,
   // Optional: A function that returns the content of your robots.txt
   robotsTxt,
-  // Optional: A function that returns the content of your sitemaps.xml
+  // Optional: A function that returns the content of your sitemap.xml
   sitemapXml,
+  // Optional: A function that return the content of you humans.txt
+  humansTxt,
   // Optional: An object with keys on URL with query parameters
   urlQueryParameters,
   // Optional: An object with keys on route solver
   webhooks,
   // Optional: An i18n config for server side
   i18n,
-  // Optional: A platform transformer (see hereafter), a default transformer is provided
-  platformTransformers,
 });
 logger.info('Router started');
 ```
+
+### Universal logging
+By default this package logs for this package a muted. You can add asymetric
+logging using an universal logger like [pino](https://github.com/pinojs/pino)
+using the `logger.set` method. The logger requires the following methods:
+`debug`, `info`, `warn` & `error` which are used within this package.
 
 ### Localization and i18n
 We use i18next for server side rendered localization. It gets the user browser language and serves the right language with a default one(in case you don't serve for users one).
@@ -100,40 +108,24 @@ as `404` Not found route.
 Example: [NotFound](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/NotFound.jsx)
 
 ## Sever side routes
-### Pre-made: Robots.txt and Sitemap.xml
+### Pre-made: Robots.txt, Humans.txt & Sitemap.xml
 
-To set up your robots.txt, you need to have a key "robotsTxt" inside the object
+To set up your `robots.txt`, you need to have a key `robotsTxt` inside the object
 that you pass to the server-side createRouter function. This key should contain
-a function that returns a string with the desired content of your robots.txt.
-The same principle applies to sitemap.xml, with the key "sitemapXml". The function
-that you pass will receive store as it's first parameter. This allows you to
-programmatically build your sitemap.xml or robots.txt based on the store contents.  
+a function that returns a string with the desired content of your `robots.txt`.
+The function receives the store as its first arguments. This allows you to
+programmatically build your `robots.txt` based on the store contents.  
+
+The same principle applies to `humans.txt` and `sitemap.xml`,
+with the key `humansTxt` and `sitemapXml` respectively.
 
 For example, you can populate your sitemap.xml of dynamic routes generated based
 on the store data. You can see examples of building these functions here:  
-* [Robots.txt](https://github.com/ssrwpo/ssr/blob/master/demo/server/robotsTxt.js "Robots.txt builder")  
-* [Sitemap.xml](https://github.com/ssrwpo/ssr/blob/master/demo/server/sitemapXml.js "Sitemap.xml builder")
+* [`robots.txt`](https://github.com/ssrwpo/ssr/blob/master/demo/server/robotsTxt.js)  
+* [`sitemap.xml`](https://github.com/ssrwpo/ssr/blob/master/demo/server/sitemapXml.js)
+* [`humans.txt`](https://github.com/ssrwpo/ssr/blob/master/demo/server/humansTxt.js)
 
-For easing the sitemap creation, a convenient tool `sitemapFromArray` accepts an array of object with the following keys:
-
-* `slug`: A mandatory relative URL to a page
-* `lastmod`: An optional `Date`
-* `changefreq`: An optional frequency of robot's revisiting with the following allowed values: `always`, `hourly`, `daily`, `weekly`, `monthly`, `yearly`, `never`.
-* `priority`: An optional priority when search engine are displaying your map. When none provided, robots are using 0.5. This value range from 0 to 1.
-
-For using it:
-```js
-// Server side only
-import { sitemapFromArray } from 'meteor/ssrwpo:ssr';
-...
-const sitemapContent = sitemapFromArray([
-  // The home
-  { slug: '', lastmod: new Date(), priority: 1 },
-  // A frequently changed news page
-  { slug: 'news', changefreq: 'hourly' },
-  // ...
-]);
-```
+> **NOTE** For `sitemap.xml` we strongly recommend [sitemap.js](https://github.com/ekalinin/sitemap.js).
 
 ### Your own webhooks or REST API
 By passing a webhooks function, you can build your own server side routes powered
@@ -273,16 +265,6 @@ const LoadingStateWithout = asymetricSsr(Loaded);
 Example: [Asymetric SSR](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/asymetricSsr.jsx)
 
 ## Configuration
-### Universal logger
-#### Loglevel
-In your Meteor's settings under the `ssr` object, use the `loglevel` key for
-settings the expected log level. Available values:
-
-* **`debug`** Debugging and performance.
-* **`info`** (default) Informations.
-* **`warning`** Warnings and deprecation messages.
-* **`error`** Errors.
-
 ### Recommended Babel configuration
 For optimal results, set your `.babelrc` with the following content:
 ```json
@@ -332,7 +314,7 @@ This project uses [Jest](https://facebook.github.io/jest/) and [chai](http://cha
 # In one-shot mode:
 yarn test
 # In watch mode:
-yarn test -- --watchAll --notify
+yarn test.watch
 ```
 
 ### Linting
@@ -344,12 +326,17 @@ yarn lint
 
 :warning: All code must be linted before sending any PR. See the [Contributing guide](./CONTRIBUTING.md).
 
+## Artwork
+
+Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
+
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)
-- [Client side logging: logatim](https://github.com/sospedra/logatim)
-- [Server side logging: winston](https://github.com/winstonjs/winston)
+- [Egghead's React router 4 - videos tutorials](https://egghead.io/lessons/react-run-the-react-router-v4-examples-with-create-react-app)
+- [Universal logging: pino](https://github.com/pinojs/pino)
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
 - [Protocol: Sitemaps](https://www.sitemaps.org/)
+- [Protocol: Humans.txt](http://humanstxt.org/)
 - [Server side security: helmet](https://github.com/helmetjs/helmet)
 - [Server side performance profiling: benchmark](https://benchmarkjs.com/)
 - [In memory LRU cache: receptacle](https://github.com/DylanPiercey/receptacle)
@@ -369,3 +356,7 @@ yarn lint
 - [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers)
 - [Progressive Web Apps With React](https://addyosmani.com/blog/progressive-web-apps-with-react/)
 - [Discussion on main thread at client side initial rendering](https://github.com/developit/preact/issues/407)
+
+## Sites using this engine in production
+
+- [Panoply City](https://www.panoplycity.com/)

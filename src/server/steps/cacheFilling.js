@@ -1,4 +1,4 @@
-import logger from '../utils/logger';
+import logger from '../../shared/utils/logger';
 import cache from '../utils/cache';
 import nextTick from '../utils/nextTick';
 import { NOT_FOUND_URL } from '../../shared/constants';
@@ -16,20 +16,14 @@ const cacheFilling = (stepResults) => {
     );
     if (stepResults.statusCode === 404) {
       if (!stepResults.is404fromCache) {
-        cache.setPage(
-          platform, NOT_FOUND_URL,
-          stepResults.head, stepResults.body, stepResults.hash,
-        );
+        cache.setPage(platform, NOT_FOUND_URL, stepResults.html, stepResults.hash);
       }
       // Don't cache 404 for wrong URL query parameters
       if (!stepResults.hasUnwantedQueryParameters) {
         cache.setNotFound(stepResults.url);
       }
     } else if (stepResults.statusCode === 200) {
-      cache.setPage(
-        platform, stepResults.url,
-        stepResults.head, stepResults.body, stepResults.hash,
-      );
+      cache.setPage(platform, stepResults.url, stepResults.html, stepResults.hash);
     } else if (stepResults.statusCode === 301) {
       cache.setRedirect(stepResults.url, stepResults.Location);
     }

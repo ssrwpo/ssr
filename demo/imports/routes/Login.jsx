@@ -23,7 +23,7 @@ class Login extends PureComponent {
     }
     return (
       <div>
-        <Helmet title="Login" />
+        <Helmet><title>Login</title></Helmet>
         <p>Not logged in: <button onClick={this.onLogin}>Log in</button></p>
       </div>
     );

@@ -1,18 +1,9 @@
-import logger, { getLoglevel } from './logger';
+import logger from '../../shared/utils/logger';
 
 let start = null;
-const perfRequired = getLoglevel() === 'debug';
 
-const perfStart = () => {
-  if (perfRequired) {
-    start = (new Date()).valueOf();
-  }
-};
+const perfStart = () => (start = (new Date()).valueOf());
 
-const perfStop = (message) => {
-  if (perfRequired) {
-    logger.debug(message, 'in', (new Date()).valueOf() - start, 'ms');
-  }
-};
+const perfStop = message => logger.debug(message, 'in', (new Date()).valueOf() - start, 'ms');
 
 export { perfStart, perfStop };

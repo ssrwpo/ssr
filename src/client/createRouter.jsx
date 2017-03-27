@@ -47,9 +47,7 @@ const createRouter = ({
         applyMiddleware(...appMiddlewares),
       );
       // Set store subscription
-      if (storeSubscription) {
-        store.subscribe(() => storeSubscription(store));
-      }
+      if (storeSubscription) store.subscribe(() => storeSubscription(store));
       // Get the React root element
       const div = document.getElementById('react');
       let app = (

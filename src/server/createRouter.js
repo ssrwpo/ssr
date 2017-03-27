@@ -5,7 +5,7 @@ import i18nMiddleware from 'i18next-express-middleware';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import logger from './utils/logger';
+import logger from '../shared/utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import createAppAndPackageStore from './utils/createAppAndPackageStore';
 import defaultPlatformTransformers from './utils/platformTransformers';
@@ -40,6 +40,7 @@ const createRouter = ({
   appCursors = {},
   robotsTxt,
   sitemapXml,
+  humansTxt,
   urlQueryParameters,
   webhooks,
   ServerRouter,
@@ -49,17 +50,13 @@ const createRouter = ({
   // Create a redux store
   const store = createAppAndPackageStore(appReducers, appCursors, platformTransformers);
   // Set store subscription
-  if (storeSubscription) {
-    store.subscribe(() => storeSubscription(store));
-  }
+  if (storeSubscription) store.subscribe(() => storeSubscription(store));
   // Create an Express server
   const app = express();
   // Secure Express
   app.use(helmet());
   // express middleware to handle i18n
-  if (i18n) {
-    app.use(i18nMiddleware.handle(i18n));
-  }
+  if (i18n) app.use(i18nMiddleware.handle(i18n));
   app
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
@@ -79,18 +76,18 @@ const createRouter = ({
       hasUnwantedQueryParameters: false,
       statusCode: 200,
       hash: null,
-      head: null,
-      body: null,
+      html: null,
       Location: null,
       isFromCache: false,
       is404fromCache: false,
       store,
       contextMarkup: null,
       MainApp,
-      // used for localization
+      // Used for localization
       i18n,
       i18nOptions: null,
       platformTransformers,
+      humansTxt,
       // Used for circumventing issues on checkNpmDependencies
       ServerRouter,
     };
@@ -113,37 +110,35 @@ const createRouter = ({
     transport(stepResults);
     // STEP9 Cache filling if required
     cacheFilling(stepResults);
-
     // End performance cheking
     perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
   });
-
   // Routes for robots.txt payload
   if (robotsTxt) {
-    app
-    .route('/robots.txt')
-    .get((req, res) => {
+    app.get('/robots.txt', (req, res) => {
       perfStart();
-      res.end(robotsTxt());
+      res.end(robotsTxt(store));
       perfStop('/robots.txt');
     });
   }
-
   // Routes for sitemap.xml payload
   if (sitemapXml) {
     app.get('/sitemap.xml', (req, res) => {
       perfStart();
-      res.set('Content-Type', 'text/xml');
-      res.end(sitemapXml(store));
+      res.set('Content-Type', 'text/xml').end(sitemapXml(store));
       perfStop('/sitemap.xml');
     });
   }
-
-  // Server side routes
-  if (webhooks) {
-    webhooks(app);
+  // Routes for humans.txt payload
+  if (humansTxt) {
+    app.get('/humans.txt', (req, res) => {
+      perfStart();
+      res.end(humansTxt(store));
+      perfStop('/humans.txt');
+    });
   }
-
+  // Server side routes
+  if (webhooks) webhooks(app);
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
 };

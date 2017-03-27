@@ -8,18 +8,18 @@ const transport = (stepResults) => {
     const callerIp = stepResults.req.socket && stepResults.req.socket.remoteAddress
       ? stepResults.req.socket.remoteAddress
       : 'undefined';
-    if (!shouldForce200(callerIp)) {
-      stepResults.statusCode = 304;
-    }
+    if (!shouldForce200(callerIp)) stepResults.statusCode = 304;
   }
   stepResults.req.res.statusCode = stepResults.statusCode;
   switch (stepResults.statusCode) {
     // OK
     case 200:
-      stepResults.req.dynamicHead = stepResults.head;
-      stepResults.req.dynamicBody = stepResults.body;
-      stepResults.res.set({ ETag: stepResults.hash, 'Cache-Control': 'public, no-cache' });
-      stepResults.next();
+      stepResults.res.set({
+        ETag: stepResults.hash,
+        'Cache-Control': 'public, no-cache',
+        'content-type': 'text/html',
+      });
+      stepResults.res.end(stepResults.html);
       break;
     // Redirect
     case 301:
@@ -34,9 +34,8 @@ const transport = (stepResults) => {
     // Not found
     case 404:
       stepResults.req.res.statusMessage = 'Not found';
-      stepResults.req.dynamicHead = stepResults.head;
-      stepResults.req.dynamicBody = stepResults.body;
-      stepResults.next();
+      stepResults.res.writeHead(404, { 'content-type': 'text/html' });
+      stepResults.res.end(stepResults.html);
       break;
     default:
   }

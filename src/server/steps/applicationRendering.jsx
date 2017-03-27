@@ -1,11 +1,12 @@
-import crypto from 'crypto';
+import { WebApp, WebAppInternals } from 'meteor/webapp';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import htmlMinifier from 'html-minifier';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import { rewind } from 'react-helmet';
+import Helmet from 'react-helmet';
 /* eslint-enable */
 import cache from '../utils/cache';
 import { NOT_FOUND_URL } from '../../shared/constants';
@@ -13,9 +14,7 @@ import { NOT_FOUND_URL } from '../../shared/constants';
 // Impure function
 /* eslint-disable no-param-reassign */
 const applicationRendering = (stepResults) => {
-  if (stepResults.isFromCache) {
-    return;
-  }
+  if (stepResults.isFromCache) return;
   let helmetHead = null;
   let bodyMarkup = null;
   const { MainApp, i18nOptions } = stepResults;
@@ -27,14 +26,12 @@ const applicationRendering = (stepResults) => {
       </StaticRouter>
     </Provider>
   );
-  if (i18nOptions) {
-    app = <I18nextProvider i18n={i18nOptions.server}>{app}</I18nextProvider>;
-  }
+  if (i18nOptions) app = <I18nextProvider i18n={i18nOptions.server}>{app}</I18nextProvider>;
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
   if (!stepResults.hasUnwantedQueryParameters) {
     // Create and render application main entry point
     bodyMarkup = renderToString(app);
-    helmetHead = rewind();
+    helmetHead = Helmet.renderStatic();
   }
   // Redirect case
   if (routerContext.location && routerContext.location.pathname) {
@@ -42,7 +39,7 @@ const applicationRendering = (stepResults) => {
     stepResults.Location = routerContext.location.pathname;
     return;
   }
-  // Not found, check if re-render for <Miss> component
+  // Not found
   if (stepResults.hasUnwantedQueryParameters || routerContext.has404) {
     stepResults.statusCode = 404;
     // Check if a former not found page has been cached
@@ -50,23 +47,28 @@ const applicationRendering = (stepResults) => {
     if (cache.has(platform, NOT_FOUND_URL)) {
       stepResults.is404fromCache = true;
       const cachedPage = cache.get(platform, NOT_FOUND_URL);
-      stepResults.head = cachedPage.head;
-      stepResults.body = cachedPage.body;
+      stepResults.html = cachedPage.html;
     }
   }
-  if (stepResults.body === null) {
+  if (stepResults.html === null) {
     // Create body
-    stepResults.body = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;
-  }
-  if (stepResults.head === null) {
+    stepResults.req.dynamicBody = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;
     // Create head
-    stepResults.head = ['title', 'meta', 'link', 'script']
+    stepResults.req.dynamicHead = ['title', 'meta', 'link', 'script']
       .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
-  }
-  if (stepResults.statusCode === 200 && stepResults.hash === null) {
-    stepResults.hash = crypto.createHash('md5')
-      .update(stepResults.head + stepResults.body)
-      .digest('hex');
+    // Add humans.txt link, if required
+    if (stepResults.humansTxt) stepResults.req.dynamicHead += '<link rel="author" href="humans.txt" />';
+    // Create minified HTML payload
+    const meteorHtml = WebAppInternals.getBoilerplate(stepResults.req, WebApp.defaultArch);
+    stepResults.html = htmlMinifier.minify(meteorHtml, {
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      collapseWhitespace: true,
+    });
+    // Load Meteor's bundle asyncrhoneously only in production
+    if (process.env.NODE_ENV === 'production') {
+      stepResults.html = stepResults.html.replace(/<script src/g, '<script async src');
+    }
   }
 };
 export default applicationRendering;

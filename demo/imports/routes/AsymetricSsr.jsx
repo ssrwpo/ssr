@@ -10,7 +10,7 @@ const LoadingStateWithout = asymetricSsr(Loaded);
 
 const AsymetricSsr = () => (
   <div>
-    <Helmet title="Asymetric SSR & No SSR" />
+    <Helmet><title>Asymetric SSR & No SSR</title></Helmet>
     <h2>Asymetric SSR & No SSR</h2>
     <hr />
     <p>A component rendering differently on the server and the client</p>

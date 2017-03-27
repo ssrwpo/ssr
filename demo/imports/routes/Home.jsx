@@ -10,7 +10,7 @@ const Home = ({
   retina, mobile, viewportWidth, viewportHeight,
 }) => (
   <div>
-    <Helmet title="Home" />
+    <Helmet><title>Home</title></Helmet>
     <h2>Home</h2>
     <p>{auth ? 'Logged in' : 'Logged out'}</p>
     { auth && <p><button onClick={logout}>Log out</button></p>}
