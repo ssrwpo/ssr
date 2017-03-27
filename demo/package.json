@@ -34,6 +34,7 @@
     "express": "^4.14.2",
     "faker": "^4.1.0",
     "helmet": "^3.5.0",
+    "html-minifier": "^3.4.2",
     "i18next": "^7.1.3",
     "i18next-express-middleware": "^1.0.3",
     "i18next-node-remote-backend": "0.0.4",

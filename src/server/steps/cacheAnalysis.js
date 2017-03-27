@@ -25,8 +25,7 @@ const cacheAnalysis = (stepResults) => {
     case 200:
       stepResults.statusCode = 200;
       stepResults.hash = cached.hash;
-      stepResults.head = cached.head;
-      stepResults.body = cached.body;
+      stepResults.html = cached.html;
       break;
     case 301:
       stepResults.statusCode = 301;
@@ -38,8 +37,7 @@ const cacheAnalysis = (stepResults) => {
       if (cache.has(platform, NOT_FOUND_URL)) {
         const notFoundCached = cache.get(platform, NOT_FOUND_URL);
         stepResults.statusCode = 404;
-        stepResults.head = notFoundCached.head;
-        stepResults.body = notFoundCached.body;
+        stepResults.html = notFoundCached.html;
       } else {
         // No rendered page for this platform, ensure that this page will
         //  get rendered and cache

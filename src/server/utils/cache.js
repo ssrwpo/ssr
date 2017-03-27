@@ -8,10 +8,10 @@ class Cache {
     this.receptacle = new Receptacle({ max: Cache.MAX_ITEMS });
   }
   getKey(platform, url) { return `${platform}-${url}`; }
-  setPage(platform, url, head, body, hash) {
+  setPage(platform, url, html, hash) {
     const key = this.getKey(platform, url);
     logger.debug('cache page:', key);
-    this.receptacle.set(key, { type: 200, head, body, hash }, Cache.DEFAULT_TTL);
+    this.receptacle.set(key, { type: 200, html, hash }, Cache.DEFAULT_TTL);
   }
   setRedirect(url, location) {
     logger.debug('cache redirect:', url);

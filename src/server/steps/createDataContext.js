@@ -1,4 +1,6 @@
+import { WebApp } from 'meteor/webapp';
 import { EJSON } from 'meteor/ejson';
+import crypto from 'crypto';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import serialize from 'serialize-javascript';
 /* eslint-enable */
@@ -20,5 +22,10 @@ const createDataContext = (stepResults) => {
     i18n = `;window.__i18n='${serialize(stepResults.i18nOptions.client)}'`;
   }
   stepResults.contextMarkup = `<script>window.__PRELOADED_STATE__='${encoded}'${i18n}</script>`;
+  if (stepResults.hash === null) {
+    stepResults.hash = crypto.createHash('md5')
+      .update(WebApp.clientHash() + stepResults.contextMarkup)
+      .digest('hex');
+  }
 };
 export default createDataContext;
