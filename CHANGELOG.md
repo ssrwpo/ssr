@@ -1,3 +1,7 @@
+# 2.4.0 cordova friendly
+
+* Avoid analyzing cordova's hot code push URL: `/__cordova/`.
+
 # 2.3.0 react-helmet 5.x, sitemap.js & humans.txt
 
 * react-helmet: 5.X API.
