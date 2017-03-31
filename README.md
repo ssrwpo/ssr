@@ -1,6 +1,6 @@
 # SSR - Router with SSR for Node & Meteor
 
-![logo](https://github.com/ssrwpo/ssr/tree/master/doc/logo_small.png)
+![logo](https://raw.githubusercontent.com/ssrwpo/ssr/master/doc/logo_small.png)
 
 Server side rendering with Express, react-router-4 & redux for Meteor.
 
@@ -69,7 +69,7 @@ yarn lint
 
 ## Artwork
 
-Logo created by [Alexandre Tabasso](https://www.facebook.com/TabbusoAlexandre/).
+Logo created by [Alexandre Tabbuso](https://www.facebook.com/TabbusoAlexandre/).
 
 ## 3rd party documentation
 - [Application router: react-router-4](https://react-router.now.sh)

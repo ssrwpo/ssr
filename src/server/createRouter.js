@@ -36,9 +36,10 @@ let debugLastResponse = null;
 
 // URL pattern covered by Express
 // @NOTE URLs that:
-// * doesn't start with "/api/"
-// * contains no dot
-const EXPRESS_COVERED_URL = /^\/(?!api\/)[^.]*$/;
+// * doesn't start with `/api/`
+// * doesn't start with `/__cordova/`
+// * contains no `.`
+const EXPRESS_COVERED_URL = /^\/(?!api\/)(?!__cordova\/)[^.]*$/;
 
 /* eslint-disable max-len */
 /**
