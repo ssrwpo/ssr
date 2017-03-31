@@ -50,7 +50,7 @@ routepolicy@1.0.12
 shell-server@0.2.3
 spacebars@1.0.15
 spacebars-compiler@1.1.2
-ssrwpo:ssr@2.3.0
+ssrwpo:ssr@2.4.0
 ssrwpo:uglifyjs2@0.5.0
 stylus@2.513.9
 tmeasday:check-npm-versions@0.3.1
