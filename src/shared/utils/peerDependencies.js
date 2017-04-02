@@ -23,6 +23,7 @@ if (Meteor.isServer) {
     actual: '0.x',
     'electrode-react-ssr-caching': '0.x',
     express: '4.x',
+    farmhash: '1.x',
     helmet: '3.x',
     'html-minifier': '3.x',
     intl: '1.x',

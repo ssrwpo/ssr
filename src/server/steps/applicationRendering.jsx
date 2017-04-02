@@ -1,5 +1,6 @@
 import { WebApp, WebAppInternals } from 'meteor/webapp';
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
+import 'farmhash';
 import SSRCaching from 'electrode-react-ssr-caching';
 import htmlMinifier from 'html-minifier';
 import React from 'react';

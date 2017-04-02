@@ -24,6 +24,7 @@
     "electrode-react-ssr-caching": "^0.1.5",
     "express": "^4.14.1",
     "faker": "^4.1.0",
+    "farmhash": "^1.2.1",
     "helmet": "^3.4.1",
     "history": "^4.5.1",
     "html-minifier": "^3.4.2",

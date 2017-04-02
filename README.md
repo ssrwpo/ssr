@@ -15,9 +15,9 @@ To install yarn : https://yarnpkg.com/en/docs/install
 To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
-meteor yarn add react react-dom react-router-dom express helmet html-minifier \ \
-  react-helmet winston logatim receptacle useragent redux react-redux moment \
-  intl react-intl react-intl-redux lodash actual url-pattern is-retina
+meteor yarn add is-retina lodash moment react react-dom react-helmet react-intl \
+  react-intl-redux react-redux react-router-dom actual electrode-react-ssr-caching \
+  express farmhash helmet html-minifier intl receptacle url-pattern useragent
 meteor add ssrwpo:ssr
 ```
 

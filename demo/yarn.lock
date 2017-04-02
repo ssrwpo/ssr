@@ -1345,7 +1345,7 @@ faker@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
 
-farmhash@^1.1.1:
+farmhash@^1.1.1, farmhash@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/farmhash/-/farmhash-1.2.1.tgz#2dbf12604ef5ca1f1420fb6600fccb30d5474dfd"
   dependencies:
