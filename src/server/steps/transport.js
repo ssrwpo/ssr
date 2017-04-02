@@ -37,6 +37,10 @@ const transport = (stepResults) => {
       stepResults.res.writeHead(404, { 'content-type': 'text/html' });
       stepResults.res.end(stepResults.html);
       break;
+    case 500:
+      stepResults.res.writeHead(500);
+      stepResults.res.end(stepResults.serverError.message);
+      break;
     default:
   }
 };

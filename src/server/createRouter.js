@@ -185,6 +185,11 @@ const createRouter = (MainApp, {
 
         // End performance cheking
         perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
+      }).catch((e) => {
+        stepResults.statusCode = 500;
+        stepResults.serverError = e;
+        logger.error(e.message);
+        transport(stepResults);
       });
     };
 
