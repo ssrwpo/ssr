@@ -18,10 +18,7 @@ const isPubSubInitialised = createValueReducer('isPubSubInitialised', false);
 const isPubSubSubscribed = createValueReducer('isPubSubSubscribed', false);
 const isStoryDataInitialised = createValueReducer('isStoryDataInitialised', false);
 
-function stories(state = {
-  isFetching: false,
-  items: [],
-}, action) {
+function stories(state = { isFetching: false, items: [] }, action) {
   switch (action.type) {
     case RECEIVE_STORIES:
       return {

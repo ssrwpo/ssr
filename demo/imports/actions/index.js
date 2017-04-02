@@ -1,4 +1,3 @@
-
 export const RECEIVE_STORIES = 'RECEIVE_STORIES';
 
 export function receiveStories(stories) {
@@ -7,8 +6,4 @@ export function receiveStories(stories) {
     stories,
     receivedAt: Date.now(),
   };
-}
-
-export function fetchStories() {
-
 }
