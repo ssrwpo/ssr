@@ -13,21 +13,15 @@ class Login extends PureComponent {
     ]).isRequired,
     location: pt.object.isRequired,
   }
+  static defaultProps = {
+    user: false,
+  }
   state = { redirectToReferrer: false }
-  onLogin = () => {
+  onLogin = () =>
     Meteor.loginWithPassword(this.email.value, this.password.value, (error) => {
-      if (!error) {
-        this.setState({ redirectToReferrer: true });
-      }
-    });
-  }
-  onLogout = () => {
-    Meteor.logout((error) => {
-      if (!error) {
-        // do whatever you want after logout
-      }
-    });
-  }
+      if (!error) { this.setState({ redirectToReferrer: true }); }
+    })
+  onLogout = () => Meteor.logout()
   onRegister = () => {
     Accounts.createUser({
       email: this.email.value,
@@ -47,8 +41,8 @@ class Login extends PureComponent {
     return (
       <div>
         <Helmet title="Login" />
-        {!user ?
-          <div>
+        {!user
+          ? <div>
             <p>Not logged in:</p>
             <form onSubmit={this.onLogin}>
               <input ref={(c) => { this.email = c; }} type="text" placeholder="email" />
@@ -56,20 +50,16 @@ class Login extends PureComponent {
             </form>
             <button onClick={this.onLogin}>Log in</button>
             <button onClick={this.onRegister}>Register</button>
-          </div> :
-          <div>
-            <p>logged in as:</p>
-            <p>{user.emails[0].address}</p>
-            <button onClick={this.onLogout}>Log out</button>
           </div>
+        : <div>
+          <p>logged in as:</p>
+          <p>{user.emails[0].address}</p>
+          <button onClick={this.onLogout}>Log out</button>
+        </div>
         }
       </div>
     );
   }
 }
-
-Login.defaultProps = {
-  user: false,
-};
 
 export default connect(state => ({ user: state.user }), null)(Login);

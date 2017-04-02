@@ -52,7 +52,6 @@ class AsyncData extends PureComponent {
           store.dispatch(receiveStories(stories));
         });
       }
-
       return null;
     },
   }
@@ -65,9 +64,7 @@ class AsyncData extends PureComponent {
     const { isStoryDataInitialised, setStoriesInitialised, setStories } = this.props;
     if (Meteor.isClient && !isStoryDataInitialised) {
       setStoriesInitialised();
-      prepareStoriesStore().then((stories) => {
-        setStories(stories);
-      });
+      prepareStoriesStore().then(stories => setStories(stories));
     }
   }
 
@@ -99,7 +96,7 @@ export default connect(
     stories: state.stories.items,
   }),
   dispatch => ({
-    setStoriesInitialised: () => { dispatch(receiveStories(valueSet('isStoryDataInitialised', true))); },
-    setStories: (stories) => { dispatch(receiveStories(stories)); },
+    setStoriesInitialised: () => dispatch(receiveStories(valueSet('isStoryDataInitialised', true))),
+    setStories: stories => dispatch(receiveStories(stories)),
   }),
 )(AsyncData);

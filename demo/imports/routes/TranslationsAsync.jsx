@@ -12,9 +12,7 @@ const prepareIntlMessages = () => {
   logger.debug('Fetching intl messages...');
   return fetch('http://demo2587166.mockable.io/translations')
   .then((response) => {
-    if (response.status >= 400) {
-      throw new Error('Bad response from server');
-    }
+    if (response.status >= 400) throw new Error('Bad response from server');
     logger.debug('Hydrating store with received intl messages...');
     const messages = response.json();
     return messages;
@@ -91,38 +89,37 @@ class TranslationsAsync extends PureComponent {
       <div>
         <Helmet title="Translations Async" />
         <h2>Translation from Rest API</h2>
-        {!Meteor.settings.public.localization.async ?
-          <p>You should set &quot;localization.async: true&quot;
-            in settings.json to try asynchronous translations </p>
-        :
+        {!Meteor.settings.public.localization.async
+        ? <p>You should set &quot;localization.async: true&quot;
+          in settings.json to try asynchronous translations </p>
+        : <div>
+          <br />
+          <button onClick={() => languageChanger('en')}>English</button>
+          <button onClick={() => languageChanger('fr')}>Français</button>
+          <button onClick={() => languageChanger('tr')}>Türkçe</button>
+          <br />
+          {!isIntlInitialised
+          ? <p>loading...</p> :
           <div>
-            <br />
-            <button onClick={() => languageChanger('en')}>English</button>
-            <button onClick={() => languageChanger('fr')}>Français</button>
-            <button onClick={() => languageChanger('tr')}>Türkçe</button>
-            <br />
-            { !isIntlInitialised ?
-              <p>loading...</p> :
-              <div>
-                <p>
-                  <FormattedMessage
-                    id="app.currentLanguage"
-                    values={{ language: intl.locale }}
-                  />
-                </p>
-                <h2><FormattedMessage id="app.greetings" defaultMessage="你好!" /></h2>
-                <h3>
-                  <FormattedDate
-                    value={new Date()}
-                    year="numeric"
-                    month="long"
-                    day="numeric"
-                    weekday="long"
-                  />
-                </h3>
-              </div>
-            }
+            <p>
+              <FormattedMessage
+                id="app.currentLanguage"
+                values={{ language: intl.locale }}
+              />
+            </p>
+            <h2><FormattedMessage id="app.greetings" defaultMessage="你好!" /></h2>
+            <h3>
+              <FormattedDate
+                value={new Date()}
+                year="numeric"
+                month="long"
+                day="numeric"
+                weekday="long"
+              />
+            </h3>
           </div>
+          }
+        </div>
         }
       </div>
     );
@@ -148,7 +145,7 @@ export default connect(
         dispatch(valueSet('isIntlInitialised', true));
       });
     },
-    setIntlInitialised: () => { dispatch(valueSet('isIntlInitialised', true)); },
-    setIntl: (payload) => { dispatch(receiveIntl(payload)); },
+    setIntlInitialised() { dispatch(valueSet('isIntlInitialised', true)); },
+    setIntl(payload) { dispatch(receiveIntl(payload)); },
   }),
 )(TranslationsAsync);

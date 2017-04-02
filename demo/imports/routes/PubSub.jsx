@@ -90,9 +90,7 @@ class PubSub extends PureComponent {
 
   componentWillUnmount() {
     const { isPubSubSubscribed, toggleSubscribe, PubSubStore } = this.props;
-    if (isPubSubSubscribed) {
-      toggleSubscribe(this, isPubSubSubscribed, PubSubStore);
-    }
+    if (isPubSubSubscribed) toggleSubscribe(this, isPubSubSubscribed, PubSubStore);
   }
 
   render() {
@@ -111,23 +109,18 @@ class PubSub extends PureComponent {
         >
           {isPubSubSubscribed ? 'Stop subscription' : 'Synchronize via subscribe'}
         </button>
-        {
-          isPubSubSubscribed ||
-            <button
-              style={styles.button}
-              onClick={() => handleSyncViaMethod(PubSubStore)}
-            >
-              Synchronize via method
-            </button>
+        {isPubSubSubscribed
+          || <button style={styles.button} onClick={() => handleSyncViaMethod(PubSubStore)}>
+            Synchronize via method
+          </button>
         }
         <button style={styles.button} onClick={handleInsertRandom}>
           Insert a random item
         </button>
         <hr />
-        {
-          PubSubStore
-          .sort((a, b) => b.lastMod - a.lastMod)
-          .map(item => <CachableItem key={`${item.id}`} {...{ ...item, isPubSubSubscribed }} />)
+        {PubSubStore
+        .sort((a, b) => b.lastMod - a.lastMod)
+        .map(item => <CachableItem key={`${item.id}`} {...{ ...item, isPubSubSubscribed }} />)
         }
       </div>
     );
@@ -140,7 +133,6 @@ export default connect(
     isPubSubSubscribed: state.isPubSubSubscribed,
     isPubSubInitialised: state.isPubSubInitialised,
   }),
-
   dispatch => ({
     toggleSubscribe: createToggleSubscribe(
       dispatch,

@@ -1,7 +1,7 @@
 import pino from 'pino';
 import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
 import appReducers from '/imports/reducers';
-import createLogger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import MainApp from '/imports/app/MainApp';

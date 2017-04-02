@@ -35,18 +35,14 @@ export const prepareGlobalStores = (store) => {
     logger.debug('Preparing Folks and Places store');
     const globalCollections = [
       { collection: PlacesCollection, name: 'Places' },
-      { collection: FolksCollection, name: 'Folks' }];
-
-    globalCollections.forEach(({ collection, name }) => {
-      collection.find({}, { sort: { order: -1 } }).fetch().forEach((item) => {
-        store.dispatch(collectionAdd(
-          name,
-          item._id, // eslint-disable-line no-underscore-dangle
-          omit(item, '_id'),
-        ));
-      });
-    });
-
+      { collection: FolksCollection, name: 'Folks' },
+    ];
+    globalCollections.forEach(({ collection, name }) =>
+      collection.find({}, { sort: { order: -1 } }).fetch().forEach(item =>
+        // eslint-disable-next-line no-underscore-dangle
+        store.dispatch(collectionAdd(name, item._id, omit(item, '_id'))),
+      ),
+    );
     store.dispatch(valueSet('areGlobalStoresInitialised', true));
   }
 };
@@ -104,7 +100,6 @@ const MainApp = ({ user }) => {
 
 // SSR requirements for this component
 MainApp.ssr = {
-
   // If you supply a `prepareStore` function on any component then it will be called
   // to hydrate the store for server-side-rendering.
   // This pre-hydrated store will also be send with the initial  HTML payload.
@@ -115,10 +110,7 @@ MainApp.ssr = {
 };
 
 MainApp.propTypes = {
-  user: pt.oneOfType([
-    pt.object,
-    pt.bool,
-  ]).isRequired,
+  user: pt.oneOfType([pt.object, pt.bool]).isRequired,
 };
 
 export default connect((state => ({ user: state.user })))(pure(MainApp));

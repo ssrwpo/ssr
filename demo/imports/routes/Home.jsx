@@ -2,7 +2,6 @@ import moment from 'moment';
 import _ from 'lodash';
 import React, { PropTypes as pt } from 'react';
 import { pure, valueSet } from 'meteor/ssrwpo:ssr';
-import { Accounts } from 'meteor/accounts-base';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 // Components
@@ -29,15 +28,13 @@ const Home = ({
   </div>
 );
 Home.propTypes = {
-  user: pt.oneOfType([
-    pt.object,
-    pt.bool,
-  ]).isRequired,
+  user: pt.oneOfType([pt.object, pt.bool]).isRequired,
   platform: pt.string.isRequired,
   buildDate: pt.number.isRequired,
   userLocale: pt.string.isRequired,
   retina: pt.bool.isRequired,
   mobile: pt.bool.isRequired,
+  logout: pt.func.isRequired,
   viewportWidth: pt.number.isRequired,
   viewportHeight: pt.number.isRequired,
 };
@@ -49,9 +46,7 @@ const mapStateToProps = state => _.pick(state, [
 const mapDispatchToProps = dispatch => ({
   logout() {
     Meteor.logout((error) => {
-      if (!error) {
-        dispatch(valueSet('user', false));
-      }
+      if (!error) dispatch(valueSet('user', false));
     });
   },
 });

@@ -5,25 +5,14 @@ import { connect } from 'react-redux';
 const Privateroute = ({ user, component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={
-      props => (
-        user
-        ? <Component {...props} />
-        : <Redirect
-          to={{
-            pathname: '/login',
-            state: { from: props.location },
-          }}
-        />
-      )
-    }
+    render={props => (user
+      ? <Component {...props} />
+      : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+    )}
   />
 );
 Privateroute.propTypes = {
-  user: pt.oneOfType([
-    pt.object,
-    pt.bool,
-  ]).isRequired,
+  user: pt.oneOfType([pt.object, pt.bool]).isRequired,
   component: pt.func.isRequired,
   location: pt.string,
 };
