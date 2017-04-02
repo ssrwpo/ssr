@@ -1,8 +1,5 @@
 {
   "public": {
-    "ssr": {
-      "loglevel": "debug"
-    },
     "localization": {
       "async": true
     }

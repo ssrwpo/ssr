@@ -25,7 +25,6 @@ if (Meteor.isServer) {
     helmet: '3.x',
     intl: '1.x',
     receptacle: '1.x',
-    'serialize-javascript': '1.x',
     'url-pattern': '1.x',
     useragent: '2.x',
   }), 'ssrwpo:ssr');
