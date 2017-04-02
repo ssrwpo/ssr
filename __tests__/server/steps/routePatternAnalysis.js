@@ -1,4 +1,4 @@
-import routePatternAnalysis from '../../../server/steps/routePatternAnalysis';
+import routePatternAnalysis from '../../../src/server/steps/routePatternAnalysis';
 
 const routePatterns = [
   '/',
