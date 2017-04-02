@@ -7,8 +7,8 @@ import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-intl-redux';
 import Helmet from 'react-helmet';
-import logger from '../utils/logger';
 /* eslint-enable */
+import logger from '../../shared/utils/logger';
 
 // Impure function
 /* eslint-disable no-param-reassign */

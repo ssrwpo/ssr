@@ -2,7 +2,6 @@ import '../shared/utils/peerDependencies';
 import { createRouter, debugLastRequest, debugLastResponse } from './createRouter';
 import logger from '../shared/utils/logger';
 import { resetSSRCache } from './utils/cache';
-import sitemapFromArray from './utils/sitemaps';
 import pure from '../shared/hoc/pure';
 import asymetricSsr from '../shared/hoc/asymetricSsr';
 import {

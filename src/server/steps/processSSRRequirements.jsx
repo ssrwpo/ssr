@@ -2,8 +2,8 @@
 import React, { Children } from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-intl-redux';
-import logger from '../utils/logger';
 /* eslint-enable */
+import logger from '../../shared/utils/logger';
 
 // Recurse an React Element tree, running visitor on each element.
 // If visitor returns `false`, don't call the element's render function

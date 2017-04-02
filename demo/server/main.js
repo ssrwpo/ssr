@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { createRouter, resetSSRCache, logger } from 'meteor/ssrwpo:ssr';
 import MainApp from '/imports/app/MainApp';
 import appReducers from '/imports/reducers';

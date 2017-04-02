@@ -1,14 +1,9 @@
 {
-  "presets": ["env", "meteor"],
+  "presets": ["es2015", "meteor"],
   "plugins": [
     "transform-class-properties",
     "transform-react-constant-elements",
     "transform-react-inline-elements",
-    "transform-react-remove-prop-types",
-    ["module-resolver", {
-      "alias": {
-        "meteor": "./jest"
-      }
-    }]
+    "transform-react-remove-prop-types"
   ]
 }

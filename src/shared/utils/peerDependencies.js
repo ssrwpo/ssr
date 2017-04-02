@@ -21,8 +21,10 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   checkNpmVersions(Object.assign({}, sharedPkjs, {
     actual: '0.x',
+    'electrode-react-ssr-caching': '0.x',
     express: '4.x',
     helmet: '3.x',
+    'html-minifier': '3.x',
     intl: '1.x',
     receptacle: '1.x',
     'url-pattern': '1.x',
