@@ -10,10 +10,10 @@ export function intl(state = { locale: 'en', messages }, action) {
       };
     }
     case 'SET_MESSAGES':
-      messages = action.payload.messages;
     // @NOTE No break here as the next case needs to be interpreted
     // eslint-disable-next-line no-fallthrough
     case 'RECEIVE_INTL': {
+      messages = action.payload.messages;
       const { locale, languages, fallback } = action.payload;
       let userLocale = null;
       // Detect if users locale is fully supported by us

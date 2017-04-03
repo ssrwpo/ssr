@@ -52,6 +52,6 @@ createRouter({
 })
 .then(() => {
   // For easing debug
-  window.store = getStore();
+  window.getStore = getStore;
   logger.info('Router started');
 });

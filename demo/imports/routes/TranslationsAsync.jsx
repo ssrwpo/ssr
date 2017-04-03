@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { PureComponent, PropTypes as pt } from 'react';
 import { logger, valueSet, receiveIntl } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
@@ -7,10 +8,9 @@ import { connect } from 'react-redux';
 
 // This function will be called by the server to prepare the store before the
 // server-side rendering.
-
 const prepareIntlMessages = () => {
   logger.debug('Fetching intl messages...');
-  return fetch('http://demo2587166.mockable.io/translations')
+  return fetch(`${Meteor.absoluteUrl()}translations`)
   .then((response) => {
     if (response.status >= 400) throw new Error('Bad response from server');
     logger.debug('Hydrating store with received intl messages...');
@@ -18,7 +18,6 @@ const prepareIntlMessages = () => {
     return messages;
   });
 };
-
 
 class TranslationsAsync extends PureComponent {
   static propTypes = {
