@@ -202,8 +202,10 @@ const createRouter = (MainApp, {
   // Routes for robots.txt payload
   if (robotsTxt) {
     app.get('/robots.txt', (req, res) => {
+      const stepResults = { store: null };
       perfStart();
-      res.end(robotsTxt(store));
+      createStore(stepResults, storeSubscription, appReducers);
+      res.end(robotsTxt(stepResults.store));
       perfStop('/robots.txt');
     });
   }
@@ -212,9 +214,7 @@ const createRouter = (MainApp, {
     app.get('/sitemap.xml', (req, res) => {
       const stepResults = { store: null };
       perfStart();
-
       createStore(stepResults, storeSubscription, appReducers);
-
       res.set('Content-Type', 'text/xml');
       res.end(sitemapXml(stepResults.store));
       perfStop('/sitemap.xml');
@@ -223,7 +223,9 @@ const createRouter = (MainApp, {
   // Routes for humans.txt payload
   if (humansTxt) {
     app.get('/humans.txt', (req, res) => {
+      const stepResults = { store: null };
       perfStart();
+      createStore(stepResults, storeSubscription, appReducers);
       res.end(humansTxt(stepResults.store));
       perfStop('/humans.txt');
     });
