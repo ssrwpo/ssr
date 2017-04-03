@@ -79,7 +79,10 @@ function processSSRRequirementsAndReturnPromises(
 
     const ssrRequirements = (instance && instance.ssr) || element.type.ssr;
     if (ssrRequirements && typeof ssrRequirements === 'object') {
-      const { cacheConfig, prepareStore } = ssrRequirements;
+      const { cacheConfig, prepareStore, stopTreeWalking } = ssrRequirements;
+
+      // Allows user to stop walking the tree for data.
+      if (stopTreeWalking === true) return true;
 
       // Check for component caching requirements
       if (typeof cacheConfig === 'object' && element.type.name) {
