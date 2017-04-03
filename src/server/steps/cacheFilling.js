@@ -4,13 +4,13 @@ import nextTick from '../utils/nextTick';
 import { NOT_FOUND_URL } from '../../shared/constants';
 
 const canEnableCache = (routePattern, routes, statusCode) => {
-  if (routes.options || routes.options.enableCahing) {
+  if (routes.options && routes.options.enableCaching) {
     return true;
   }
 
   if (routePattern
     && routes[routePattern].options
-    && routes[routePattern].options.enableCahing
+    && routes[routePattern].options.enableCaching
   ) {
     return true;
   }
@@ -18,7 +18,7 @@ const canEnableCache = (routePattern, routes, statusCode) => {
   if (statusCode === 404
     && routes[NOT_FOUND_URL]
     && routes[NOT_FOUND_URL].options
-    && routes[NOT_FOUND_URL].options.enableCahing
+    && routes[NOT_FOUND_URL].options.enableCaching
   ) {
     return true;
   }
