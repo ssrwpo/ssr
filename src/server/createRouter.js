@@ -214,22 +214,20 @@ const createRouter = (MainApp, {
   // Routes for sitemap.xml payload
   if (sitemapXml) {
     app.get('/sitemap.xml', (req, res) => {
-      app.get('/sitemap.xml', (req, res) => {
-        const callback = () => {
-          const stepResults = { store: null };
-          perfStart();
-          createStore(stepResults, storeSubscription, appReducers);
-          res.set('Content-Type', 'text/xml');
-          res.end(sitemapXml(stepResults.store));
-          perfStop('/sitemap.xml');
-        }
+      const callback = () => {
+        const stepResults = { store: null };
+        perfStart();
+        createStore(stepResults, storeSubscription, appReducers);
+        res.set('Content-Type', 'text/xml');
+        res.end(sitemapXml(stepResults.store));
+        perfStop('/sitemap.xml');
+      }
 
-        if (Fiber.current) {
-          callback();
-        } else {
-          new Fiber(() => callback.call()).run();
-        }
-      });
+      if (Fiber.current) {
+        callback();
+      } else {
+        new Fiber(() => callback.call()).run();
+      }
     });
   }
   // Routes for humans.txt payload
