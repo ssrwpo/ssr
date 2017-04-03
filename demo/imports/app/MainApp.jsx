@@ -1,5 +1,5 @@
 import React, { PropTypes as pt } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import omit from 'lodash/omit';
 import { pure, collectionAdd, logger, BrowserStats, UserStats, valueSet } from 'meteor/ssrwpo:ssr';
@@ -113,4 +113,4 @@ MainApp.propTypes = {
   user: pt.oneOfType([pt.object, pt.bool]).isRequired,
 };
 
-export default connect((state => ({ user: state.user })))(pure(MainApp));
+export default withRouter(connect((state => ({ user: state.user })))(pure(MainApp)));
