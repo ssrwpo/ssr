@@ -50,6 +50,7 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)(?!__cordova\/)[^.]*$/;
  * @param {Object=} routerConfig.ServerRouter
  * @param {Function=} routerConfig.createServerRenderContext
  * @param {Function=} routerConfig.robotsTxt - dynamically generate robots.txt
+ * @param {Function=} routerConfig.humansTxt - dynamically generate humans.txt
  * @param {Object=} routerConfig.routes
  * @param {Object=} routerConfig.routes.<string> - Route path
  * @param {function(Object)=} routerConfig.routes.<string>.urlQueryParameters - function(query), callback validates params

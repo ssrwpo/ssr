@@ -14,8 +14,9 @@ import '/imports/api/PubSub/server';
 import { en, fr, tr } from '/imports/messages';
 // Store subscription
 import storeSubscription from '/imports/store';
-// Sitemaps & Robots
+// Static routes
 import robotsTxt from './robotsTxt';
+import humansTxt from './humansTxt';
 import sitemapXml from './sitemapXml';
 // URL query parameters
 import routes from './routes';
@@ -35,6 +36,8 @@ logger.info('Starting router');
 createRouter(MainApp, {
   // Optional: A function that returns the content of your robots.txt
   robotsTxt,
+  // Optional: A function that returns the content of your humans.txt
+  humansTxt,
   // Optional: An object describe route action and validator for url parameters
   routes,
   // Optional: A function that returns the content of your sitemaps.xml
