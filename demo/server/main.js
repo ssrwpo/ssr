@@ -52,13 +52,19 @@ createRouter(MainApp, {
 //
 // In this example we simply reset the entire cache if any of the collections change.
 
-const globalCollections = [Folks, Places, PubSub];
-globalCollections.forEach((collection) => {
+const globalCollections = [
+  { collection: Folks, pattern: 'default-fr-/folks' },
+  { collection: Places, pattern: /\/places/ },
+  { collection: PubSub, pattern: /\/pubsub/ },
+];
+
+globalCollections.forEach(({ collection, pattern }) => {
   let initializing = true;
+
   collection.find().observeChanges({
-    added: () => { if (!initializing) resetSSRCache(); },
-    changed: () => resetSSRCache(),
-    removed: () => resetSSRCache(),
+    added: () => { if (!initializing) resetSSRCache(pattern); },
+    changed: () => resetSSRCache(pattern),
+    removed: () => resetSSRCache(pattern),
   });
   initializing = false;
 });

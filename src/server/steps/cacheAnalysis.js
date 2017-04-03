@@ -8,13 +8,21 @@ const cacheAnalysis = (stepResults) => {
   const platform = stepResults.userAgent;
   const userLocale = stepResults.userLocale;
 
-  if (!cache.has(platform, stepResults.url, stepResults.userLocale)) {
+  if (!cache.has({
+    platform,
+    url: stepResults.url,
+    userLocale: stepResults.userLocale,
+  })) {
     stepResults.isFromCache = false;
     logger.debug('cache missed: url:', platform, stepResults.userLocale, stepResults.url);
     return;
   }
 
-  const cached = cache.get(platform, stepResults.url, userLocale);
+  const cached = cache.get({
+    platform,
+    url: stepResults.url,
+    userLocale,
+  });
   logger.debug('cache hit: type:', cached.type);
   stepResults.isFromCache = true;
   switch (cached.type) {

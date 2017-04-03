@@ -39,26 +39,6 @@ const cacheFilling = ({
   userLocale,
 }) => {
   nextTick(() => {
-    // const platform = stepResults.userAgent;
-    // if (stepResults.statusCode === 404) {
-    //   if (!stepResults.is404fromCache) {
-    //     cache.setPage(
-    //       platform, NOT_FOUND_URL,
-    //       stepResults.head, stepResults.body, stepResults.hash,
-    //     );
-    //   }
-    //   // Don't cache 404 for wrong URL query parameters
-    //   if (!stepResults.hasUnwantedQueryParameters) {
-    //     cache.setNotFound(stepResults.url);
-    //   }
-    // } else if (stepResults.statusCode === 200) {
-    //   cache.setPage(
-    //     platform, stepResults.url,
-    //     stepResults.head, stepResults.body, stepResults.hash,
-    //   );
-    // } else if (stepResults.statusCode === 301) {
-    //   cache.setRedirect(stepResults.url, stepResults.Location);
-    // }
     if (canEnableCache(routePattern, routes, statusCode)) {
       logger.debug(
         'cache fill:',
@@ -69,9 +49,13 @@ const cacheFilling = ({
         hasUnwantedQueryParameters,
       );
       if (statusCode === 301) {
-        cache.setRedirect(url, Location);
+        cache.setRedirect({ url }, Location);
       } else {
-        cache.setPage(userAgent, userLocale, url, html, hash, statusCode);
+        cache.setPage({
+          platform: userAgent,
+          url,
+          userLocale,
+        }, html, hash, statusCode);
       }
     }
   });
