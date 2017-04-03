@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import MainApp from '/imports/app/MainApp';
 import storeSubscription from '/imports/store';
-import { en, fr, tr } from '/imports/messages';
+import * as messages from '/imports/messages';
 
 // Set logger
 let LOG_LEVEL = 'error';
@@ -24,11 +24,13 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
+// Internationalization
+const languages = Object.keys(messages);
 const localization = {
-  languages: ['en', 'tr', 'fr'], // required
-  fallback: 'en', // required
-  async: Meteor.settings.public.localization.async, // for async translations
-  messages: { en, fr, tr }, // language resources required if not async
+  languages,
+  fallback: languages[0],
+  async: Meteor.settings.public.localization.async,
+  messages,
 };
 
 const appCursorNames = ['Folks', 'Places', 'PubSub'];
