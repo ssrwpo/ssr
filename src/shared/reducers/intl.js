@@ -1,54 +1,34 @@
-global.Intl = require('intl');
-
 let messages = {};
 // eslint-disable-next-line import/prefer-default-export
-export function intl(state = { locale: 'mui', messages }, action) {
+export function intl(state = { locale: 'en', messages }, action) {
   switch (action.type) {
-    case 'CHANGE_LANGUAGE' : {
+    case 'CHANGE_LANGUAGE': {
+      const { locale, fallback } = action.payload;
       return {
-        locale: action.payload.locale || action.payload.fallback,
-        messages: messages[action.payload.locale],
+        locale: locale || fallback,
+        messages: messages[locale || fallback],
       };
     }
-    case 'SET_MESSAGES' : {
+    case 'SET_MESSAGES':
       messages = action.payload.messages;
+    // @NOTE No break here as the next case needs to be interpreted
+    // eslint-disable-next-line no-fallthrough
+    case 'RECEIVE_INTL': {
+      const { locale, languages, fallback } = action.payload;
       let userLocale = null;
-      // detect users locale is fully supported by us
-      const fullySupportedLng =
-        action.payload.languages.includes(action.payload.locale);
-        // detect users locale is partially supported by us
-      const partiallySupportedLng =
-        action.payload.languages.includes(action.payload.locale.substring(0, 2));
+      // Detect if users locale is fully supported by us
+      const fullySupportedLng = languages.indexOf(locale) !== -1;
       if (fullySupportedLng) {
-        userLocale = action.payload.locale;
-      }
-      if (!userLocale && partiallySupportedLng) {
-        userLocale = action.payload.locale.substring(0, 2);
+        userLocale = locale;
+      } else {
+        // Detect if users locale is partially supported by us
+        const shortLocale = locale.substring(0, 2);
+        const partiallySupportedLng = languages.indexOf(shortLocale) !== -1;
+        if (partiallySupportedLng) userLocale = shortLocale;
       }
       return {
-        locale: userLocale || action.payload.fallback,
-        messages: messages[
-          userLocale ||
-          action.payload.fallback],
-      };
-    }
-    case 'RECEIVE_INTL' : {
-      let userLocale = null;
-      // detect users locale is fully supported by us
-      const fullySupportedLng =
-        action.payload.languages.includes(action.payload.locale);
-        // detect users locale is partially supported by us
-      const partiallySupportedLng =
-        action.payload.languages.includes(action.payload.locale.substring(0, 2));
-      if (fullySupportedLng) {
-        userLocale = action.payload.locale;
-      }
-      if (!userLocale && partiallySupportedLng) {
-        userLocale = action.payload.locale.substring(0, 2);
-      }
-      return {
-        locale: userLocale,
-        messages: action.payload.messages[userLocale],
+        locale: userLocale || fallback,
+        messages: messages[userLocale || fallback],
       };
     }
     default: return state;
