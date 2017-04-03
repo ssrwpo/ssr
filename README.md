@@ -60,13 +60,24 @@ yarn test.watch
 ```
 
 ### Linting
+#### JS
 The linter is based on [ESlint](http://eslint.org/) configured with [Airbnb styles](https://github.com/airbnb/javascript).
 
 ```
-yarn lint
+yarn lint.js
 ```
 
 :warning: All code must be linted before sending any PR. See the [Contributing guide](./CONTRIBUTING.md).
+
+#### CSS
+The linter is based on [stylelint](https://stylelint.io/)..
+
+```
+yarn lint.css
+```
+
+:warning: All code must be linted before sending any PR. See the [Contributing guide](./CONTRIBUTING.md).
+
 
 ## Artwork
 

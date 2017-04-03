@@ -1,9 +1,10 @@
 import React, { PropTypes as pt } from 'react';
 import { withRouter } from 'react-router-dom';
 import { pure } from 'meteor/ssrwpo:ssr';
+import Button from '/imports/ui/atom/Button';
 
 const TransitionButton = ({ href, history, children }) =>
-  <button onClick={() => history.push(href)}>{children}</button>;
+  <Button onClick={() => history.push(href)}>{children}</Button>;
 TransitionButton.propTypes = {
   href: pt.string.isRequired,
   history: pt.object.isRequired,
