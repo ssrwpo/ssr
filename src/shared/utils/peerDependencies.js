@@ -13,6 +13,7 @@ const sharedPkjs = {
   'react-redux': '5.x',
   'react-router-dom': '4.x',
   redux: '3.x',
+  'styled-components': '1.x',
 };
 
 if (Meteor.isClient) {

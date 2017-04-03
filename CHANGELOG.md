@@ -1,3 +1,5 @@
+# > 3.X See [Github's project page](https://github.com/ssrwpo/ssr/projects)
+
 # 2.4.0 cordova friendly
 
 * Avoid analyzing cordova's hot code push URL: `/__cordova/`.

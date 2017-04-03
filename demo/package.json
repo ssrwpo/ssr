@@ -35,7 +35,7 @@
     "moment": "^2.18.1",
     "normalize.css": "^6.0.0",
     "pino": "^4.2.4",
-    "postcss-flexbugs-fixes": "^2.1.0",
+    "polished": "^1.0.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-helmet": "^5.0.2",
@@ -50,6 +50,7 @@
     "redux-thunk": "^2.2.0",
     "simpl-schema": "^0.2.3",
     "sitemap": "^1.11.1",
+    "styled-components": "^1.4.4",
     "useragent": "^2.1.13"
   }
 }

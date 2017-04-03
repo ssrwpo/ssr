@@ -17,7 +17,8 @@ To install "meteor yarn" : ```meteor npm i -g yarn```
 ```
 meteor yarn add is-retina lodash moment react react-dom react-helmet react-intl \
   react-intl-redux react-redux react-router-dom actual electrode-react-ssr-caching \
-  express farmhash helmet html-minifier intl receptacle url-pattern useragent
+  express farmhash helmet html-minifier intl receptacle url-pattern useragent \
+  styled-components
 meteor add ssrwpo:ssr
 ```
 
@@ -77,6 +78,7 @@ Logo created by [Alexandre Tabbuso](https://www.facebook.com/TabbusoAlexandre/).
 - [Universal logging: pino](https://github.com/pinojs/pino)
 - [Protocol: Robots.txt](http://www.robotstxt.org/)
 - [Protocol: Sitemaps](https://www.sitemaps.org/)
+- Not a 3rd party but strongly recommended: [sitemap.js](https://github.com/ekalinin/sitemap.js)
 - [Protocol: Humans.txt](http://humanstxt.org/)
 - [Server side security: helmet](https://github.com/helmetjs/helmet)
 - [Server side performance profiling: benchmark](https://benchmarkjs.com/)
@@ -87,6 +89,8 @@ Logo created by [Alexandre Tabbuso](https://www.facebook.com/TabbusoAlexandre/).
 - [Discussions about Hot code push issue](https://forums.meteor.com/t/app-constantly-refreshing-after-an-update/23586/143)
 - [Unit tests: Jest](https://facebook.github.io/jest/)
 - [Unit tests: chai](http://chaijs.com/)
+- [styled-components](https://styled-components.com/)
+- Not a 3rd party but strongly recommended: [polished](https://polished.js.org/)
 
 ## Links
 - [Atomic design](http://patternlab.io/)
