@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent, PropTypes as pt } from 'react';
-import { logger, valueSet, receiveIntl } from 'meteor/ssrwpo:ssr';
+import { logger, valueSet, receiveIntl, TRANSLATION_URL } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 // server-side rendering.
 const prepareIntlMessages = () => {
   logger.debug('Fetching intl messages...');
-  return fetch(`${Meteor.absoluteUrl()}translations`)
+  return fetch(TRANSLATION_URL)
   .then((response) => {
     if (response.status >= 400) throw new Error('Bad response from server');
     logger.debug('Hydrating store with received intl messages...');

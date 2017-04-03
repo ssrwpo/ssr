@@ -1,7 +1,7 @@
 {
   "public": {
     "localization": {
-      "async": false
+      "async": true
     }
   }
 }

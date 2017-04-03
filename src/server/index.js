@@ -24,6 +24,7 @@ import {
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
 import { BrowserStats, UserStats } from '../shared/components';
+import { TRANSLATION_URL, NOT_FOUND_URL } from '../shared/constants';
 
 // Server side exports
 export {
@@ -55,4 +56,7 @@ export {
   // Acces to last request, mainly for debug in `meteor shell`
   debugLastRequest,
   debugLastResponse,
+  // Constants
+  NOT_FOUND_URL,
+  TRANSLATION_URL,
 };

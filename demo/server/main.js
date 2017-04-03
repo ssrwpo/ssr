@@ -11,7 +11,7 @@ import Places from '/imports/api/Places';
 import PubSub from '/imports/api/PubSub';
 import '/imports/api/PubSub/server';
 // localization resources
-import * as messages from '/imports/messages';
+import localization from '/imports/messages';
 // Store subscription
 import storeSubscription from '/imports/store';
 // Static routes
@@ -22,14 +22,6 @@ import sitemapXml from './sitemapXml';
 import routes from './routes';
 // Webhooks
 import webhooks from './webhooks';
-
-const languages = Object.keys(messages);
-const localization = {
-  languages,
-  fallback: languages[0],
-  async: Meteor.settings.public.localization.async,
-  messages,
-};
 
 logger.info('Starting router');
 

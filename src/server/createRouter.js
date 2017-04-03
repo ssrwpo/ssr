@@ -49,6 +49,7 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)(?!__cordova\/)[^.]*$/;
  * @param {Object=} routerConfig
  * @param {Object=} routerConfig.ServerRouter
  * @param {Function=} routerConfig.createServerRenderContext
+ * @param {Object=} routerConfig.localization - Localization
  * @param {Function=} routerConfig.robotsTxt - dynamically generate robots.txt
  * @param {Function=} routerConfig.humansTxt - dynamically generate humans.txt
  * @param {Object=} routerConfig.routes
@@ -70,7 +71,7 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)(?!__cordova\/)[^.]*$/;
 const createRouter = (MainApp, {
   ServerRouter = DefaultServerRouter,
   createServerRenderContext = defaultCreateServerRenderContext,
-  localization,
+  localization = null,
   humansTxt = null,
   robotsTxt = null,
   routes = {},
@@ -229,6 +230,16 @@ const createRouter = (MainApp, {
       createStore(stepResults, storeSubscription, appReducers);
       res.end(humansTxt(stepResults.store));
       perfStop('/humans.txt');
+    });
+  }
+  // Route for localization
+  if (localization && localization.async) {
+    const messageStr = JSON.stringify(localization.messages);
+    app.get('/api/translations', (req, res) => {
+      perfStart();
+      res.set('Content-Type', 'application/json');
+      res.end(messageStr);
+      perfStop('/translations');
     });
   }
 };

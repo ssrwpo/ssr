@@ -24,6 +24,7 @@ import {
   createHandleSyncViaMethod,
 } from '../shared/selectors/createHandles';
 import { BrowserStats, UserStats } from '../shared/components';
+import { TRANSLATION_URL, NOT_FOUND_URL } from '../shared/constants';
 
 // Client side exports
 export {
@@ -54,4 +55,7 @@ export {
   UserStats,
   // Store access, mainly for debug
   getStore,
+  // Constants
+  NOT_FOUND_URL,
+  TRANSLATION_URL,
 };
