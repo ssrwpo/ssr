@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import omit from 'lodash/omit';
 import { pure, collectionAdd, logger, BrowserStats, UserStats, valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
+import { bgColor, secondaryColor } from '/imports/styles/colors';
 // Collections
 import FolksCollection from '/imports/api/Folks';
 import PlacesCollection from '/imports/api/Places';
@@ -65,11 +66,11 @@ const MainApp = ({ user }) => {
         <link rel="icon" type="image/png" href="/favicon-32x32.png?v=2" sizes="32x32" />
         <link rel="icon" type="image/png" href="/favicon-16x16.png?v=2" sizes="16x16" />
         <link rel="manifest" href="/_manifest.json?v=2" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#00a2d4" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color={secondaryColor} />
         <link rel="shortcut icon" href="/favicon.ico?v=2" />
         <meta name="apple-mobile-web-app-title" content="SSR" />
         <meta name="application-name" content="SSR" />
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content={bgColor} />
       </Helmet>
       <TransitionLogger />
       <BrowserStats />
