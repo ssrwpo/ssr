@@ -3,6 +3,7 @@ import { Route, Switch, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import omit from 'lodash/omit';
 import { pure, collectionAdd, logger, BrowserStats, UserStats, valueSet } from 'meteor/ssrwpo:ssr';
+import Helmet from 'react-helmet';
 // Collections
 import FolksCollection from '/imports/api/Folks';
 import PlacesCollection from '/imports/api/Places';
@@ -54,6 +55,22 @@ const MainApp = ({ user }) => {
   };
   return (
     <div>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+        <title>SSR</title>
+        <meta name="description" content="Router with SSR for Node & Meteor" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
+        <link rel="icon" type="image/png" href="/favicon-32x32.png?v=2" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/favicon-16x16.png?v=2" sizes="16x16" />
+        <link rel="manifest" href="/_manifest.json?v=2" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#00a2d4" />
+        <link rel="shortcut icon" href="/favicon.ico?v=2" />
+        <meta name="apple-mobile-web-app-title" content="SSR" />
+        <meta name="application-name" content="SSR" />
+        <meta name="theme-color" content="#ffffff" />
+      </Helmet>
       <TransitionLogger />
       <BrowserStats />
       <UserStats />
