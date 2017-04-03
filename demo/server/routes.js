@@ -34,7 +34,7 @@ const routes = {
     },
   },
   options: {
-    enableCahing: true,
+    enableCaching: true,
   },
 };
 
