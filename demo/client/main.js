@@ -1,4 +1,3 @@
-import pino from 'pino';
 import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
 import appReducers from '/imports/reducers';
 import { createLogger } from 'redux-logger';
@@ -7,13 +6,6 @@ import promise from 'redux-promise';
 import MainApp from '/imports/app/MainApp';
 import storeSubscription from '/imports/store';
 import * as messages from '/imports/messages';
-
-// Set logger
-let LOG_LEVEL = 'error';
-if (process.env.NODE_ENV !== 'production') {
-  LOG_LEVEL = 'debug';
-}
-logger.set(pino({ level: LOG_LEVEL }));
 
 // Middlewares
 const appMiddlewares = [thunk, promise];
