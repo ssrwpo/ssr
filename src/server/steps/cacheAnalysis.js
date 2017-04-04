@@ -1,4 +1,4 @@
-import cache from '../utils/cache';
+import { cache, generateKey } from '../utils/cache';
 // import { NOT_FOUND_URL } from '../../shared/constants';
 import logger from '../../shared/utils/logger';
 
@@ -7,22 +7,19 @@ import logger from '../../shared/utils/logger';
 const cacheAnalysis = (stepResults) => {
   const platform = stepResults.userAgent;
   const userLocale = stepResults.userLocale;
-
-  if (!cache.has({
-    platform,
-    url: stepResults.url,
-    userLocale: stepResults.userLocale,
-  })) {
-    stepResults.isFromCache = false;
-    logger.debug('cache missed: url:', platform, stepResults.userLocale, stepResults.url);
-    return;
-  }
-
-  const cached = cache.get({
+  const cacheKey = generateKey({
     platform,
     url: stepResults.url,
     userLocale,
   });
+  const cached = cache.get(cacheKey);
+
+  if (!cached) {
+    stepResults.isFromCache = false;
+    logger.debug('cache missed: key:', cacheKey);
+    return;
+  }
+
   logger.debug('cache hit: type:', cached.type);
   stepResults.isFromCache = true;
   switch (cached.type) {
@@ -35,22 +32,10 @@ const cacheAnalysis = (stepResults) => {
       stepResults.statusCode = 301;
       stepResults.Location = cached.location;
       break;
-    case 404: {
+    case 404:
       stepResults.statusCode = 404;
       stepResults.html = cached.html;
-      // URL is a 404 but we need to check if a NotFound page has been
-      //  rendered for this platform
-      // if (cache.has(platform, NOT_FOUND_URL)) {
-      //   const notFoundCached = cache.get(platform, NOT_FOUND_URL);
-      //   stepResults.statusCode = 404;
-      //   stepResults.head = notFoundCached.head;
-      //   stepResults.body = notFoundCached.body;
-      // } else {
-        // No rendered page for this platform, ensure that this page will
-        //  get rendered and cache
-      //   stepResults.isFromCache = false;
-      // }
-    } break;
+      break;
     default:
   }
 };

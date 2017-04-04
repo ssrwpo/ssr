@@ -4,78 +4,48 @@ import NodeCache from 'node-cache';
 import { logger } from '..';
 
 /** @class */
-class Cache {
-  /* eslint-disable no-underscore-dangle */
+export default class Cache {
   /**
    * @constructor
-   * @param  {Object} [options={maxItems: Cache.MAX_ITEMS, stdTTL: Cache.DEFAULT_TTL.ttl}]
+   * @param {Object} [options={}]
+   * @param {Number} [options.checkperiod=600]
+   * @param {Boolean} [options.enableLogs=true]
+   * @param {Boolean} [options.errorOnMissing=false]
+   * @param {Number} [options.maxItems=Cache.MAX_ITEMS]
+   * @param {Number} [options.stdTTL=Cache.DEFAULT_TTL]
+   * @param {Boolean} [options.useClones=true]
    */
-  constructor(options = {
-    maxItems: Cache.MAX_ITEMS,
-    stdTTL: Cache.DEFAULT_TTL.ttl,
-  }) {
-    this._maxSize = options.maxItems || Infinity;
+  constructor(options = {}) {
+    this.cache = new NodeCache({
+      stdTTL: Cache.DEFAULT_TTL,
+      ...options,
+    });
+    this.enableLogs = !(options.enableLogs === false);
+    this.maxItems = options.maxItems || Cache.MAX_ITEMS;
 
-    this.cache = new NodeCache(options);
-  }
-  /* eslint-enable */
+    // node-cache API
+    this.close = this.cache.close;
+    this.del = this.cache.del;
+    this.flushAll = this.cache.flushAll;
+    this.get = this.cache.get;
+    this.getStats = this.cache.getStats;
+    this.getTtl = this.cache.getTtl;
+    this.keys = this.cache.keys;
+    this.mget = this.cache.mget;
+    this.on = this.cache.on;
+    this.reset = this.cache.flushAll;
+    this.ttl = this.cache.ttl;
 
-  /**
-   * @summary Deletes cache entry `route`
-   * @locus Server
-   * @instance
-   * @memberof Cache
-   * @method del
-   * @param  {Object} route
-   * @return {Number}
-   */
-  del(route) {
-    return this.cache.del(this.generateKey(route));
-  }
+    // Events
+    if (this.enableLogs) {
+      this.cache.on('del', (key) => {
+        logger.debug('cache del: ', key);
+      });
 
-  /**
-   * @summary
-   * @locus Server
-   * @instance
-   * @memberof Cache
-   * @method generateKey
-   * @param  {Object} route
-   * @param  {String} route.platform
-   * @param  {String} route.url
-   * @param  {String} route.userLocale
-   * @return {String}
-   */
-  generateKey({ platform, url, userLocale }) {
-    if (!platform && !userLocale) {
-      return url;
+      this.cache.on('flush', () => {
+        logger.debug('cache reset');
+      });
     }
-    return `${platform}-${userLocale}-${url}`;
-  }
-
-  /**
-   * @summary Returns `value` for `route`
-   * @locus Server
-   * @instance
-   * @memberof Cache
-   * @method get
-   * @param  {Object} route
-   * @return {*}
-   */
-  get(route) {
-    return this.cache.get(this.generateKey(route));
-  }
-
-  /**
-   * @summary Returns true if `key` is present in cache
-   * @locus Server
-   * @instance
-   * @memberof Cache
-   * @method has
-   * @param  {Object} route
-   * @return {Boolean}
-   */
-  has(route) {
-    return !!this.get(route);
   }
 
   /**
@@ -84,51 +54,36 @@ class Cache {
    * @instance
    * @memberof Cache
    * @method rdel
-   * @param  {RegExp} regex
+   * @param  {RegExp} regexp
    * @return {Number}
    */
-  rdel(regex) {
+  rdel(regexp) {
     const keys = this.cache.keys();
     let hit = 0;
 
     keys.forEach((key) => {
-      if (key.match(regex)) {
-        logger.debug('cache del: ', key);
-        hit += this.del({ url: key });
+      if (key.match(regexp)) {
+        hit += this.del(key);
       }
     });
     return hit;
   }
 
   /**
-   * @summary Reset cache
-   * @locus Server
-   * @instance
-   * @memberof Cache
-   * @method reset
-   */
-  reset() {
-    logger.debug('cache reset');
-    this.cache.flushAll();
-  }
-
-  /* eslint-disable no-underscore-dangle */
-  /**
    * @summary Set `value` for `key`
    * @locus Server
    * @instance
    * @memberof Cache
    * @method set
-   * @param  {Object} route
-   * @param  {Any} value
+   * @param  {String} key
+   * @param  {Object} value
    * @param  {Number} ttl
    */
-  set(route, value, ttl) {
-    if (this.cache.getStats().keys < this._maxSize) {
-      this.cache.set(this.generateKey(route), value, ttl);
+  set(key, value, ttl) {
+    if (this.getStats().keys < this.maxItems) {
+      this.cache.set(key, value, ttl);
     }
   }
-  /* eslint-enable */
 
   /**
    * @summary Set value for 404 `key`
@@ -136,11 +91,11 @@ class Cache {
    * @instance
    * @memberof Cache
    * @method setNotFound
-   * @param  {Object} route
+   * @param  {String} key
    */
-  setNotFound(route) {
-    logger.debug('cache notfound:', route.url);
-    this.set(route, { type: 404 }, Cache.DEFAULT_TTL);
+  setNotFound(key) {
+    logger.debug('cache notfound:', key);
+    this.set(key, { type: 404 }, Cache.DEFAULT_TTL);
   }
 
   /**
@@ -149,14 +104,14 @@ class Cache {
    * @instance
    * @memberof Cache
    * @method setPage
-   * @param  {Object} route
+   * @param  {String} key
    * @param  {String} html
-   * @param  {Object} hash
+   * @param  {String} hash
    * @param  {Number} [type=200]
    */
-  setPage(route, html, hash, type = 200) {
-    logger.debug('cache page:', this.generateKey(route));
-    this.set(route, { type, html, hash }, Cache.DEFAULT_TTL);
+  setPage(key, html, hash, type = 200) {
+    logger.debug('cache page:', key);
+    this.set(key, { type, html, hash }, Cache.DEFAULT_TTL);
   }
 
   /**
@@ -165,21 +120,31 @@ class Cache {
    * @instance
    * @memberof Cache
    * @method setRedirect
-   * @param  {Object} route
+   * @param  {String} key
    * @param  {String} location
    */
-  setRedirect(route, location) {
-    logger.debug('cache redirect:', route.url);
-    this.set(route, { type: 301, location }, Cache.DEFAULT_TTL);
+  setRedirect(key, location) {
+    logger.debug('cache redirect:', key);
+    this.set(key, { type: 301, location }, Cache.DEFAULT_TTL);
   }
 }
+
+// TTL set to 1day
+Cache.DEFAULT_TTL = 1000 * 60 * 60 * 24;
 
 // 1k pages are cached
 // eslint-disable-next-line no-restricted-properties
 Cache.MAX_ITEMS = Math.pow(2, 10);
-// TTL set to 1day
-Cache.DEFAULT_TTL = { ttl: 1000 * 60 * 60 * 24 };
-const cache = new Cache();
+
+export const cache = new Cache();
+
+export function generateKey({ platform, url, userLocale }) {
+  if (!platform && !userLocale) {
+    return url;
+  }
+  return `${platform}-${userLocale}-${url}`;
+}
+
 export function resetSSRCache(key) {
   if (key && key instanceof RegExp) {
     cache.rdel(key);
@@ -189,4 +154,3 @@ export function resetSSRCache(key) {
     cache.reset();
   }
 }
-export default cache;

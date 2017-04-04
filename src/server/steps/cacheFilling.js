@@ -1,5 +1,5 @@
 import logger from '../../shared/utils/logger';
-import cache from '../utils/cache';
+import { cache, generateKey } from '../utils/cache';
 import nextTick from '../utils/nextTick';
 import { NOT_FOUND_URL } from '../../shared/constants';
 
@@ -48,14 +48,15 @@ const cacheFilling = ({
         url,
         hasUnwantedQueryParameters,
       );
+
       if (statusCode === 301) {
         cache.setRedirect({ url }, Location);
       } else {
-        cache.setPage({
+        cache.setPage(generateKey({
           platform: userAgent,
           url,
           userLocale,
-        }, html, hash, statusCode);
+        }), html, hash, statusCode);
       }
     }
   });

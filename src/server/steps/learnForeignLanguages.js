@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import cache from '../utils/cache';
+import { cache } from '../utils/cache';
 
 const learnForeignLanguages = (stepResults) => {
   const { req, i18n } = stepResults;

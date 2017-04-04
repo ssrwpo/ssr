@@ -28,7 +28,7 @@ if (Meteor.isServer) {
     helmet: '3.x',
     'html-minifier': '3.x',
     intl: '1.x',
-    receptacle: '1.x',
+    'node-cache': '4.x',
     'url-pattern': '1.x',
     useragent: '2.x',
   }), 'ssrwpo:ssr');

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
-import Receptacle from 'receptacle';
+import Cache from './cache';
 /* eslint-enable */
 import { logger } from '..';
 
@@ -11,20 +11,25 @@ const DEFAULT_TTL = { ttl: 1000 * 30 };
 // 3 retries per HTTP 304
 const MAX_RETRY = 3;
 
-const ipCache = new Receptacle({ max: MAX_ITEMS });
+const ipCache = new Cache({
+  enableLogs: false,
+  maxItems: MAX_ITEMS,
+});
 
 const shouldForce200 = (ip) => {
-  if (ipCache.has(ip)) {
-    const nbAttemps = ipCache.get(ip);
-    if (nbAttemps >= MAX_RETRY) {
-      logger.debug(`Forcing HTTP 200 for ip: ${ip}`);
-      ipCache.delete(ip);
-      return true;
-    }
-    ipCache.set(ip, nbAttemps + 1, DEFAULT_TTL);
-    return false;
+  const nbAttemps = ipCache.get(ip);
+
+  if (nbAttemps && nbAttemps.value >= MAX_RETRY) {
+    logger.debug(`Forcing HTTP 200 for ip: ${ip}`);
+    ipCache.del(ip);
+    return true;
+  } else if (nbAttemps) {
+    ipCache.set(ip, { value: nbAttemps.value + 1 }, DEFAULT_TTL);
+  } else {
+    ipCache.set(ip, { value: 1 }, DEFAULT_TTL);
   }
-  ipCache.set(ip, 1, DEFAULT_TTL);
+
   return false;
 };
+
 export default shouldForce200;
