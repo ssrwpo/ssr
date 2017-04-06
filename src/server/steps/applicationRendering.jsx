@@ -8,6 +8,7 @@ import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-intl-redux';
 import Helmet from 'react-helmet';
+import { styleSheet } from 'styled-components';
 /* eslint-enable */
 import logger from '../../shared/utils/logger';
 
@@ -46,6 +47,7 @@ const applicationRendering = (stepResults) => {
   if (!hasUnwantedQueryParameters) {
     // Create and render application main entry point
     bodyMarkup = renderToString(app);
+    css = styleSheet.getCSS();
     helmetHead = Helmet.renderStatic();
   }
 
@@ -80,6 +82,8 @@ const applicationRendering = (stepResults) => {
       .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
     // Add humans.txt link, if required
     if (stepResults.humansTxt) stepResults.req.dynamicHead += '<link rel="author" href="humans.txt" />';
+    // Add the css tag for styled components to head if it's not empty
+    if (css.length > 0) stepResults.req.dynamicHead += `<style type="text/css">${css}</style>`;
     // Create minified HTML payload
     const meteorHtml = WebAppInternals.getBoilerplate(stepResults.req, WebApp.defaultArch);
     //stepResults.html = htmlMinifier.minify(meteorHtml, {
