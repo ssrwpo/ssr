@@ -50,7 +50,7 @@
     "redux-thunk": "^2.2.0",
     "simpl-schema": "^0.2.3",
     "sitemap": "^1.11.1",
-    "styled-components": "lol",
+    "styled-components": "^2.0.0-14",
     "url-pattern": "^1.0.3",
     "useragent": "^2.1.13"
   }
