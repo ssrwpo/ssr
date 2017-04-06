@@ -82,11 +82,12 @@ const applicationRendering = (stepResults) => {
     if (stepResults.humansTxt) stepResults.req.dynamicHead += '<link rel="author" href="humans.txt" />';
     // Create minified HTML payload
     const meteorHtml = WebAppInternals.getBoilerplate(stepResults.req, WebApp.defaultArch);
-    stepResults.html = htmlMinifier.minify(meteorHtml, {
-      removeScriptTypeAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      collapseWhitespace: true,
-    });
+    //stepResults.html = htmlMinifier.minify(meteorHtml, {
+    //  removeScriptTypeAttributes: true,
+    //  removeStyleLinkTypeAttributes: true,
+    //  collapseWhitespace: true,
+    //});
+    stepResults.html = meteorHtml;
     // Load Meteor's bundle asyncrhoneously only in production
     if (process.env.NODE_ENV === 'production') {
       stepResults.html = stepResults.html.replace(/<script src/g, '<script async src');
