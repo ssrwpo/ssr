@@ -1,4 +1,4 @@
-import { PropTypes as pt } from 'react';
+import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { logger, pure } from 'meteor/ssrwpo:ssr';
 import { withRouter } from 'react-router-dom';
@@ -10,6 +10,6 @@ const TransitionLogger = ({ location }) => {
   return null;
 };
 TransitionLogger.propTypes = {
-  location: pt.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 export default withRouter(pure(TransitionLogger));

@@ -1,5 +1,6 @@
 /* eslint-disable import/first, no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import actual from 'actual';
 import debounce from 'lodash/debounce';
@@ -34,12 +35,12 @@ class BrowserStats extends React.PureComponent {
   }
 }
 BrowserStats.propTypes = {
-  platform: pt.string.isRequired,
-  fixInitialValue: pt.func.isRequired,
-  handleResizeEvent: pt.func.isRequired,
-  retinaMinDpi: pt.number,
-  mobileBreakpoint: pt.number,
-  debounceTimer: pt.number,
+  platform: PropTypes.string.isRequired,
+  fixInitialValue: PropTypes.func.isRequired,
+  handleResizeEvent: PropTypes.func.isRequired,
+  retinaMinDpi: PropTypes.number,
+  mobileBreakpoint: PropTypes.number,
+  debounceTimer: PropTypes.number,
 };
 BrowserStats.defaultProps = {
   retinaMinDpi: 144,

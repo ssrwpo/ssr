@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { pure } from 'meteor/ssrwpo:ssr';
 
@@ -9,6 +10,6 @@ const Topic = ({ match }) => (
   </div>
 );
 Topic.propTypes = {
-  match: pt.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 export default pure(Topic);
