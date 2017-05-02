@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { pure, changeLanguage, valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { FormattedMessage, FormattedDate } from 'react-intl';
@@ -39,8 +40,8 @@ const Translations = ({ languageChanger, intl }) => (
   </div>
 );
 Translations.propTypes = {
-  languageChanger: pt.func.isRequired,
-  intl: pt.object.isRequired,
+  languageChanger: PropTypes.func.isRequired,
+  intl: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => pick(state, ['intl']);
 const mapDispatchToProps = dispatch => ({

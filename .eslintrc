@@ -33,7 +33,7 @@ settings:
         - .jsx
         - .js
   react:
-    version: 15.4.2
+    version: 15.5.4
 plugins:
   - meteor
   - class-property

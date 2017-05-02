@@ -1,9 +1,10 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import { Route, Switch, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import omit from 'lodash/omit';
 import { pure, collectionAdd, logger, BrowserStats, UserStats, valueSet } from 'meteor/ssrwpo:ssr';
-import Helmet from 'react-helmet';
 import { bgColor, secondaryColor } from '/imports/styles/colors';
 // Collections
 import FolksCollection from '/imports/api/Folks';

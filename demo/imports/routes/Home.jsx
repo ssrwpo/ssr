@@ -1,7 +1,8 @@
 import moment from 'moment';
 import _ from 'lodash';
-import React, { PropTypes as pt } from 'react';
-import { pure, valueSet } from 'meteor/ssrwpo:ssr';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { pure, valueSet, valueReset } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 // Components
@@ -28,15 +29,14 @@ const Home = ({
   </div>
 );
 Home.propTypes = {
-  user: pt.oneOfType([pt.object, pt.bool]).isRequired,
-  platform: pt.string.isRequired,
-  buildDate: pt.number.isRequired,
-  userLocale: pt.string.isRequired,
-  retina: pt.bool.isRequired,
-  mobile: pt.bool.isRequired,
-  logout: pt.func.isRequired,
-  viewportWidth: pt.number.isRequired,
-  viewportHeight: pt.number.isRequired,
+  user: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
+  logout: PropTypes.func.isRequired,
+  platform: PropTypes.string.isRequired,
+  buildDate: PropTypes.number.isRequired,
+  retina: PropTypes.bool.isRequired,
+  mobile: PropTypes.bool.isRequired,
+  viewportWidth: PropTypes.number.isRequired,
+  viewportHeight: PropTypes.number.isRequired,
 };
 const mapStateToProps = state => _.pick(state, [
   'user', 'platform', 'buildDate', 'userLocale',

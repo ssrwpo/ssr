@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { pure } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
@@ -12,7 +13,7 @@ const Places = ({ places }) => (
 );
 
 Places.propTypes = {
-  places: pt.array.isRequired,
+  places: PropTypes.array.isRequired,
 };
 
 // state.Places is the the redux store that was pre-hydrated from the Mongo collection by

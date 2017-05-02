@@ -5,6 +5,7 @@ const sharedPkjs = {
   'is-retina': '1.x',
   lodash: '4.x',
   moment: '2.x',
+  'prop-types': '15.x',
   react: '15.x',
   'react-dom': '15.x',
   'react-helmet': '5.x',

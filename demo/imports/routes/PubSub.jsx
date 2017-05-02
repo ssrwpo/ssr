@@ -1,10 +1,11 @@
-import React, { PureComponent, PropTypes as pt } from 'react';
-import omit from 'lodash/omit';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import {
   logger, valueSet, createToggleSubscribe, createHandleSyncViaMethod, collectionAdd,
 } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
+import omit from 'lodash/omit';
 import PubSubCol, { PubSubPublicationName, insertRandomPubSubItem, getPubSubValues,
 } from '/imports/api/PubSub';
 import CachableItem from './CachableItem';
@@ -15,13 +16,13 @@ const styles = {
 
 class PubSub extends PureComponent {
   static propTypes = {
-    PubSubStore: pt.array.isRequired,
-    isPubSubSubscribed: pt.bool.isRequired,
-    isPubSubInitialised: pt.bool.isRequired,
-    markPubSubAsInitialised: pt.func.isRequired,
-    toggleSubscribe: pt.func.isRequired,
-    handleInsertRandom: pt.func.isRequired,
-    handleSyncViaMethod: pt.func.isRequired,
+    PubSubStore: PropTypes.array.isRequired,
+    isPubSubSubscribed: PropTypes.bool.isRequired,
+    isPubSubInitialised: PropTypes.bool.isRequired,
+    markPubSubAsInitialised: PropTypes.func.isRequired,
+    toggleSubscribe: PropTypes.func.isRequired,
+    handleInsertRandom: PropTypes.func.isRequired,
+    handleSyncViaMethod: PropTypes.func.isRequired,
   }
 
   static ssr = {

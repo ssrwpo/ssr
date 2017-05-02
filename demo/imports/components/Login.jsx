@@ -1,5 +1,6 @@
 /* eslint-disable import/extensions, import/no-extraneous-dependencies */
-import React, { PureComponent, PropTypes as pt } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Accounts } from 'meteor/accounts-base';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
@@ -7,11 +8,11 @@ import { Redirect } from 'react-router-dom';
 
 class Login extends PureComponent {
   static propTypes = {
-    user: pt.oneOfType([
-      pt.object,
-      pt.bool,
+    user: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.bool,
     ]).isRequired,
-    location: pt.object.isRequired,
+    location: PropTypes.object.isRequired,
   }
   static defaultProps = {
     user: false,

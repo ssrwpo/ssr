@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes as pt } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import { logger, valueSet } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
@@ -22,10 +23,10 @@ const prepareStoriesStore = () => {
 
 class AsyncData extends PureComponent {
   static propTypes = {
-    isStoryDataInitialised: pt.bool.isRequired,
-    setStoriesInitialised: pt.func.isRequired,
-    stories: pt.array.isRequired,
-    setStories: pt.func.isRequired,
+    isStoryDataInitialised: PropTypes.bool.isRequired,
+    setStoriesInitialised: PropTypes.func.isRequired,
+    stories: PropTypes.array.isRequired,
+    setStories: PropTypes.func.isRequired,
   }
 
   // SSR requirements for this component

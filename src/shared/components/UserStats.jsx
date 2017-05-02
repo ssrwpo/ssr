@@ -1,12 +1,12 @@
 /* eslint-disable import/first, no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
-import React, { PropTypes as pt } from 'react';
+import { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 /* eslint-enable */
 import { valueSet } from '../actions/utils';
 
-class UserStats extends React.PureComponent {
-
+class UserStats extends PureComponent {
   componentWillMount() {
     const { login } = this.props;
     if (Meteor.isClient) {
@@ -24,11 +24,9 @@ class UserStats extends React.PureComponent {
     return null;
   }
 }
-
 UserStats.propTypes = {
-  login: pt.func.isRequired,
+  login: PropTypes.func.isRequired,
 };
-
 UserStats.defaultProps = {
   user: false,
 };

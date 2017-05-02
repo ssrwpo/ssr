@@ -15,10 +15,10 @@ To install yarn : https://yarnpkg.com/en/docs/install
 To install "meteor yarn" : ```meteor npm i -g yarn```  
 
 ```
-meteor yarn add is-retina lodash moment react react-dom react-helmet react-intl \
-  react-intl-redux react-redux react-router-dom actual electrode-react-ssr-caching \
-  express farmhash helmet html-minifier intl receptacle url-pattern useragent \
-  styled-components
+meteor yarn add react prop-types react-dom react-router-dom express helmet \
+  html-minifier react-helmet pino receptacle useragent redux react-redux moment \
+  i18next i18next-node-remote-backend i18next-xhr-backend react-i18next \
+  i18next-express-middleware serialize-javascript lodash actual is-retina
 meteor add ssrwpo:ssr
 ```
 
@@ -28,8 +28,8 @@ meteor add ssrwpo:ssr
 git clone https://github.com/ssrwpo/ssr.git && cd ssr
 meteor yarn install
 cd demo
-meteor yarn install
-yarn meteor
+yarn deps
+yarn start
 ```
 
 ## Package development

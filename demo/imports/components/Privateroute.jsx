@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -12,9 +13,9 @@ const Privateroute = ({ user, component: Component, ...rest }) => (
   />
 );
 Privateroute.propTypes = {
-  user: pt.oneOfType([pt.object, pt.bool]).isRequired,
-  component: pt.func.isRequired,
-  location: pt.string,
+  user: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
+  component: PropTypes.func.isRequired,
+  location: PropTypes.string,
 };
 Privateroute.defaultProps = {
   location: '/',

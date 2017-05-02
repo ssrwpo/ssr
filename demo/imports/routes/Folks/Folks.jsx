@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import querystring from 'querystring';
 import Helmet from 'react-helmet';
 import { pure } from 'meteor/ssrwpo:ssr';
@@ -43,9 +44,9 @@ const Folks = ({ folks, match, location }) => {
 };
 
 Folks.propTypes = {
-  folks: pt.array.isRequired,
-  match: pt.object.isRequired,
-  location: pt.object.isRequired,
+  folks: PropTypes.array.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 // state.Folks is the the redux store that was pre-hydrated from the Mongo collection by

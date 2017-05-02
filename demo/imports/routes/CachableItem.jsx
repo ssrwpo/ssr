@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { pure } from 'meteor/ssrwpo:ssr';
 import { updatePubSubItem, removePubSubItem } from '/imports/api/PubSub';
@@ -9,11 +10,11 @@ const styles = {
 
 class CachableItem extends React.Component {
   static propTypes = {
-    isPubSubSubscribed: pt.bool.isRequired,
-    id: pt.string.isRequired,
-    avatar: pt.string.isRequired,
-    email: pt.string.isRequired,
-    lastMod: pt.number.isRequired,
+    isPubSubSubscribed: PropTypes.bool.isRequired,
+    id: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    lastMod: PropTypes.number.isRequired,
   }
 
   static ssr = {

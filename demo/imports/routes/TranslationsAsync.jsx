@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import React, { PureComponent, PropTypes as pt } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { logger, valueSet, receiveIntl, TRANSLATION_URL } from 'meteor/ssrwpo:ssr';
 import Helmet from 'react-helmet';
 import { FormattedMessage, FormattedDate } from 'react-intl';
@@ -21,12 +22,12 @@ const prepareIntlMessages = () => {
 
 class TranslationsAsync extends PureComponent {
   static propTypes = {
-    isIntlInitialised: pt.bool.isRequired,
-    intl: pt.object.isRequired,
-    userLocale: pt.string.isRequired,
-    setIntlInitialised: pt.func.isRequired,
-    setIntl: pt.func.isRequired,
-    languageChanger: pt.func.isRequired,
+    isIntlInitialised: PropTypes.bool.isRequired,
+    intl: PropTypes.object.isRequired,
+    userLocale: PropTypes.string.isRequired,
+    setIntlInitialised: PropTypes.func.isRequired,
+    setIntl: PropTypes.func.isRequired,
+    languageChanger: PropTypes.func.isRequired,
   }
 
   // SSR requirements for this component
