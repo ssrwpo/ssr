@@ -1,3 +1,8 @@
+# 2.5.0 PropTypes as external package
+
+* react 15.5.x deprecates `PropTypes`: user NPM's `prop-types`.
+* Meteor 1.4.4.1
+
 # 2.4.0 cordova friendly
 
 * Avoid analyzing cordova's hot code push URL: `/__cordova/`.

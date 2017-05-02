@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { pure, valueSet } from 'meteor/ssrwpo:ssr';
@@ -6,7 +7,7 @@ import perf from '/imports/ui/hoc/perf';
 
 let Item = ({ idx }) => <li>{idx}</li>;
 Item.propTypes = {
-  idx: pt.number.isRequired,
+  idx: PropTypes.number.isRequired,
 };
 Item = pure(Item);
 
@@ -21,8 +22,8 @@ const Performance = ({ perfItems, toggle }) => (
   </div>
 );
 Performance.propTypes = {
-  perfItems: pt.number.isRequired,
-  toggle: pt.func.isRequired,
+  perfItems: PropTypes.number.isRequired,
+  toggle: PropTypes.func.isRequired,
 };
 export default connect(
   state => ({ perfItems: state.perfItems }),

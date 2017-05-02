@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -20,9 +21,9 @@ const Privateroute = ({ isLoggedIn, component: Component, ...rest }) => (
   />
 );
 Privateroute.propTypes = {
-  isLoggedIn: pt.bool.isRequired,
-  component: pt.func.isRequired,
-  location: pt.string,
+  isLoggedIn: PropTypes.bool.isRequired,
+  component: PropTypes.func.isRequired,
+  location: PropTypes.string,
 };
 Privateroute.defaultProps = {
   location: '/',

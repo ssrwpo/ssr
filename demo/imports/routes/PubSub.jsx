@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes as pt } from 'react';
+import React, { PureComponent } from 'react';
 import {
   logger, pure,
   // Helpers for collectionStore synchronization
@@ -41,23 +41,23 @@ let Item = ({ isPubSubSubscribed, id, avatar, email, lastMod }) => {
   );
 };
 Item.propTypes = {
-  isPubSubSubscribed: pt.bool.isRequired,
-  id: pt.string.isRequired,
-  avatar: pt.string.isRequired,
-  email: pt.string.isRequired,
-  lastMod: pt.number.isRequired,
+  isPubSubSubscribed: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  lastMod: PropTypes.number.isRequired,
 };
 
 Item = pure(Item);
 
 class PubSub extends PureComponent {
   static propTypes = {
-    buildDate: pt.number.isRequired,
-    PubSubStore: pt.array.isRequired,
-    isPubSubSubscribed: pt.bool.isRequired,
-    handleSubscribe: pt.func.isRequired,
-    handleInserRandom: pt.func.isRequired,
-    handleSyncViaMethod: pt.func.isRequired,
+    buildDate: PropTypes.number.isRequired,
+    PubSubStore: PropTypes.array.isRequired,
+    isPubSubSubscribed: PropTypes.bool.isRequired,
+    handleSubscribe: PropTypes.func.isRequired,
+    handleInserRandom: PropTypes.func.isRequired,
+    handleSyncViaMethod: PropTypes.func.isRequired,
   }
   componentWillUnmount() {
     const { isPubSubSubscribed, handleSubscribe, buildDate } = this.props;

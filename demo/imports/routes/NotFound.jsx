@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import React, { PropTypes as pt } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { pure } from 'meteor/ssrwpo:ssr';
 
@@ -17,9 +18,9 @@ const NotFound = ({ location }, { router }) => {
   );
 };
 NotFound.propTypes = {
-  location: pt.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 NotFound.contextTypes = {
-  router: pt.object.isRequired,
+  router: PropTypes.object.isRequired,
 };
 export default pure(NotFound);
