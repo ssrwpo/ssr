@@ -38,7 +38,7 @@ const createRouter = ({
     Meteor.startup(() => {
       // Get initial context transmitted as a script
       // eslint-disable-next-line no-underscore-dangle
-      const decodedEjsonString = decodeURIComponent(window.__PRELOADED_STATE__);
+      const decodedEjsonString = window.__PRELOADED_STATE__ ? decodeURIComponent(window.__PRELOADED_STATE__ ) : null;
       const initialState = !decodedEjsonString ? {} : EJSON.parse(decodedEjsonString);
       // Create store
       store = createStore(
@@ -49,7 +49,13 @@ const createRouter = ({
       // Set store subscription
       if (storeSubscription) store.subscribe(() => storeSubscription(store));
       // Get the React root element
-      const div = document.getElementById('react');
+        let div = document.getElementById('react');
+        if (Meteor.isCordova){
+            div = document.createElement('div')
+            div.setAttribute('id', 'react')
+            document.body.appendChild(div);
+        }
+
       let app = (
         <Provider store={store}>
           <BrowserRouter>
