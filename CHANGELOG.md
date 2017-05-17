@@ -1,3 +1,8 @@
+# 2.6.0 Cordova
+
+* Packages bumped
+* Cordova fixes by @floydprice :+1:
+
 # 2.5.0 PropTypes as external package
 
 * react 15.5.x deprecates `PropTypes`: user NPM's `prop-types`.
