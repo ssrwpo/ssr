@@ -28,8 +28,196 @@ meteor add ssrwpo:ssr
 git clone https://github.com/ssrwpo/ssr.git && cd ssr
 meteor yarn install
 cd demo
-yarn deps
-yarn start
+meteor yarn install
+# For launching the demo in development mode
+yarn dev
+# For launching the demo in production mode
+yarn prod
+# For launching the demo with ios in simulator mode
+yarn ios
+# For launching the demo with android in simulator mode
+yarn android
+```
+
+### Client side call
+```js
+import { createRouter, logger } from 'meteor/ssrwpo:ssr';
+...
+createRouter({
+  // Your MainApp as the top component that will get rendered in <div id='react' />
+  MainApp,
+  // Optional: Store subscription
+  storeSubscription,
+  // Optional: An object containing your application reducers
+  appReducers,
+  // Optional: An array of your redux middleware of choice
+  appMiddlewares,
+  // Optional: An array of your collection names
+  appCursorNames,
+  // Optional: Add a redux store that watches for URL changes
+  hasUrlStore: false,
+  // Optional: An i18n config for client side
+  i18n,
+  // Optional: Server uses a platform transformer, client must load optional reducers
+  hasPlatformTransformer = true,
+})
+.then(() => logger.info('Router started'));
+```
+
+### Server side call
+```js
+import { createRouter, logger } from 'meteor/ssrwpo:ssr';
+...
+createRouter({
+  // Your MainApp as the top component rendered and injected in the HTML payload
+  MainApp,
+  // Optional: Store subscription
+  storeSubscription,
+  // Optional: An object containing your application reducers
+  appReducers,
+  // Optional: An object containing the cursors required as data context
+  appCursors,
+  // Optional: A function that returns the content of your robots.txt
+  robotsTxt,
+  // Optional: A function that returns the content of your sitemap.xml
+  sitemapXml,
+  // Optional: A function that return the content of you humans.txt
+  humansTxt,
+  // Optional: An object with keys on URL with query parameters
+  urlQueryParameters,
+  // Optional: An object with keys on route solver
+  webhooks,
+  // Optional: An i18n config for server side
+  i18n,
+});
+logger.info('Router started');
+```
+
+### Universal logging
+By default this package logs for this package a muted. You can add asymetric
+logging using an universal logger like [pino](https://github.com/pinojs/pino)
+using the `logger.set` method. The logger requires the following methods:
+`debug`, `info`, `warn` & `error` which are used within this package.
+
+### Localization and i18n
+We use i18next for server side rendered localization. It gets the user browser language and serves the right language with a default one(in case you don't serve for users one).
+
+You can find more about :
+* [i18next](http://i18next.com/)  
+* [react-i18next](https://github.com/i18next/react-i18next)
+
+Do not need it see [FAQ](https://github.com/ssrwpo/ssr/blob/master/FAQ.md) how to remove from [demo](https://github.com/ssrwpo/ssr/tree/master/demo) app.
+
+### 404 - Not found route
+`react-router` will always render your application. For identifying a `404`, you
+have to tell to the server that while rendering the app, one of the displayed
+component is due to a `404`. This is achieved via the `react-router`'s `staticContext`
+and by setting into it a `has404` boolean used by the server to identify the route
+as `404` Not found route.
+
+Example: [NotFound](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/NotFound.jsx)
+
+## Sever side routes
+### Pre-made: Robots.txt, Humans.txt & Sitemap.xml
+
+To set up your `robots.txt`, you need to have a key `robotsTxt` inside the object
+that you pass to the server-side createRouter function. This key should contain
+a function that returns a string with the desired content of your `robots.txt`.
+The function receives the store as its first arguments. This allows you to
+programmatically build your `robots.txt` based on the store contents.  
+
+The same principle applies to `humans.txt` and `sitemap.xml`,
+with the key `humansTxt` and `sitemapXml` respectively.
+
+For example, you can populate your sitemap.xml of dynamic routes generated based
+on the store data. You can see examples of building these functions here:  
+* [`robots.txt`](https://github.com/ssrwpo/ssr/blob/master/demo/server/robotsTxt.js)  
+* [`sitemap.xml`](https://github.com/ssrwpo/ssr/blob/master/demo/server/sitemapXml.js)
+* [`humans.txt`](https://github.com/ssrwpo/ssr/blob/master/demo/server/humansTxt.js)
+
+> **NOTE** For `sitemap.xml` we strongly recommend [sitemap.js](https://github.com/ekalinin/sitemap.js).
+
+### Your own webhooks or REST API
+By passing a webhooks function, you can build your own server side routes powered
+by Express. A small example is setup in the demo:
+[webhooks](https://github.com/ssrwpo/ssr/blob/master/demo/server/webhooks.js).
+
+## Reducers
+### Platform detection, built-in reducer
+For the initial render, your app may require some defaults to ensure that
+it will server retina images or specific layout for a platform.
+
+The `platform` detection reducer provides the following platforms:
+
+* `android`: Any tablet or phone with Android using Chrome or the built-in browser.
+* `ipad`:  Any Apple iPad.
+* `iphone`: Any Apple iPhone.
+* `safari`: Any MacOS Safari (not iPhone or iPad).
+* `ie`: Any Internet Explorer before Edge.
+* `default`: All the other browsers and devices.
+
+By default, a `platformTransformers` is provided and adds 4 built-in reducers to
+the app: `retina`, `mobile`, `viewportWidth`, `viewportHeight`. It only applies
+to server side rendering. When your client side app is rendered, you can patch
+the default values that the server has injected with a bult-in component:
+
+`<BrowserStats retinaMinDpi={<number>} mobileBreakpoint={<number>} debounceTimer={<number>} />`
+where :
+
+* `retinaMinDpi`: 144, by default (1.5 x 96 in dpi).
+* `mobileBreakpoint`: 992, by default (in px).
+* `debounceTimer`: 64, by default (4 x 16 in ms).
+
+If you want to build your own `platformTransformers` and `<BrowserStats />`, please
+refer to the following sources for inspiration:
+
+* [`platformTransformers`](https://github.com/ssrwpo/ssr/blob/master/src/server/utils/platformTransformers.js).
+* [`<BrowserStats />`](https://github.com/ssrwpo/ssr/blob/master/src/shared/components/BrowserStats.jsx)
+
+
+### Build date, built-in reducer
+Each produced HTML payload is tagged with a build date allowing capabilities
+to check if a reload is required. The reducer is named `buildDate` and it
+contains a UNIX date.
+
+### Reducer helpers
+Store creation (see [Reducer](https://github.com/ssrwpo/ssr/tree/master/src/shared/reducers)):
+
+* Collections store: `createCollectionReducers`
+* Value store: `createValueReducer`
+
+Actions on reducers:
+
+* On collection store:
+  * `collectionAdd`
+  * `collectionChange`
+  * `collectionRemove`
+* On value store:
+  * `valueSet`
+  * `valueReset`
+
+### Synchronisation helpers for collections
+When your collection is serialized in the store, you may want to synchronize it
+when your application starts, or when entering a page, or on a user action ...
+As this is a common use case for Meteor, we provide an easy way to create
+`mapDispatchToProps` methods for subscribing/subscribing or calling a validated
+method that will synchronize your collection store.
+
+Example: [PubSub](https://github.com/ssrwpo/ssr/blob/master/demo/imports/routes/PubSub.jsx "PubSub")
+
+#### Via subscribe: `createHandleSubscribe`
+The subscribe / unsubscribe based synchronization helper has the following API:
+```js
+/**
+ * `createHandleSubscribe`
+ * Create an `handleSubscribe` function for your `mapDispatchToProps`.
+ * @param dispatch Store's dispatch.
+ * @param publicationName Your publication name which must accept an UNIX date value as `lastMod`.
+ * @param cursor A cursor on Mongo collection with a `lastMod` set on each item.
+ * @param valueStoreNameForSubscription Name of the value store identifying subscription state.
+ * @param collectionStoreName Name of the collection store holding replica of collection.
+ * @return A function allowing to subscribe and unsubscribe.
+ */
 ```
 
 ## Package development

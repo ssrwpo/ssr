@@ -18,7 +18,7 @@ const sharedPkgs = [
 ];
 
 Package.onUse((api) => {
-  api.versionsFrom('1.4.4.1');
+  api.versionsFrom('1.4.4.2');
   api.use(sharedPkgs);
   api.mainModule('shared/utils/peerDependencies.js', ['client', 'server']);
   api.mainModule('client/index.js', 'client');

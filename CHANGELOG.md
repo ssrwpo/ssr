@@ -1,4 +1,3 @@
-# > 3.X See [Github's project page](https://github.com/ssrwpo/ssr/projects)
 
 # 2.5.0 PropTypes as external package
 
