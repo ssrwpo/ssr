@@ -4,8 +4,8 @@
   "scripts": {
     "dev": "meteor",
     "prod": "meteor --production",
-    "ios": "meteor run ios-device",
-    "android": "meteor run android-device"
+    "ios": "meteor run ios",
+    "android": "meteor run android"
   },
   "devDependencies": {
     "react-addons-perf": "^15.4.2"

@@ -30,9 +30,9 @@ meteor yarn install
 yarn dev
 # For launching the demo in production mode
 yarn prod
-# For launching the demo with ios
+# For launching the demo with ios in simulator mode
 yarn ios
-# For launching the demo with android
+# For launching the demo with android in simulator mode
 yarn android
 ```
 
