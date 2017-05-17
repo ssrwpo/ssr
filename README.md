@@ -26,7 +26,14 @@ git clone https://github.com/ssrwpo/ssr.git && cd ssr
 meteor yarn install
 cd demo
 meteor yarn install
-yarn meteor
+# For launching the demo in development mode
+yarn dev
+# For launching the demo in production mode
+yarn prod
+# For launching the demo with ios
+yarn ios
+# For launching the demo with android
+yarn android
 ```
 
 ### Client side call

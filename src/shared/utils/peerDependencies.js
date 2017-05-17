@@ -9,7 +9,7 @@ const sharedPkjs = {
   react: '15.x',
   'react-dom': '15.x',
   'react-helmet': '5.x',
-  'react-i18next': '3.x',
+  'react-i18next': '4.x',
   'react-redux': '5.x',
   'react-router-dom': '4.x',
   redux: '3.x',

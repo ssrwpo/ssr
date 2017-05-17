@@ -50,7 +50,7 @@ shell-server@0.2.3
 spacebars@1.0.15
 spacebars-compiler@1.1.2
 ssrwpo:minifierjs@2.0.0
-ssrwpo:ssr@2.5.0
+ssrwpo:ssr@2.6.0
 ssrwpo:uglifyjs2@0.6.0
 stylus@2.513.9
 tmeasday:check-npm-versions@0.3.1
