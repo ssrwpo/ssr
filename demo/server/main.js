@@ -12,6 +12,8 @@ import PubSub from '/imports/api/PubSub';
 import '/imports/api/PubSub/server';
 // Store subscription
 import storeSubscription from '/imports/store';
+//helmet config
+import helmetConfig from './helmetConfig';
 // i18n
 // eslint-disable-next-line no-unused-vars
 import i18n from '/imports/i18n/i18nServer';
@@ -37,6 +39,8 @@ logger.info('Starting router');
 createRouter({
   // Your MainApp as the top component rendered and injected in the HTML payload
   MainApp,
+  // Optional: Helmet config
+  helmetConfig,
   // Optional: Store subscription
   storeSubscription,
   // Optional: An object containing your application reducers
