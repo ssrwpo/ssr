@@ -36,6 +36,7 @@ const EXPRESS_COVERED_URL = /^\/(?!api\/)(?!__cordova\/)[^.]*$/;
 /* eslint-disable no-param-reassign */
 const createRouter = ({
   MainApp,
+  helmetConfig,
   storeSubscription,
   appReducers = {},
   appCursors = {},
@@ -56,6 +57,8 @@ const createRouter = ({
   const app = express();
   // Secure Express
   app.use(helmet());
+  // modfy express if supplied
+  if (helmetConfig) app.use(helmet(helmetConfig));
   // express middleware to handle i18n
   if (i18n) app.use(i18nMiddleware.handle(i18n));
   app
