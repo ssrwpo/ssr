@@ -58,7 +58,7 @@ const createRouter = ({
   // Secure Express
   app.use(helmet());
   // modfy express if supplied
-  if (helmetConfig) app.use(helmet(helmetConfig));
+  if (helmetConfig) app.use(helmetConfig);
   // express middleware to handle i18n
   if (i18n) app.use(i18nMiddleware.handle(i18n));
   app

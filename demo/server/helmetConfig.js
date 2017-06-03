@@ -1,10 +1,8 @@
-// See for https://github.com/helmetjs/helmet for details of configuration
+import helmet from 'helmet';
 
-const helmetConfig =
-{
-  frameguard: {
-    action: 'deny'
-  },
+
+// See for https://github.com/helmetjs/helmet for details of configuration
+const helmetConfig = helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'none'"],
@@ -14,6 +12,6 @@ const helmetConfig =
       connectSrc : ["'self'", 'ws:'],
     }
   }
-};
+});
 
 export default helmetConfig;
