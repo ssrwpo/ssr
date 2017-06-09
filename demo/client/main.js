@@ -1,7 +1,9 @@
 import pino from 'pino';
 import { createRouter, logger, getStore } from 'meteor/ssrwpo:ssr';
+import { applyMiddleware } from 'redux';
 import * as appReducers from '/imports/reducers';
 import { createLogger } from 'redux-logger';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import MainApp from '/imports/app/MainApp';
@@ -25,6 +27,11 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
+// Enhancers
+const storeEnhancers = composeWithDevTools(
+  applyMiddleware(...appMiddlewares),
+);
+
 const appCursorNames = ['Folks', 'Places', 'PubSub'];
 
 logger.info('Starting router');
@@ -35,8 +42,8 @@ createRouter({
   storeSubscription,
   // Optional: An object containing your application reducers
   appReducers,
-  // Optional: An array of your redux middleware of choice
-  appMiddlewares,
+  // Optional: A function to enhance the store with enhancers
+  storeEnhancers,
   // Optional: An array of your collection names
   appCursorNames,
   // Optional: Add a redux store that watches for URL changes
