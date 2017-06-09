@@ -6,7 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import { combineReducers, applyMiddleware, createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
 import * as optionalReducers from '../shared/reducers/optionals';
@@ -23,7 +24,7 @@ const createRouter = ({
   MainApp,
   storeSubscription,
   appReducers = {},
-  appMiddlewares = [],
+  storeEnhancers,
   appCursorNames = [],
   i18n,
   hasPlatformTransformer = true,
@@ -45,7 +46,7 @@ const createRouter = ({
       store = createStore(
         allReducers,
         initialState,
-        applyMiddleware(...appMiddlewares),
+        storeEnhancers,
       );
       // Set store subscription
       if (storeSubscription) store.subscribe(() => storeSubscription(store));
