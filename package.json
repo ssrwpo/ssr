@@ -48,7 +48,6 @@
     "intl": "^1.2.5",
     "jest": "^19.0.2",
     "microtime": "^2.1.3",
-    "moment": "^2.18.1",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "receptacle": "^1.3.0",
