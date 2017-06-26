@@ -76,6 +76,15 @@ function processSSRRequirementsAndReturnPromises(
   walkTree(rootElement, rootContext, (element, instance, context) => {
     const skipRoot = !fetchRoot && (element === rootElement);
     if (skipRoot) return true;
+    
+    if (instance && instance.fetchData) {
+      const result = instance.fetchData();
+      const isPromise = result && typeof result.then === 'function';
+      if (isPromise) {
+        promises.push({ promise: result, element, context });
+        return false;
+      }
+    }
 
     const ssrRequirements = (instance && instance.ssr) || element.type.ssr;
     if (ssrRequirements && typeof ssrRequirements === 'object') {
