@@ -8,7 +8,7 @@ import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-intl-redux';
 import Helmet from 'react-helmet';
-import { styleSheet } from 'styled-components';
+import { ServerStyleSheet } from 'styled-components';
 /* eslint-enable */
 import logger from '../../shared/utils/logger';
 
@@ -46,8 +46,9 @@ const applicationRendering = (stepResults) => {
   // Avoid the initial app rendering in case there's an unwanted URL query parameter
   if (!hasUnwantedQueryParameters) {
     // Create and render application main entry point
-    bodyMarkup = renderToString(app);
-    css = styleSheet.getCSS();
+    const sheet = new ServerStyleSheet();
+    bodyMarkup = renderToString(sheet.collectStyles(app));
+    css = sheet.getStyleTags();
     helmetHead = Helmet.renderStatic();
   }
 
@@ -83,7 +84,7 @@ const applicationRendering = (stepResults) => {
     // Add humans.txt link, if required
     if (stepResults.humansTxt) stepResults.req.dynamicHead += '<link rel="author" href="humans.txt" />';
     // Add the css tag for styled components to head if it's not empty
-    if (css.length > 0) stepResults.req.dynamicHead += `<style type="text/css">${css}</style>`;
+    if (css.length > 0) stepResults.req.dynamicHead += css;
     // Create minified HTML payload
     const meteorHtml = WebAppInternals.getBoilerplate(stepResults.req, WebApp.defaultArch);
     //stepResults.html = htmlMinifier.minify(meteorHtml, {
