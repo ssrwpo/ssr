@@ -79,6 +79,7 @@ const createRouter = (MainApp, {
   webhooks = {},
 } = {}, {
   appReducers = {},
+  storeEnhancers = {},
   platformTransformers = defaultPlatformTransformers,
   storeSubscription = null,
 } = {}) => {
@@ -166,6 +167,7 @@ const createRouter = (MainApp, {
         storeSubscription,
         appReducers,
         platformTransformers,
+        storeEnhancers,
       );
 
       // STEP 8: Init store values such as platform

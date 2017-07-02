@@ -4,7 +4,7 @@ import { combineReducers, createStore } from 'redux';
 import * as packageReducers from '../../shared/reducers';
 import * as optionalReducers from '../../shared/reducers/optionals';
 
-const createAppAndPackageStore = (appReducers, platformTransformers) => {
+const createAppAndPackageStore = (appReducers, platformTransformers, storeEnhancers) => {
   // Create a redux store
   const allReducers = combineReducers({
     ...appReducers,
@@ -13,7 +13,7 @@ const createAppAndPackageStore = (appReducers, platformTransformers) => {
       platformTransformers ? optionalReducers : null,
     ),
   });
-  return createStore(allReducers);
+  return createStore(allReducers, {}, storeEnhancers);
 };
 
 export default createAppAndPackageStore;

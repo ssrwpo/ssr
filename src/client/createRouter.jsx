@@ -5,7 +5,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-intl-redux';
-import { combineReducers, applyMiddleware, createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 import { setMessages } from '../shared/actions';
 /* eslint-enable */
 import * as packageReducers from '../shared/reducers';
@@ -22,7 +22,7 @@ const createRouter = ({
   MainApp,
   storeSubscription,
   appReducers = {},
-  appMiddlewares = [],
+  storeEnhancers,
   appCursorNames = [],
   hasPlatformTransformer = true,
   localization,
@@ -44,7 +44,7 @@ const createRouter = ({
       store = createStore(
         allReducers,
         initialState,
-        applyMiddleware(...appMiddlewares),
+        storeEnhancers,
       );
       // Set store subscription
       if (storeSubscription) {
