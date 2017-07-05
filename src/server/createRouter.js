@@ -10,6 +10,7 @@ import {
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
+import { applyMiddleware } from 'redux';
 import logger from '../shared/utils/logger';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
@@ -79,7 +80,7 @@ const createRouter = (MainApp, {
   webhooks = {},
 } = {}, {
   appReducers = {},
-  storeEnhancers = {},
+  storeEnhancers = applyMiddleware(),
   platformTransformers = defaultPlatformTransformers,
   storeSubscription = null,
 } = {}) => {
