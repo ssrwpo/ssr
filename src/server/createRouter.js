@@ -224,7 +224,7 @@ const createRouter = (MainApp, {
         res.set('Content-Type', 'text/xml');
         res.end(sitemapXml(stepResults.store));
         perfStop('/sitemap.xml');
-      }
+      };
 
       if (Fiber.current) {
         callback();
@@ -252,6 +252,10 @@ const createRouter = (MainApp, {
       res.end(messageStr);
       perfStop('/translations');
     });
+  }
+  // Webhook support
+  if (webhooks) {
+    webhooks(app);
   }
 };
 
