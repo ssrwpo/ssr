@@ -81,7 +81,6 @@ const createToggleSubscribe = (
               }
             },
             changed(id, fields) {
-              console.log('here');
               dispatch(collectionChange(collectionStoreName, id, fields));
             },
             removed(id) {
