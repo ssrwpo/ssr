@@ -77,7 +77,7 @@ const createRouter = (MainApp, {
   robotsTxt = null,
   routes = {},
   sitemapXml = null,
-  webhooks = {},
+  webhooks,
 } = {}, {
   appReducers = {},
   storeEnhancers = applyMiddleware(),
@@ -254,9 +254,7 @@ const createRouter = (MainApp, {
     });
   }
   // Webhook support
-  if (webhooks) {
-    webhooks(app);
-  }
+  if (webhooks) webhooks(app);
 };
 
 // Server side exports
