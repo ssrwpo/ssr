@@ -77,7 +77,7 @@ const createRouter = (MainApp, {
   robotsTxt = null,
   routes = {},
   sitemapXml = null,
-  webhooks,
+  webhooks = {},
 } = {}, {
   appReducers = {},
   storeEnhancers = applyMiddleware(),
@@ -86,6 +86,15 @@ const createRouter = (MainApp, {
 } = {}) => {
   // Create an Express server
   const app = express();
+
+  // Webhooks support
+  if (webhooks) {
+    if(typeof webhooks === 'function') webhooks(app);
+    else
+      Object.keys(webhooks).forEach(webhookRoute => {
+        app.use(webhookRoute, webhooks[webhookRoute]);
+      });
+  }
 
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
@@ -204,6 +213,7 @@ const createRouter = (MainApp, {
       new Fiber(() => callback.call()).run();
     }
   });
+
   // Routes for robots.txt payload
   if (robotsTxt) {
     app.get('/robots.txt', (req, res) => {
@@ -253,8 +263,7 @@ const createRouter = (MainApp, {
       perfStop('/translations');
     });
   }
-  // Webhook support
-  if (webhooks) webhooks(app);
+
 };
 
 // Server side exports
