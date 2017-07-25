@@ -3,6 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 import pull from 'lodash/pull';
 import Fiber from 'fibers';
+import { applyMiddleware } from 'redux';
 import {
   ServerRouter as DefaultServerRouter,
   createServerRenderContext as defaultCreateServerRenderContext,
@@ -10,7 +11,6 @@ import {
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
-import { applyMiddleware } from 'redux';
 import logger from '../shared/utils/logger';
 import { checkTypes } from './utils/error';
 import { perfStart, perfStop } from './utils/perfMeasure';
@@ -92,13 +92,13 @@ const createRouter = (MainApp, {
   const match = checkTypes(
     webhooks,
     ['function', 'object'],
-    'webhooks must be an object with routes as keys and callbacks as values for these keys or a function taking the express app as its arguments'
+    'webhooks must be an object with routes as keys and callbacks as values for these keys or a function taking the express app as its arguments',
   );
 
-  if(match === 'function'){
+  if (match === 'function') {
     webhooks(app);
-  }else if(match === 'object'){
-    Object.keys(webhooks).forEach(webhookRoute => {
+  } else if (match === 'object') {
+    Object.keys(webhooks).forEach((webhookRoute) => {
       app.use(webhookRoute, webhooks[webhookRoute]);
     });
   }
@@ -270,7 +270,6 @@ const createRouter = (MainApp, {
       perfStop('/translations');
     });
   }
-
 };
 
 // Server side exports
