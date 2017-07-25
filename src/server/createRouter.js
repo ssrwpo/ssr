@@ -12,6 +12,7 @@ import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import { applyMiddleware } from 'redux';
 import logger from '../shared/utils/logger';
+import checkTypes from './utils/error';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
@@ -88,13 +89,17 @@ const createRouter = (MainApp, {
   const app = express();
 
   // Webhooks support
-  if (webhooks) {
-    if(typeof webhooks === 'function') webhooks(app);
-    else
+  checkTypes(
+    webhooks,
+    {'function': _ => {
+      webhooks(app);
+    }, 'object': _ => {
       Object.keys(webhooks).forEach(webhookRoute => {
         app.use(webhookRoute, webhooks[webhookRoute]);
       });
-  }
+    }},
+    'webhooks must be an object with route as key and callback as value or a function taking the express app as its arguments'
+  );
 
   // Add Express to Meteor's connect
   WebApp.connectHandlers.use(Meteor.bindEnvironment(app));
