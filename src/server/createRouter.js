@@ -98,7 +98,7 @@ const createRouter = (MainApp, {
         app.use(webhookRoute, webhooks[webhookRoute]);
       });
     }},
-    'webhooks must be an object with route as key and callback as value or a function taking the express app as its arguments'
+    'webhooks must be an object with routes as keys and callbacks as values for these keys or a function taking the express app as its arguments'
   );
 
   // Add Express to Meteor's connect
