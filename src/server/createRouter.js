@@ -62,57 +62,64 @@ const createRouter = ({
   // Routes for HTML payload
   .route(EXPRESS_COVERED_URL)
   .get((req, res, next) => {
-    const url = req.path;
-    // Start performance cheking
-    perfStart();
-    debugLastRequest = req;
-    debugLastResponse = res;
-    // Inpure structure for storing results throughout steps
-    const stepResults = {
-      req,
-      res,
-      next,
-      url,
-      urlQueryParameters,
-      hasUnwantedQueryParameters: false,
-      statusCode: 200,
-      hash: null,
-      html: null,
-      Location: null,
-      isFromCache: false,
-      is404fromCache: false,
-      store,
-      contextMarkup: null,
-      MainApp,
-      // Used for localization
-      i18n,
-      i18nOptions: null,
-      platformTransformers,
-      humansTxt,
-      // Used for circumventing issues on checkNpmDependencies
-      ServerRouter,
-    };
+    const callback = () => {
+      const url = req.path;
+      // Start performance cheking
+      perfStart();
+      debugLastRequest = req;
+      debugLastResponse = res;
+      // Inpure structure for storing results throughout steps
+      const stepResults = {
+        req,
+        res,
+        next,
+        url,
+        urlQueryParameters,
+        hasUnwantedQueryParameters: false,
+        statusCode: 200,
+        hash: null,
+        html: null,
+        Location: null,
+        isFromCache: false,
+        is404fromCache: false,
+        store,
+        contextMarkup: null,
+        MainApp,
+        // Used for localization
+        i18n,
+        i18nOptions: null,
+        platformTransformers,
+        humansTxt,
+        // Used for circumventing issues on checkNpmDependencies
+        ServerRouter,
+      };
 
-    // STEP1 Do we want speak to world?
-    learnForeignLanguages(stepResults);
-    // STEP2 User agent analysis
-    userAgentAnalysis(stepResults);
-    // STEP3 Analyse query params
-    queryParamsAnalysis(stepResults);
-    // STEP4 Create location
-    urlAnalysis(stepResults);
-    // SETP5 Cache analysis
-    cacheAnalysis(stepResults);
-    // STEP6 Create data context
-    createDataContext(stepResults);
-    // STEP7 Application rendering if required
-    applicationRendering(stepResults);
-    // STEP8 Transport
-    transport(stepResults);
-    // STEP9 Cache filling if required
-    cacheFilling(stepResults);
-    // End performance cheking
-    perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
+      // STEP1 Do we want speak to world?
+      learnForeignLanguages(stepResults);
+      // STEP2 User agent analysis
+      userAgentAnalysis(stepResults);
+      // STEP3 Analyse query params
+      queryParamsAnalysis(stepResults);
+      // STEP4 Create location
+      urlAnalysis(stepResults);
+      // SETP5 Cache analysis
+      cacheAnalysis(stepResults);
+      // STEP6 Create data context
+      createDataContext(stepResults);
+      // STEP7 Application rendering if required
+      applicationRendering(stepResults);
+      // STEP8 Transport
+      transport(stepResults);
+      // STEP9 Cache filling if required
+      cacheFilling(stepResults);
+      // End performance cheking
+      perfStop(`${stepResults.statusCode} - ${stepResults.url}`);
+    };
+    if (Fiber.current) {
+      callback();
+    } else {
+      new Fiber(() => callback.call()).run();
+    }
   });
   // Routes for robots.txt payload
   if (robotsTxt) {
