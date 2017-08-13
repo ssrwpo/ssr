@@ -1,6 +1,7 @@
 /* eslint-disable import/first, no-undef, import/no-extraneous-dependencies, import/no-unresolved, import/extensions, max-len */
 import express from 'express';
 import helmet from 'helmet';
+import Fiber from 'fibers';
 import i18nMiddleware from 'i18next-express-middleware';
 /* eslint-enable */
 import { Meteor } from 'meteor/meteor';
