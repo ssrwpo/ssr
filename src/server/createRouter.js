@@ -12,7 +12,7 @@ import {
 import { Meteor } from 'meteor/meteor';
 import { WebApp } from 'meteor/webapp';
 import logger from '../shared/utils/logger';
-import { checkTypes } from './utils/error';
+import checkTypes from './utils/error';
 import { perfStart, perfStop } from './utils/perfMeasure';
 import defaultPlatformTransformers from './utils/platformTransformers';
 // Serving steps
