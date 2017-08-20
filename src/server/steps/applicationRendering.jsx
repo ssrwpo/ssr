@@ -56,6 +56,11 @@ const applicationRendering = (stepResults) => {
     // Create head
     stepResults.req.dynamicHead = ['title', 'meta', 'link', 'script']
       .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
+
+    // Add html attributes
+    stepResults.req.htmlAttributes = helmetHead.htmlAttributes;
+    WebApp.addHtmlAttributeHook(request => request.htmlAttributes.toComponent());
+
     // Add humans.txt link, if required
     if (stepResults.humansTxt) stepResults.req.dynamicHead += '<link rel="author" href="humans.txt" />';
     // Create minified HTML payload
@@ -65,7 +70,7 @@ const applicationRendering = (stepResults) => {
       removeStyleLinkTypeAttributes: true,
       collapseWhitespace: true,
     });
-    // Load Meteor's bundle asyncrhoneously only in production
+    // Load Meteor's bundle asynchroneously only in production
     if (process.env.NODE_ENV === 'production') {
       stepResults.html = stepResults.html.replace(/<script src/g, '<script async src');
     }
