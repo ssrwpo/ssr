@@ -54,7 +54,7 @@ const applicationRendering = (stepResults) => {
     // Create body
     stepResults.req.dynamicBody = `<div id="react">${bodyMarkup}</div>${stepResults.contextMarkup}`;
     // Create head
-    stepResults.req.dynamicHead = ['title', 'meta', 'link', 'script']
+    stepResults.req.dynamicHead = ['title', 'meta', 'link', 'script', 'style']
       .reduce((acc, key) => `${acc}${helmetHead[key].toString()}`, '');
 
     // Add html attributes
